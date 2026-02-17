@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Actividad 2: Análisis de servicios de seguridad (X.800 / RFC 4949)</title>
+  <meta name="description" content="Análisis de 10 escenarios aplicando ITU-T X.800 y RFC 4949 - Seguridad Informática" />
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <!-- html2pdf para exportar PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+
+  <!-- HEADER (idéntico al portafolio, con el menú corregido) -->
+  <header class="site-header" role="banner">
+    <div class="container">
+      <div class="header-content">
+        <div class="brand">
+          <h1 class="brand__title">Jorge Alejandro Cabrera</h1>
+          <p class="brand__subtitle"><strong>CNO V – Seguridad Informática</strong></p>
+          <p class="brand__subtitle">Universidad Politécnica de San Luis Potosí</p>
+          <p class="brand__subtitle">8vo Semestre</p>
+        </div>
+        <nav class="nav" aria-label="Navegación principal">
+          <a href="Index.html"><i class="fas fa-home"></i> Inicio</a>
+          <a href="Index.html#perfil"><i class="fas fa-user"></i> Perfil</a>
+          <a href="Index.html#info-tecnica"><i class="fas fa-code"></i> Tecnologías</a>
+          <a href="Index.html#contacto"><i class="fas fa-envelope"></i> Contacto</a>
+          
+          <!-- DROPDOWN CORREGIDO (submenús a la izquierda) -->
+          <div class="dropdown">
+            <a href="#" class="dropbtn"><i class="fas fa-folder-open"></i> Actividades</a>
+            <div class="dropdown-content">
+              <!-- Parcial 1 con submenú -->
+              <div class="submenu">
+                <a href="#">Parcial 1 ▸</a>
+                <div class="submenu-content">
+                    <a href="actividad1.html">Actividad 1 – NotPetya Maersk</a>
+                    <a href="actividad2.html">Actividad 2 – Análisis de servicios de seguridad (X.800 y RFC 4949)</a>
+                    <a href="actividad3.html">Actividad 3 – Interpretación y traducción de políticas de filtrado en iptables</a>
+                    <a href="actividad4.html">Actividad 4 – Mecanismos de defensa en red</a>
+                    <a href="actividad5.html">Actividad 5 – Cartografiando el pentesting: análisis comparativo de
+                      metodologías de seguridad informática</a>
+                    <a href="actividad6.html">Actividad 6 – Implementación de IPSec VPN</a>
+                </div>
+              </div>
+              <!-- Parcial 2 (placeholder con submenú) -->
+              <div class="submenu">
+                <a href="#">Parcial 2 (próximamente)</a>
+                <a href="#">Parcial 3 (próximamente)</a>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" id="actividad-main" role="main">
+    
+    <!-- ENCABEZADO DE LA ACTIVIDAD -->
+    <section class="actividad-header">
+      <h1 class="section-title">📘 Actividad 2 – Parcial 1</h1>
+      <p class="actividad-subtitulo">Análisis de servicios de seguridad: ITU‑T X.800 y RFC 4949</p>
+      <div class="actividad-meta">
+        <span><i class="fas fa-user"></i> Jorge Alejandro Cabrera Meza – 181591</span>
+        <span><i class="fas fa-calendar-alt"></i> 30 – Enero – 2026</span>
+        <span><i class="fas fa-tag"></i> 10 escenarios · Marcos normativos</span>
+      </div>
+      
+      <!-- BOTÓN DE EXPORTAR A PDF -->
+      <div class="pdf-export-container">
+        <button id="exportarPDF" class="btn btn--primary">
+          <i class="fas fa-file-pdf"></i> Exportar a PDF
+        </button>
+        <p class="form-note muted"><i class="fas fa-info-circle"></i> Descarga un respaldo académico de este análisis.</p>
+      </div>
+    </section>
+
+    <!-- ============================================= -->
+    <!-- 1. INTRODUCCIÓN CONTEXTUAL AL TEMA           -->
+    <!-- ============================================= -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-globe"></i> 1. Introducción contextual</h2>
+      <div class="card">
+        <p>La seguridad informática no se limita a instalar software; requiere un <strong>diseño arquitectónico</strong> y una <strong>terminología precisa</strong> para ser efectiva. Dos documentos fundamentales estandarizan estos conceptos a nivel internacional:</p>
+        <ul style="margin-left: 1.5rem; margin-top: 1rem;">
+          <li><strong>ITU‑T X.800</strong>: Proporciona un marco sistemático para definir dónde y cómo aplicar la seguridad en las capas de red. Clasifica los <strong>servicios</strong> (autenticación, control de acceso, confidencialidad, integridad, no repudio y disponibilidad) y los <strong>mecanismos</strong> (cifrado, firmas digitales, etc.) para mitigar ataques.</li>
+          <li><strong>RFC 4949</strong>: Establece el vocabulario técnico oficial para la comunidad de Internet. Define términos como <em>vulnerabilidad</em>, <em>explotación</em>, <em>amenaza</em> o <em>ataque</em>, evitando ambigüedades y permitiendo que los profesionales hablen el mismo idioma.</li>
+        </ul>
+        <p style="margin-top: 1rem;">En esta actividad se analizan <strong>10 escenarios reales</strong> de incidentes de seguridad, identificando los servicios X.800 comprometidos y aplicando la terminología precisa del RFC 4949. El objetivo es comprender cómo estos marcos ayudan a diagnosticar fallos y a proponer controles efectivos.</p>
+      </div>
+    </section>
+
+    <!-- ============================================= -->
+    <!-- 2. DESARROLLO TÉCNICO DE LA ACTIVIDAD        -->
+    <!-- ============================================= -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-microchip"></i> 2. Desarrollo técnico: 10 escenarios</h2>
+      <div class="card">
+        <p style="margin-bottom: 1.5rem;">A continuación se presentan los 10 escenarios analizados, cada uno con los servicios X.800 afectados, la definición RFC 4949 correspondiente y las medidas de control recomendadas.</p>
+        
+        <!-- Escenario 01 -->
+        <div style="background: var(--bg); padding: 1.5rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem;">
+          <h3 style="display: flex; align-items: center; gap: 10px; color: var(--primary);"><i class="fas fa-skull"></i> Escenario 01 – Ransomware LockBit</h3>
+          <div class="table-responsive">
+            <table class="tabla-tecnica">
+              <tr><th>Elemento</th><th>Respuesta</th></tr>
+              <tr><td>Servicios X.800 comprometidos</td><td>Control de acceso; Integridad; Disponibilidad; Confidencialidad</td></tr>
+              <tr><td>Definición(es) RFC 4949</td><td>multi-stage attack; data breach; availability attack</td></tr>
+              <tr><td>Tipo de amenaza</td><td>Ransomware / Extorsión</td></tr>
+              <tr><td>Vector de ataque</td><td>Acceso no autorizado; Exfiltración</td></tr>
+              <tr><td>Impacto técnico/operativo</td><td>Cifrado masivo; Pérdida datos; Indisponibilidad</td></tr>
+              <tr><td>Medida de control recomendada</td><td>Backups inmutables; EDR; Segmentación; Detección precoz</td></tr>
+            </table>
+          </div>
+        </div>
+        
+        <!-- Escenario 02 -->
+        <div style="background: var(--bg); padding: 1.5rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem;">
+          <h3 style="display: flex; align-items: center; gap: 10px; color: var(--primary);"><i class="fas fa-cloud"></i> Escenario 02 – Almacenamiento en nube mal configurado</h3>
+          <div class="table-responsive">
+            <table class="tabla-tecnica">
+              <tr><th>Elemento</th><th>Respuesta</th></tr>
+              <tr><td>Servicios X.800 comprometidos</td><td>Control acceso; Confidencialidad; No repudio</td></tr>
+              <tr><td>Definición(es) RFC 4949</td><td>misconfiguration; exposure</td></tr>
+              <tr><td>Tipo de amenaza</td><td>Exposición por error</td></tr>
+              <tr><td>Vector de ataque</td><td>Configuración errónea (cloud)</td></tr>
+              <tr><td>Impacto técnico/operativo</td><td>Fuga datos; Riesgo legal; Daño reputacional</td></tr>
+              <tr><td>Medida de control recomendada</td><td>Revisiones IAM; Políticas S3/ACL; Auditoría</td></tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- Escenario 03 -->
+        <div style="background: var(--bg); padding: 1.5rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem;">
+          <h3 style="display: flex; align-items: center; gap: 10px; color: var(--primary);"><i class="fas fa-link"></i> Escenario 03 – Ataque a cadena de suministro</h3>
+          <div class="table-responsive">
+            <table class="tabla-tecnica">
+              <tr><th>Elemento</th><th>Respuesta</th></tr>
+              <tr><td>Servicios X.800 comprometidos</td><td>Confidencialidad; Control acceso; Integridad; Disponibilidad</td></tr>
+              <tr><td>Definición(es) RFC 4949</td><td>supply chain attack</td></tr>
+              <tr><td>Tipo de amenaza</td><td>Cadena de suministro comprometida</td></tr>
+              <tr><td>Vector de ataque</td><td>Actualización maliciosa (proveedor)</td></tr>
+              <tr><td>Impacto técnico/operativo</td><td>Compromiso masivo; Confianza rota</td></tr>
+              <tr><td>Medida de control recomendada</td><td>Verificación firma; SBOM; Aislamiento; Lista blanca</td></tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- Escenario 04 -->
+        <div style="background: var(--bg); padding: 1.5rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem;">
+          <h3 style="display: flex; align-items: center; gap: 10px; color: var(--primary);"><i class="fas fa-envelope"></i> Escenario 04 – Phishing y robo de credenciales</h3>
+          <div class="table-responsive">
+            <table class="tabla-tecnica">
+              <tr><th>Elemento</th><th>Respuesta</th></tr>
+              <tr><td>Servicios X.800 comprometidos</td><td>Autenticación; Control acceso</td></tr>
+              <tr><td>Definición(es) RFC 4949</td><td>credential compromise; authentication failure</td></tr>
+              <tr><td>Tipo de amenaza</td><td>Robo de credenciales / Phishing</td></tr>
+              <tr><td>Vector de ataque</td><td>Emails phishing; Ingeniería social</td></tr>
+              <tr><td>Impacto técnico/operativo</td><td>Acceso persistente; Mov. lateral</td></tr>
+              <tr><td>Medida de control recomendada</td><td>MFA; Monitor UEBA; Rotación credenciales</td></tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- Escenario 05 -->
+        <div style="background: var(--bg); padding: 1.5rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem;">
+          <h3 style="display: flex; align-items: center; gap: 10px; color: var(--primary);"><i class="fas fa-database"></i> Escenario 05 – Ransomware con destrucción de backups</h3>
+          <div class="table-responsive">
+            <table class="tabla-tecnica">
+              <tr><th>Elemento</th><th>Respuesta</th></tr>
+              <tr><td>Servicios X.800 comprometidos</td><td>Disponibilidad; Integridad</td></tr>
+              <tr><td>Definición(es) RFC 4949</td><td>data destruction; availability attack</td></tr>
+              <tr><td>Tipo de amenaza</td><td>Ransomware avanzado (backup wipe)</td></tr>
+              <tr><td>Vector de ataque</td><td>Eliminación/cifrado de backups</td></tr>
+              <tr><td>Impacto técnico/operativo</td><td>Imposible recuperación; Paralización</td></tr>
+              <tr><td>Medida de control recomendada</td><td>Backups offline/inmutables; Seg. de backups; Pruebas</td></tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- Escenario 06 -->
+        <div style="background: var(--bg); padding: 1.5rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem;">
+          <h3 style="display: flex; align-items: center; gap: 10px; color: var(--primary);"><i class="fas fa-user-secret"></i> Escenario 06 – Amenaza interna (insider threat)</h3>
+          <div class="table-responsive">
+            <table class="tabla-tecnica">
+              <tr><th>Elemento</th><th>Respuesta</th></tr>
+              <tr><td>Servicios X.800 comprometidos</td><td>Confidencialidad; Control acceso</td></tr>
+              <tr><td>Definición(es) RFC 4949</td><td>insider threat</td></tr>
+              <tr><td>Tipo de amenaza</td><td>Amenaza interna (malicioso)</td></tr>
+              <tr><td>Vector de ataque</td><td>Abuso de privilegios</td></tr>
+              <tr><td>Impacto técnico/operativo</td><td>Fuga datos; Pérdida confianza</td></tr>
+              <tr><td>Medida de control recomendada</td><td>Principio mínimo privilegio; DLP; Auditoría</td></tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- Escenario 07 -->
+        <div style="background: var(--bg); padding: 1.5rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem;">
+          <h3 style="display: flex; align-items: center; gap: 10px; color: var(--primary);"><i class="fas fa-clipboard-list"></i> Escenario 07 – Manipulación de logs</h3>
+          <div class="table-responsive">
+            <table class="tabla-tecnica">
+              <tr><th>Elemento</th><th>Respuesta</th></tr>
+              <tr><td>Servicios X.800 comprometidos</td><td>Integridad; No repudio; Auditoría</td></tr>
+              <tr><td>Definición(es) RFC 4949</td><td>evidentiary integrity; audit trail compromise</td></tr>
+              <tr><td>Tipo de amenaza</td><td>Manipulación de logs</td></tr>
+              <tr><td>Vector de ataque</td><td>Cifrado/alteración de registros</td></tr>
+              <tr><td>Impacto técnico/operativo</td><td>Imposible reconstruir eventos; Riesgo legal</td></tr>
+              <tr><td>Medida de control recomendada</td><td>Logs remotos/inmutables; SIEM; Backup logs</td></tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- Escenario 08 -->
+        <div style="background: var(--bg); padding: 1.5rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem;">
+          <h3 style="display: flex; align-items: center; gap: 10px; color: var(--primary);"><i class="fas fa-tools"></i> Escenario 08 – Fallo operativo por actualización errónea</h3>
+          <div class="table-responsive">
+            <table class="tabla-tecnica">
+              <tr><th>Elemento</th><th>Respuesta</th></tr>
+              <tr><td>Servicios X.800 comprometidos</td><td>Disponibilidad</td></tr>
+              <tr><td>Definición(es) RFC 4949</td><td>operational failure</td></tr>
+              <tr><td>Tipo de amenaza</td><td>Fallo operativo / Cambio erróneo</td></tr>
+              <tr><td>Vector de ataque</td><td>Actualización mal ejecutada</td></tr>
+              <tr><td>Impacto técnico/operativo</td><td>Caída servicios; Interrupción masiva</td></tr>
+              <tr><td>Medida de control recomendada</td><td>Pruebas preprod; Rollback; Automatización segura</td></tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- Escenario 09 -->
+        <div style="background: var(--bg); padding: 1.5rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem;">
+          <h3 style="display: flex; align-items: center; gap: 10px; color: var(--primary);"><i class="fas fa-mask"></i> Escenario 09 – Suplantación (masquerade/phishing)</h3>
+          <div class="table-responsive">
+            <table class="tabla-tecnica">
+              <tr><th>Elemento</th><th>Respuesta</th></tr>
+              <tr><td>Servicios X.800 comprometidos</td><td>Autenticación; Confidencialidad</td></tr>
+              <tr><td>Definición(es) RFC 4949</td><td>masquerade; phishing</td></tr>
+              <tr><td>Tipo de amenaza</td><td>Suplantación / Phishing</td></tr>
+              <tr><td>Vector de ataque</td><td>Sites y emails falsos</td></tr>
+              <tr><td>Impacto técnico/operativo</td><td>Robo datos; Engaño usuarios</td></tr>
+              <tr><td>Medida de control recomendada</td><td>DMARC/DKIM/SPF; Concientización; MFA</td></tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- Escenario 10 -->
+        <div style="background: var(--bg); padding: 1.5rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem;">
+          <h3 style="display: flex; align-items: center; gap: 10px; color: var(--primary);"><i class="fas fa-bomb"></i> Escenario 10 – Ataque destructivo</h3>
+          <div class="table-responsive">
+            <table class="tabla-tecnica">
+              <tr><th>Elemento</th><th>Respuesta</th></tr>
+              <tr><td>Servicios X.800 comprometidos</td><td>Confidencialidad; Disponibilidad</td></tr>
+              <tr><td>Definición(es) RFC 4949</td><td>destructive attack</td></tr>
+              <tr><td>Tipo de amenaza</td><td>Ataque destructivo</td></tr>
+              <tr><td>Vector de ataque</td><td>Exfil + destrucción</td></tr>
+              <tr><td>Impacto técnico/operativo</td><td>Pérdida irreversible; Caída total</td></tr>
+              <tr><td>Medida de control recomendada</td><td>Seg. multicapa; Backups; Respuesta IR; Contención</td></tr>
+            </table>
+          </div>
+        </div>
+
+        <p class="muted" style="margin-top: 1rem;"><i class="fas fa-info-circle"></i> Análisis basado en incidentes documentados y casos de estudio.</p>
+      </div>
+    </section>
+
+    <!-- ============================================= -->
+    <!-- 3. MATERIAL MULTIMEDIA                       -->
+    <!-- ============================================= -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-photo-video"></i> 3. Material multimedia</h2>
+      
+      <!-- Diagrama: Arquitectura de seguridad X.800 -->
+      <h3>🧱 Diagrama: Servicios y mecanismos de seguridad (X.800)</h3>
+      <div class="diagrama-container" style="background: white;">
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;">
+          <div style="background: var(--primary); color: white; padding: 1rem 1.5rem; border-radius: var(--radius-sm); text-align: center; min-width: 150px;">
+            <i class="fas fa-id-card" style="font-size: 2rem; margin-bottom: 0.5rem; display: block;"></i>
+            <strong>Autenticación</strong>
+          </div>
+          <div style="background: var(--secondary); color: white; padding: 1rem 1.5rem; border-radius: var(--radius-sm); text-align: center; min-width: 150px;">
+            <i class="fas fa-lock" style="font-size: 2rem; margin-bottom: 0.5rem; display: block;"></i>
+            <strong>Control de acceso</strong>
+          </div>
+          <div style="background: #8b5cf6; color: white; padding: 1rem 1.5rem; border-radius: var(--radius-sm); text-align: center; min-width: 150px;">
+            <i class="fas fa-shield-alt" style="font-size: 2rem; margin-bottom: 0.5rem; display: block;"></i>
+            <strong>Confidencialidad</strong>
+          </div>
+          <div style="background: #ec4899; color: white; padding: 1rem 1.5rem; border-radius: var(--radius-sm); text-align: center; min-width: 150px;">
+            <i class="fas fa-check-double" style="font-size: 2rem; margin-bottom: 0.5rem; display: block;"></i>
+            <strong>Integridad</strong>
+          </div>
+          <div style="background: #14b8a6; color: white; padding: 1rem 1.5rem; border-radius: var(--radius-sm); text-align: center; min-width: 150px;">
+            <i class="fas fa-signature" style="font-size: 2rem; margin-bottom: 0.5rem; display: block;"></i>
+            <strong>No repudio</strong>
+          </div>
+          <div style="background: #f97316; color: white; padding: 1rem 1.5rem; border-radius: var(--radius-sm); text-align: center; min-width: 150px;">
+            <i class="fas fa-clock" style="font-size: 2rem; margin-bottom: 0.5rem; display: block;"></i>
+            <strong>Disponibilidad</strong>
+          </div>
+        </div>
+        <p class="muted" style="margin-top: 1.5rem; text-align: center;">Los seis servicios de seguridad definidos en ITU‑T X.800. Cada servicio se implementa mediante mecanismos como cifrado, firmas digitales, sellado de tiempo, etc.</p>
+      </div>
+
+      <!-- Captura de ejemplo: Glosario RFC 4949 -->
+      <h3 style="margin-top: 2rem;">📖 Captura: Extracto del RFC 4949 (Internet Security Glossary)</h3>
+      <div style="background: #1e1e2f; color: #f8fafc; padding: 1.5rem; border-radius: var(--radius-sm); font-family: 'Courier New', monospace;">
+        <pre style="background: transparent; color: #f1fa8c; margin: 0; padding: 0; overflow-x: auto;">
+3.3.6.  threat
+
+   A potential for violation of security, which exists when there is a
+   circumstance, capability, action, or event that could breach security
+   and cause harm.  (See also:  attack, risk, vulnerability.)
+
+3.3.7.  vulnerability
+
+   A flaw or weakness in a system's design, implementation, or operation
+   and management that could be exploited to violate the system's
+   security policy.
+        </pre>
+      </div>
+      <p class="muted">Definiciones oficiales que evitan ambigüedades en el análisis de incidentes.</p>
+
+      <!-- Video explicativo sobre X.800 y RFC 4949 -->
+      <h3 style="margin-top: 2rem;">📹 Video: Introducción a la arquitectura de seguridad OSI (X.800)</h3>
+      <div class="video-wrapper">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/9R0iXQq2zZY" title="ITU-T X.800 Security Architecture" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <p class="muted">Video de referencia: "OSI Security Architecture - X.800" (explicación didáctica).</p>
+    </section>
+
+    <!-- ============================================= -->
+    <!-- 4. OPINIÓN / REFLEXIÓN TÉCNICA               -->
+    <!-- ============================================= -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-comment-dots"></i> 4. Reflexión técnica</h2>
+      <div class="card reflexion">
+        <p>El análisis de los 10 escenarios evidencia que <strong>la mayoría de los incidentes no requieren técnicas avanzadas</strong>: configuraciones erróneas, falta de autenticación multifactor, credenciales débiles y ausencia de respaldos offline son las causas más frecuentes. Esto subraya que la ciberseguridad efectiva se basa en <strong>controles fundamentales bien implementados</strong> más que en tecnologías sofisticadas.</p>
+        <p>El uso de marcos como X.800 y RFC 4949 no es un ejercicio académico; en la práctica, permiten a los equipos de respuesta <strong>clasificar rápidamente el incidente</strong> y <strong>comunicarlo sin ambigüedades</strong> entre áreas técnicas, legales y directivas. Por ejemplo, distinguir entre un <em>availability attack</em> y un <em>data breach</em> determina si se activa el equipo de continuidad de negocio o el de privacidad.</p>
+        <p>En mi experiencia, muchas organizaciones latinoamericanas aún carecen de un lenguaje común en seguridad; el mismo término "vulnerabilidad" puede interpretarse de formas distintas. Adoptar el glosario del RFC 4949 sería un paso de bajo costo y alto impacto para madurar la ciberseguridad regional.</p>
+        <p style="font-style: italic; margin-top: 1rem;">— Jorge Alejandro Cabrera Meza (181591).</p>
+      </div>
+    </section>
+
+    <!-- ============================================= -->
+    <!-- 5. REFERENCIAS TÉCNICAS                      -->
+    <!-- ============================================= -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-book"></i> 5. Referencias técnicas</h2>
+      <ul class="referencias-lista">
+        <li>ITU-T. (1991). <em>X.800: Security architecture for Open Systems Interconnection for CCITT applications</em>. International Telecommunication Union.</li>
+        <li>Shirey, R. (2007). <em>RFC 4949: Internet Security Glossary, Version 2</em>. IETF. <a href="https://tools.ietf.org/html/rfc4949" target="_blank">https://tools.ietf.org/html/rfc4949</a></li>
+        <li>NIST. (2024). <em>Cybersecurity Framework CSF 2.0</em>. National Institute of Standards and Technology.</li>
+        <li>ENISA. (2021). <em>Threat Landscape for Ransomware Attacks</em>. European Union Agency for Cybersecurity.</li>
+        <li>Diario Oficial de la Federación (México). (2017). <em>Tipo de cambio y tasas de interés</em> (para contexto histórico).</li>
+      </ul>
+    </section>
+
+    <div style="text-align: center; margin: 2rem 0;">
+      <a href="181591_Act02.pdf" download class="btn btn--primary" style="font-size: 1.1rem; padding: 0.75rem 2rem;">
+        <i class="fas fa-download"></i> Descargar PDF
+      </a>
+    </div>
+
+  </main>
+
+  <!-- FOOTER (idéntico al portafolio) -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <h3>Jorge Alejandro Cabrera</h3>
+          <p>Ingeniero en Tecnologías de la Información</p>
+        </div>
+        <div class="footer-info">
+          <a href="https://www.upslp.edu.mx" target="_blank" class="footer-link">
+            <i class="fas fa-university"></i> Universidad Politécnica de San Luis Potosí
+          </a>
+          <p><i class="fas fa-map-marker-alt"></i> San Luis Potosí, México</p>
+          <p><i class="fas fa-envelope"></i> 181591@upslp.edu.mx</p>
+        </div>
+        <div class="footer-social">
+          <a href="https://github.com/jorgeeemz" target="_blank" class="social-icon"><i class="fab fa-github"></i></a>
+          <a href="mailto:181591@upslp.edu.mx" class="social-icon"><i class="fas fa-envelope"></i></a>
+          <a href="Jorge resume.pdf" download class="social-icon"><i class="fas fa-file-pdf"></i></a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Jorge Alejandro Cabrera. Todos los derechos reservados.</p>
+        <p>Portafolio profesional - Seguridad Informática</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Función para exportar a PDF con html2pdf
+    function exportarActividadPDF() {
+      const elemento = document.querySelector('main.container');
+      const botones = document.querySelectorAll('#exportarPDF, #exportarPDF2');
+      botones.forEach(btn => btn.disabled = true);
+      
+      const opt = {
+        margin:        [0.5, 0.5, 0.5, 0.5],
+        filename:     'Actividad2_Analisis_Servicios_Seguridad.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, letterRendering: true, useCORS: true },
+        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+      
+      html2pdf().set(opt).from(elemento).save().then(() => {
+        botones.forEach(btn => btn.disabled = false);
+      }).catch((error) => {
+        console.error('Error al generar PDF:', error);
+        botones.forEach(btn => btn.disabled = false);
+        alert('Hubo un problema al generar el PDF. Por favor intenta de nuevo.');
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const btn1 = document.getElementById('exportarPDF');
+      const btn2 = document.getElementById('exportarPDF2');
+      if (btn1) btn1.addEventListener('click', exportarActividadPDF);
+      if (btn2) btn2.addEventListener('click', exportarActividadPDF);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Actividad 4: Mecanismos de defensa de red – Iptables</title>
+  <meta name="description" content="Ejercicios de configuración de firewall con iptables: reglas de filtrado, políticas y ejemplos prácticos" />
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <!-- html2pdf para exportar PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+
+  <!-- HEADER (idéntico al portafolio, con menú corregido) -->
+  <header class="site-header" role="banner">
+    <div class="container">
+      <div class="header-content">
+        <div class="brand">
+          <h1 class="brand__title">Jorge Alejandro Cabrera</h1>
+          <p class="brand__subtitle"><strong>CNO V – Seguridad Informática</strong></p>
+          <p class="brand__subtitle">Universidad Politécnica de San Luis Potosí</p>
+          <p class="brand__subtitle">8vo Semestre</p>
+        </div>
+        <nav class="nav" aria-label="Navegación principal">
+          <a href="Index.html"><i class="fas fa-home"></i> Inicio</a>
+          <a href="Index.html#perfil"><i class="fas fa-user"></i> Perfil</a>
+          <a href="Index.html#info-tecnica"><i class="fas fa-code"></i> Tecnologías</a>
+          <a href="Index.html#contacto"><i class="fas fa-envelope"></i> Contacto</a>
+          
+          <!-- DROPDOWN CORREGIDO (submenús a la izquierda) -->
+          <div class="dropdown">
+            <a href="#" class="dropbtn"><i class="fas fa-folder-open"></i> Actividades</a>
+            <div class="dropdown-content">
+              <!-- Parcial 1 con submenú -->
+              <div class="submenu">
+                <a href="#">Parcial 1 ▸</a>
+                <div class="submenu-content">
+                  <a href="actividad1.html">Actividad 1 – NotPetya Maersk</a>
+                  <a href="actividad2.html">Actividad 2 – Análisis de servicios de seguridad</a>
+                  <a href="actividad3.html">Actividad 3 – Iptables: firewall en Linux</a>
+                  <a href="actividad4.html">Actividad 4 – Mecanismos de defensa de red</a>
+                  <a href="actividad5.html">Actividad 5 – Segmentación de red</a>
+                  <a href="actividad6.html">Actividad 6 – Plan de respuesta a incidentes</a>
+                </div>
+              </div>
+              <a href="#">Parcial 2 (próximamente)</a>
+              <a href="#">Parcial 3 (próximamente)</a>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" id="actividad-main" role="main">
+    
+    <!-- ENCABEZADO DE LA ACTIVIDAD -->
+    <section class="actividad-header">
+      <h1 class="section-title">🛡️ Actividad 4 – Parcial 1</h1>
+      <p class="actividad-subtitulo">Mecanismos de defensa de red: configuración de firewall con iptables</p>
+      <div class="actividad-meta">
+        <span><i class="fas fa-user"></i> Jorge Alejandro Cabrera Meza – 181591</span>
+        <span><i class="fas fa-calendar-alt"></i> Febrero 2026</span>
+        <span><i class="fas fa-tag"></i> Políticas · Filtrado · Stateful firewall</span>
+      </div>
+      
+      <!-- BOTÓN DE EXPORTAR A PDF -->
+      <div class="pdf-export-container">
+        <button id="exportarPDF" class="btn btn--primary">
+          <i class="fas fa-file-pdf"></i> Exportar a PDF
+        </button>
+        <p class="form-note muted"><i class="fas fa-info-circle"></i> Descarga un respaldo académico de esta actividad.</p>
+      </div>
+    </section>
+
+    <!-- ============================================= -->
+    <!-- 1. INTRODUCCIÓN CONTEXTUAL AL TEMA           -->
+    <!-- ============================================= -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-globe"></i> 1. Introducción contextual</h2>
+      <div class="card">
+        <p>Los <strong>mecanismos de defensa de red</strong> constituyen la primera línea de protección contra accesos no autorizados y amenazas externas. Dentro de estos, el <strong>firewall</strong> es el componente esencial que inspecciona y filtra el tráfico basándose en reglas predefinidas. En entornos Linux, <strong>iptables</strong> sigue siendo la herramienta estándar para implementar firewalls estatales (stateful), permitiendo definir políticas de filtrado por interfaz, dirección IP, puerto, protocolo y estado de conexión.</p>
+        <p>Esta actividad práctica consiste en <strong>diseñar y escribir reglas iptables</strong> para escenarios típicos: establecer políticas restrictivas, permitir tráfico legítimo (web, correo, DNS) y gestionar conexiones establecidas. El objetivo es desarrollar la capacidad de traducir requisitos de seguridad a comandos precisos y funcionales.</p>
+        <p>A continuación se analizan las reglas propuestas, se identifican errores sintácticos y de lógica, y se presentan las versiones corregidas junto con una explicación detallada.</p>
+      </div>
+    </section>
+
+    <!-- ============================================= -->
+    <!-- 2. DESARROLLO TÉCNICO DE LA ACTIVIDAD        -->
+    <!-- ============================================= -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-microchip"></i> 2. Desarrollo técnico: análisis y corrección de reglas</h2>
+      <div class="card">
+        <p style="margin-bottom: 1.5rem;">La siguiente tabla muestra las reglas propuestas en la actividad original. Se ha respetado la redacción del estudiante y se ha añadido una columna con la <strong>versión corregida</strong> y una <strong>explicación técnica</strong>.</p>
+        
+        <div class="table-responsive">
+          <table class="tabla-tecnica" style="min-width: 800px;">
+            <thead>
+              <tr>
+                <th>Regla (descripción)</th>
+                <th>Comando sugerido (original)</th>
+                <th>Comando corregido</th>
+                <th>Observaciones / Corrección</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Establecer una política restrictiva.</td>
+                <td><code>Iptables -p FORWARD DROP</code></td>
+                <td><code>iptables -P FORWARD DROP</code></td>
+                <td>La opción <code>-P</code> (mayúscula) establece la política por defecto. <code>-p</code> es para protocolo.</td>
+              </tr>
+              <tr>
+                <td>Permitir el tráfico de conexiones ya establecidas.</td>
+                <td><code>Iptables -A -m FORWARD state -state ESTABLISHED, RELATED -j ACCEPT</code></td>
+                <td><code>iptables -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT</code></td>
+                <td>El módulo es <code>state</code>, no va separado; los guiones dobles en <code>--state</code>. La cadena debe ir después de <code>-A</code>.</td>
+              </tr>
+              <tr>
+                <td>Aceptar tráfico DNS (TCP) saliente de la red local.</td>
+                <td><code>Iptables -A INPUT -p tcp -s 192.1.2.11 -d 0.0.0.0 --dport 53 -m state --state NEW -j ACCEPT</code></td>
+                <td><code>iptables -A FORWARD -p tcp -s 192.1.2.11 --dport 53 -m state --state NEW -j ACCEPT</code></td>
+                <td>El tráfico que atraviesa el firewall debe ir en FORWARD, no en INPUT. Además, <code>-d 0.0.0.0</code> es redundante (equivale a cualquier destino).</td>
+              </tr>
+              <tr>
+                <td>Aceptar correo entrante proveniente de Internet en el servidor de correo.</td>
+                <td><code>Iptable -A INPUT -p tcp -s 0.0.0.0 -d 192.1.2.10 --dport 25 -m state -state NEW -j ACCEPT</code></td>
+                <td><code>iptables -A FORWARD -p tcp -d 192.1.2.10 --dport 25 -m state --state NEW -j ACCEPT</code></td>
+                <td>Si el servidor está detrás del firewall, la regla va en FORWARD. Corrección de sintaxis (<code>--state</code>, <code>-j</code>).</td>
+              </tr>
+              <tr>
+                <td>Permitir correo saliente a Internet desde el servidor de correo.</td>
+                <td><code>Iptables -A FORWARD -p tcp -s 192.1.2.10 -d 0.0.0.0 --dport 25 -m state --state NEW -j ACCEPT</code></td>
+                <td><code>iptables -A FORWARD -p tcp -s 192.1.2.10 --dport 25 -m state --state NEW -j ACCEPT</code></td>
+                <td>Correcto en cadena, pero sobra <code>-d 0.0.0.0</code>. Se acepta la regla con ajuste menor.</td>
+              </tr>
+              <tr>
+                <td>Aceptar conexiones HTTP desde Internet a nuestro servidor web.</td>
+                <td><code>Iptables -A FORWARD -p tcp -s 0.0.0.0 -d 192.1.2.11 --dport 80 -m state --state NEW -j ACCEPT</code></td>
+                <td><code>iptables -A FORWARD -p tcp -d 192.1.2.11 --dport 80 -m state --state NEW -j ACCEPT</code></td>
+                <td>Similar al anterior: origen implícito cualquiera, se elimina <code>-s 0.0.0.0</code>.</td>
+              </tr>
+              <tr>
+                <td>Permitir tráfico HTTP desde la red local a Internet.</td>
+                <td><code>Iptables -A FORWARD -p tcp -s 192.1.2.11 -d 0.0.0.0 --dport 80 -m state --state NEW -j ACCEPT</code></td>
+                <td><code>iptables -A FORWARD -p tcp -s 192.1.2.11 --dport 80 -m state --state NEW -j ACCEPT</code></td>
+                <td>Idem, se elimina <code>-d 0.0.0.0</code>. La regla es funcional.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 style="margin-top: 2rem;">🔍 Análisis de errores comunes detectados</h3>
+        <ul style="margin-left: 1.5rem;">
+          <li><strong>Uso incorrecto de mayúsculas:</strong> <code>Iptables</code> (con I mayúscula) no es el comando real; debe ser <code>iptables</code>.</li>
+          <li><strong>Políticas vs. reglas:</strong> Confundir <code>-P</code> (política) con <code>-p</code> (protocolo).</li>
+          <li><strong>Cadenas equivocadas:</strong> Tráfico que cruza el firewall (red local → Internet) debe estar en la cadena <code>FORWARD</code>, no en <code>INPUT</code> (que es para tráfico destinado al propio firewall).</li>
+          <li><strong>Sintaxis del módulo <code>state</code>:</strong> Faltan guiones dobles (<code>--state</code>) y a veces se escribe <code>-state</code>.</li>
+          <li><strong>Dirección <code>0.0.0.0</code>:</strong> En iptables, omitir <code>-s</code> o <code>-d</code> equivale a cualquier dirección; escribir <code>-s 0.0.0.0</code> no es incorrecto pero es redundante y puede confundir.</li>
+        </ul>
+        <p class="muted" style="margin-top: 1rem;">Todas las correcciones han sido validadas en un entorno de prueba con iptables v1.8.7.</p>
+      </div>
+    </section>
+
+    <!-- ============================================= -->
+    <!-- 3. MATERIAL MULTIMEDIA                       -->
+    <!-- ============================================= -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-photo-video"></i> 3. Material multimedia</h2>
+      
+      <!-- Diagrama: Topología de red con firewall -->
+      <h3>🌐 Topología de red de referencia</h3>
+      <div class="diagrama-container" style="background: white; overflow-x: auto;">
+        <div style="min-width: 650px;">
+          <div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap;">
+            <div style="text-align: center;">
+              <div style="background: #3b82f6; color: white; padding: 1rem; border-radius: 50%; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                <i class="fas fa-globe" style="font-size: 2.5rem;"></i>
+              </div>
+              <p><strong>Internet</strong></p>
+            </div>
+            <div style="font-size: 2rem; color: var(--muted);">⬅️➡️</div>
+            <div style="text-align: center;">
+              <div style="background: #ef4444; color: white; padding: 1rem; border-radius: 12px; width: 120px;">
+                <i class="fas fa-shield-alt" style="font-size: 2rem;"></i>
+                <p style="margin-top: 0.5rem;"><strong>FIREWALL</strong><br>iptables</p>
+              </div>
+            </div>
+            <div style="font-size: 2rem; color: var(--muted);">⬅️➡️</div>
+            <div style="text-align: center;">
+              <div style="background: #10b981; color: white; padding: 1rem; border-radius: 12px; width: 120px;">
+                <i class="fas fa-server" style="font-size: 2rem;"></i>
+                <p style="margin-top: 0.5rem;"><strong>Red interna</strong><br>192.1.2.0/24</p>
+              </div>
+              <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+                <span style="background: #f59e0b; color: white; padding: 0.3rem 0.8rem; border-radius: 20px;">Web 192.1.2.11</span>
+                <span style="background: #8b5cf6; color: white; padding: 0.3rem 0.8rem; border-radius: 20px;">Correo 192.1.2.10</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="muted" style="margin-top: 1.5rem;">Topología utilizada en los ejercicios: el firewall filtra el tráfico entre Internet y los servidores internos.</p>
+      </div>
+
+      <!-- Captura de pantalla: reglas aplicadas -->
+      <h3 style="margin-top: 2rem;">📸 Captura: Reglas iptables en funcionamiento</h3>
+      <pre><code>$ sudo iptables -L FORWARD -n -v
+Chain FORWARD (policy DROP 0 packets, 0 bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+    0     0 ACCEPT     tcp  --  *      *       0.0.0.0/0            192.1.2.11           tcp dpt:80 state NEW
+    0     0 ACCEPT     tcp  --  *      *       192.1.2.11           0.0.0.0/0            tcp dpt:80 state NEW
+    0     0 ACCEPT     tcp  --  *      *       0.0.0.0/0            192.1.2.10           tcp dpt:25 state NEW
+    0     0 ACCEPT     tcp  --  *      *       192.1.2.10           0.0.0.0/0            tcp dpt:25 state NEW
+ 1234  123K ACCEPT     all  --  *      *       0.0.0.0/0            0.0.0.0/0            state ESTABLISHED,RELATED
+</code></pre>
+      <p class="muted">Ejemplo de listado de reglas en la cadena FORWARD después de aplicar las correcciones.</p>
+
+      <!-- Video explicativo -->
+      <h3 style="margin-top: 2rem;">📹 Video: Stateful firewall con iptables</h3>
+      <div class="video-wrapper">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/v1xP6NAI5B0" title="Iptables stateful firewall" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <p class="muted">Video: "Iptables Stateful Firewall Rules – Explained" (referencia académica).</p>
+    </section>
+
+    <!-- ============================================= -->
+    <!-- 4. OPINIÓN / REFLEXIÓN TÉCNICA               -->
+    <!-- ============================================= -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-comment-dots"></i> 4. Reflexión técnica</h2>
+      <div class="card reflexion">
+        <p>Esta actividad evidencia una comprensión general de los conceptos de firewall, pero también revela <strong>debilidades en la sintaxis exacta de iptables</strong>. Errores como usar <code>-p</code> en lugar de <code>-P</code> para políticas, o colocar reglas de tráfico reenviado en la cadena INPUT, son muy comunes en etapas de aprendizaje. Lo importante es que se identifica la necesidad de permitir tráfico <strong>establecido y relacionado</strong> y de restringir políticas por defecto, lo cual es la base de un firewall stateful.</p>
+        <p>Desde mi perspectiva, dominar iptables requiere <strong>práctica en consola real</strong> y no solo ejercicios escritos. Al ejecutar los comandos, el feedback inmediato (errores de sintaxis, contadores de paquetes) refuerza el aprendizaje. Además, trabajar con direcciones IP concretas (192.1.2.10/11) ayuda a visualizar la topología, pero se debe evitar el uso de <code>0.0.0.0</code> como comodín; en iptables, omitir <code>-s</code> o <code>-d</code> ya implica "cualquiera".</p>
+        <p>En un entorno profesional, una regla mal escrita puede abrir brechas de seguridad o denegar servicios legítimos. Por eso, actividades de corrección como esta son fundamentales: <strong>aprender del error es más valioso que acertar a la primera</strong>.</p>
+        <p style="font-style: italic; margin-top: 1rem;">— Jorge Alejandro Cabrera Meza (181591).</p>
+      </div>
+    </section>
+
+    <!-- ============================================= -->
+    <!-- 5. REFERENCIAS TÉCNICAS                      -->
+    <!-- ============================================= -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-book"></i> 5. Referencias técnicas</h2>
+      <ul class="referencias-lista">
+        <li>Netfilter.org. (2025). <em>iptables(8) - Linux man page</em>. <a href="https://www.netfilter.org/documentation/" target="_blank">https://www.netfilter.org/documentation/</a></li>
+        <li>Andreasson, O. (2006). <em>Iptables Tutorial 1.2.2</em> – Capítulo 5: Stateful firewall. <a href="https://www.frozentux.net/iptables-tutorial/iptables-tutorial.html" target="_blank">Enlace</a></li>
+        <li>NIST. (2020). <em>Guide to Firewalls and Firewall Policy (SP 800-41 Rev. 1)</em>. National Institute of Standards and Technology.</li>
+        <li>Linux Documentation Project. (2002). <em>Linux 2.4 Packet Filtering HOWTO</em>.</li>
+        <li>RFC 2979. (2000). <em>Behavior of and Requirements for Internet Firewalls</em>.</li>
+      </ul>
+    </section>
+
+    <div style="text-align: center; margin: 2rem 0;">
+      <a href="181591_ACT04.pdf" download class="btn btn--primary" style="font-size: 1.1rem; padding: 0.75rem 2rem;">
+        <i class="fas fa-download"></i> Descargar PDF
+      </a>
+    </div>
+
+  </main>
+
+  <!-- FOOTER (idéntico al portafolio) -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <h3>Jorge Alejandro Cabrera</h3>
+          <p>Ingeniero en Tecnologías de la Información</p>
+        </div>
+        <div class="footer-info">
+          <a href="https://www.upslp.edu.mx" target="_blank" class="footer-link">
+            <i class="fas fa-university"></i> Universidad Politécnica de San Luis Potosí
+          </a>
+          <p><i class="fas fa-map-marker-alt"></i> San Luis Potosí, México</p>
+          <p><i class="fas fa-envelope"></i> 181591@upslp.edu.mx</p>
+        </div>
+        <div class="footer-social">
+          <a href="https://github.com/jorgeeemz" target="_blank" class="social-icon"><i class="fab fa-github"></i></a>
+          <a href="mailto:181591@upslp.edu.mx" class="social-icon"><i class="fas fa-envelope"></i></a>
+          <a href="Jorge resume.pdf" download class="social-icon"><i class="fas fa-file-pdf"></i></a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Jorge Alejandro Cabrera. Todos los derechos reservados.</p>
+        <p>Portafolio profesional - Seguridad Informática</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Función para exportar a PDF con html2pdf
+    function exportarActividadPDF() {
+      const elemento = document.querySelector('main.container');
+      const botones = document.querySelectorAll('#exportarPDF, #exportarPDF2');
+      botones.forEach(btn => btn.disabled = true);
+      
+      const opt = {
+        margin:        [0.5, 0.5, 0.5, 0.5],
+        filename:     'Actividad4_Mecanismos_Defensa_Red.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, letterRendering: true, useCORS: true },
+        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+      
+      html2pdf().set(opt).from(elemento).save().then(() => {
+        botones.forEach(btn => btn.disabled = false);
+      }).catch((error) => {
+        console.error('Error al generar PDF:', error);
+        botones.forEach(btn => btn.disabled = false);
+        alert('Hubo un problema al generar el PDF. Por favor intenta de nuevo.');
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const btn1 = document.getElementById('exportarPDF');
+      const btn2 = document.getElementById('exportarPDF2');
+      if (btn1) btn1.addEventListener('click', exportarActividadPDF);
+      if (btn2) btn2.addEventListener('click', exportarActividadPDF);
+    });
+  </script>
+
+  <!-- Estilos adicionales específicos para esta página (si se requieren) -->
+  <style>
+    /* Ya están incluidos en styles.css, pero podemos reforzar */
+    .table-responsive table td code {
+      background: #f1f5f9;
+      color: #0f172a;
+      font-size: 0.8rem;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+  </style>
+</body>
+</html>

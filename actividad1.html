@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Actividad 1: NotPetya · Maersk · Seguridad Informática</title>
+  <meta name="description" content="Análisis técnico del ataque NotPetya a Maersk - Actividad 1, Parcial 1" />
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <!-- html2pdf para exportar PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+
+  <!-- Header idéntico al del portafolio (mismo brand) -->
+  <header class="site-header" role="banner">
+    <div class="container">
+      <div class="header-content">
+        <div class="brand">
+          <h1 class="brand__title">Jorge Alejandro Cabrera</h1>
+          <p class="brand__subtitle"><strong>CNO V – Seguridad Informática</strong></p>
+          <p class="brand__subtitle">Universidad Politécnica de San Luis Potosí</p>
+          <p class="brand__subtitle">8vo Semestre</p>
+        </div>
+        <nav class="nav" aria-label="Navegación principal">
+          <a href="Index.html"><i class="fas fa-home"></i> Inicio</a>
+          <a href="Index.html#perfil"><i class="fas fa-user"></i> Perfil</a>
+          <a href="Index.html#info-tecnica"><i class="fas fa-code"></i> Tecnologías</a>
+          <a href="Index.html#contacto"><i class="fas fa-envelope"></i> Contacto</a>
+          <div class="dropdown">
+            <a href="#" class="dropbtn"><i class="fas fa-folder-open"></i> Actividades</a>
+            <div class="dropdown-content">
+              <div class="submenu">
+                <a href="#">Parcial 1 ▸</a>
+                <div class="submenu-content">
+                  <a href="actividad1.html">Actividad 1 – NotPetya Maersk</a>
+                  <a href="actividad2.html">Actividad 2 – Análisis de servicios de seguridad (X.800 y RFC 4949)</a>
+                  <a href="actividad3.html">Actividad 3 – Interpretación y traducción de políticas de filtrado en iptables</a>
+                  <a href="actividad4.html">Actividad 4 – Mecanismos de defensa en red</a>
+                  <a href="actividad5.html">Actividad 5 – Cartografiando el pentesting: análisis comparativo de
+                    metodologías de seguridad informática</a>
+                  <a href="actividad6.html">Actividad 6 – Implementación de IPSec VPN</a>
+                </div>
+              </div>
+              <a href="#">Parcial 2 (próximamente)</a>
+              <a href="#">Parcial 3 (próximamente)</a>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" id="actividad-main" role="main">
+    <!-- Encabezado de la actividad -->
+    <section class="actividad-header">
+      <h1 class="section-title">🔍 Actividad 1 – Parcial 1</h1>
+      <p class="actividad-subtitulo">Análisis del ransomware NotPetya y su impacto en la naviera Maersk (2017)</p>
+      <div class="actividad-meta">
+        <span><i class="fas fa-calendar-alt"></i> 30 de Enero del 2026</span>
+        <span><i class="fas fa-tag"></i> Caso real · Ciberguerra · Resiliencia</span>
+      </div>
+      <!-- Botón de exportar a PDF, visible y llamativo -->
+      <div class="pdf-export-container">
+        <button id="exportarPDF" class="btn btn--primary">
+          <i class="fas fa-file-pdf"></i> Exportar a PDF
+        </button>
+        <p class="form-note muted"><i class="fas fa-info-circle"></i> Descarga un respaldo académico de este análisis.</p>
+      </div>
+    </section>
+
+    <!-- 1. Introducción contextual al tema -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-globe"></i> 1. Introducción contextual</h2>
+      <div class="card">
+        <p>En junio de 2017, un ransomware relacionado con Petya, denominado <strong>NotPetya</strong> por Kaspersky, comenzó a propagarse a nivel mundial, afectando a cerca de 2000 organizaciones, principalmente en Ucrania. Entre las más impactadas se encontró la empresa naviera <strong>Maersk</strong>, cuyos sistemas críticos fueron comprometidos, provocando la interrupción total de sus operaciones y generando graves consecuencias operativas y económicas.</p>
+        <p>El ataque aprovechó el contexto geopolítico entre Rusia y Ucrania y se infiltró mediante una actualización legítima del software fiscal ucraniano <strong>M.E.Doc</strong>, utilizado por el 80% de las empresas del país. La vulnerabilidad <strong>EternalBlue</strong> (CVE-2017-0144) y una red interna completamente plana permitieron que el malware se extendiera en minutos desde una oficina en Odesa a los centros de datos globales de Maersk.</p>
+        <p>Este caso se estudia como un hito en ciberseguridad porque demuestra cómo fallas técnicas (sistemas obsoletos, falta de segmentación), humanas (credential harvesting) y políticas (ciberguerra) pueden converger en una catástrofe corporativa de más de <strong>$300 millones USD</strong>.</p>
+      </div>
+    </section>
+
+    <!-- 2. Desarrollo técnico de la actividad -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-microchip"></i> 2. Desarrollo técnico</h2>
+      <div class="card">
+        <h3>📌 Tabla resumen del ataque</h3>
+        <div class="table-responsive">
+          <table class="tabla-tecnica">
+            <tr><th>Elemento</th><th>Descripción</th></tr>
+            <tr><td>Tipo de ataque</td><td>Malware destructivo (wiper) disfrazado de ransomware. Sobrescribe MBR y cifra MFT.</td></tr>
+            <tr><td>Actor</td><td>Sandworm (GRU, inteligencia militar rusa)</td></tr>
+            <tr><td>Vector inicial</td><td>Actualización comprometida de M.E.Doc (backdoor previo desde abril 2017)</td></tr>
+            <tr><td>Vulnerabilidades clave</td><td>EternalBlue (CVE-2017-0144), EternalRomance, uso de Mimikatz para robo de credenciales</td></tr>
+            <tr><td>Etapas MITRE ATT&CK</td><td>T1190 (exploit pública), T1059 (ejecución), T1547 (persistencia MBR), T1003 (dumping de credenciales), T1210 (movimiento lateral SMB), T1486/T1490 (impacto destructivo)</td></tr>
+            <tr><td>Sistemas afectados</td><td>4,000 servidores, 45,000 PCs, 17 terminales portuarias, ERP, Active Directory</td></tr>
+          </table>
+        </div>
+        <h3 style="margin-top: 2rem;">🔧 Mecanismo de propagación</h3>
+        <p>NotPetya utilizaba <strong>EternalBlue</strong> y <strong>EternalRomance</strong> para explotar el protocolo SMBv1 sin parchear. Además, extraía credenciales almacenadas en memoria (LSASS) mediante <strong>Mimikatz</strong> y se movía lateralmente con <strong>PsExec</strong> y <strong>WMIC</strong>. Una vez dentro de un equipo, modificaba el Master Boot Record (MBR) y cifraba la Master File Table (MFT), haciendo los datos irrecuperables sin backups offline.</p>
+        <p>La red de Maersk era completamente plana; no existía segmentación entre filiales y el datacenter central, lo que permitió que la infección en una sola PC en Ucrania tumbara los sistemas de reserva (Maerskline.com) y paralizara grúas en 17 puertos internacionales.</p>
+      </div>
+    </section>
+
+    <!-- 3. Material multimedia: Diagrama, captura, video -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-photo-video"></i> 3. Material multimedia</h2>
+      
+      <h3>🗺️ Diagrama de la red plana y propagación</h3>
+      <div class="diagrama-container">
+        <div class="diagrama-red">
+          <div class="red-nodo" style="background:#ef4444;">M.E.Doc<br>(Ucrania)</div>
+          <div class="red-flecha"><i class="fas fa-arrow-right"></i></div>
+          <div class="red-nodo">Oficina Odesa</div>
+          <div class="red-flecha"><i class="fas fa-arrow-right"></i></div>
+          <div class="red-nodo" style="background:#f59e0b;">Red Corporativa<br>Plana / Sin VLAN</div>
+          <div class="red-flecha"><i class="fas fa-arrow-right"></i></div>
+          <div class="red-nodo">Centros de Datos<br>Globales</div>
+          <div class="red-flecha"><i class="fas fa-arrow-right"></i></div>
+          <div class="red-nodo" style="background:#10b981;">17 Terminales<br>Portuarias</div>
+        </div>
+        <p class="muted"><i class="fas fa-info-circle"></i> Representación simplificada: la ausencia de segmentación permitió el movimiento lateral sin restricciones.</p>
+      </div>
+
+      <h3>💻 Captura de ejemplo: comando Mimikatz (robo de credenciales)</h3>
+      <pre><code>mimikatz # privilege::debug
+mimikatz # sekurlsa::logonpasswords</code></pre>
+      <p class="muted">Este comando extrae contraseñas en texto claro y hashes NTLM de la memoria LSASS.</p>
+
+      <h3>📹 Video explicativo (referenciado)</h3>
+      <div class="video-wrapper">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/9Tzy0o-UkyI" title="YouTube - NotPetya ransomware explained" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <p class="muted">Video: "NotPetya Ransomware Attack - How It Happened and What We Learned" (referencia académica).</p>
+    </section>
+
+    <!-- 4. Opinión o reflexión técnica del estudiante -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-comment-dots"></i> 4. Reflexión técnica</h2>
+      <div class="card reflexion">
+        <p>El caso NotPetya‑Maersk evidencia que la ciberseguridad no puede limitarse a defensas perimetrales. A pesar de que Maersk contaba con firewalls y antivirus, una red plana y la falta de gestión de parches permitieron que un exploit de 2017 (EternalBlue) tumbara una multinacional. </p>
+        <p>Personalmente, me impacta que la recuperación dependiera de un <strong>backup offline encontrado por azar en Nigeria</strong> (un controlador de dominio que no se infectó por un apagón). Esto subraya la importancia de la regla <strong>3-2-1</strong> y de almacenamiento inmutable. Además, el uso de software de terceros sin validación (M.E.Doc) es un riesgo latente en muchas empresas latinoamericanas que dependen de proveedores locales no auditados.</p>
+        <p>En escenarios reales, aplicar segmentación, mínimo privilegio y parcheo proactivo habría contenido el ataque. La lección es clara: la resiliencia se construye antes del incidente, no después.</p>
+        <p style="font-style: italic; margin-top: 1rem;">— Ávalos, Cabrera, González, López C., López M. (Equipo 2).</p>
+      </div>
+    </section>
+
+    <!-- 5. Referencias técnicas -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-book"></i> 5. Referencias</h2>
+      <ul class="referencias-lista">
+        <li>Columbia University. (2022). <em>NotPetya: A case study of a state-sponsored cyberattack</em>. SIPA. <a href="https://www.sipa.columbia.edu/sites/default/files/2022-11/NotPetya%20Final.pdf" target="_blank">Enlace</a></li>
+        <li>CISA. (2017). <em>Petya Ransomware (Alert ICS-17-181-01C)</em>. <a href="https://www.cisa.gov/news-events/ics-alerts/ics-alert-17-181-01c" target="_blank">Enlace</a></li>
+        <li>IBM X-Force. <em>Petya-NotPetya ransomware campaign</em>. <a href="https://exchange.xforce.ibmcloud.com/collection/Petya-NotPetya-Ransomware-Campaign-9c4316058c7a4c50931d135e62d55d89" target="_blank">Enlace</a></li>
+        <li>NIST. (2024). <em>Cybersecurity Framework CSF 2.0</em>. <a href="https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.29.pdf" target="_blank">Enlace</a></li>
+        <li>Diario Oficial de la Federación (México). Tipo de cambio 2017.</li>
+      </ul>
+    </section>
+
+    <div style="text-align: center; margin: 2rem 0;">
+      <a href="Act01-Equipo2.pdf" download class="btn btn--primary" style="font-size: 1.1rem; padding: 0.75rem 2rem;">
+        <i class="fas fa-download"></i> Descargar PDF
+      </a>
+    </div>
+  </main>
+
+  <!-- Footer idéntico al del portafolio -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <h3>Jorge Alejandro Cabrera</h3>
+          <p>Ingeniero en Tecnologías de la Información</p>
+        </div>
+        <div class="footer-info">
+          <a href="https://www.upslp.edu.mx" target="_blank" class="footer-link">
+            <i class="fas fa-university"></i> Universidad Politécnica de San Luis Potosí
+          </a>
+          <p><i class="fas fa-map-marker-alt"></i> San Luis Potosí, México</p>
+          <p><i class="fas fa-envelope"></i> 181591@upslp.edu.mx</p>
+        </div>
+        <div class="footer-social">
+          <a href="https://github.com/jorgeeemz" target="_blank" class="social-icon"><i class="fab fa-github"></i></a>
+          <a href="mailto:181591@upslp.edu.mx" class="social-icon"><i class="fas fa-envelope"></i></a>
+          <a href="Jorge resume.pdf" download class="social-icon"><i class="fas fa-file-pdf"></i></a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Jorge Alejandro Cabrera. Todos los derechos reservados.</p>
+        <p>Portafolio profesional - Seguridad Informática</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function exportarActividadPDF() {
+      const elemento = document.querySelector('main.container'); // Captura todo el contenido principal
+      const botones = document.querySelectorAll('#exportarPDF, #exportarPDF2');
+      botones.forEach(btn => btn.disabled = true);
+      
+      const opt = {
+        margin:        [0.5, 0.5, 0.5, 0.5],
+        filename:     'Actividad1_NotPetya_Maersk.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, letterRendering: true, useCORS: true },
+        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+      
+      html2pdf().set(opt).from(elemento).save().then(() => {
+        botones.forEach(btn => btn.disabled = false);
+      }).catch(() => {
+        botones.forEach(btn => btn.disabled = false);
+        alert('Hubo un problema al generar el PDF. Por favor intenta de nuevo.');
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const btn1 = document.getElementById('exportarPDF');
+      const btn2 = document.getElementById('exportarPDF2');
+      if (btn1) btn1.addEventListener('click', exportarActividadPDF);
+      if (btn2) btn2.addEventListener('click', exportarActividadPDF);
+    });
+  </script>
+</body>
+</html>
