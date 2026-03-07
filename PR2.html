@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Proyecto Parcial 2 – Simulación de Phishing</title>
+  <meta name="description" content="Análisis de plataformas de simulación de phishing y concientización en ciberseguridad" />
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <!-- html2pdf para exportar PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    /* Estilos específicos para tablas comparativas */
+    .tabla-plataformas {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    .tabla-plataformas th {
+      background: var(--primary);
+      color: white;
+      padding: 12px 8px;
+      text-align: center;
+      font-weight: 600;
+    }
+    .tabla-plataformas td {
+      border: 1px solid var(--border);
+      padding: 12px 10px;
+      vertical-align: top;
+      background: var(--surface);
+    }
+    .tabla-plataformas tr:nth-child(even) td {
+      background: rgba(59, 130, 246, 0.02);
+    }
+    .tabla-plataformas td:first-child {
+      font-weight: 600;
+      background-color: rgba(59, 130, 246, 0.1);
+    }
+    .metricas-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+    .metrica-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+    .metrica-card i {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    .metrica-card h4 {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+    .metrica-card p {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header" role="banner">
+    <div class="container">
+      <div class="header-content">
+        <div class="brand" aria-hidden="false">
+          <h1 class="brand__title" style="margin:0;">Jorge Alejandro Cabrera - SentinelJCM</h1>
+          <p class="brand__subtitle" style="margin:4px 0 0 0;"><strong>CNO V – Seguridad Informática</strong></p>
+          <p class="brand__subtitle" style="margin:2px 0 0 0;">Universidad Politécnica de San Luis Potosí</p>
+          <p class="brand__subtitle" style="margin:2px 0 0 0;">8vo Semestre</p>
+        </div>
+
+        <nav class="nav" aria-label="Navegación principal">
+          <a href="Index.html"><i class="fas fa-home"></i> Inicio</a>
+          <div class="dropdown">
+            <a href="#" class="dropbtn"><i class="fas fa-trophy"></i> ROAD TO HALL OF FAME</a>
+            <div class="dropdown-content">
+              <a href="road-to-hall-of-fame.html">SQL Injection</a>
+            </div>
+          </div>
+          <div class="dropdown">
+            <a href="#" class="dropbtn"><i class="fas fa-folder-open"></i> Actividades</a>
+            <div class="dropdown-content">
+              <div class="submenu">
+                <a href="#">Parcial 1 ▸</a>
+                <div class="submenu-content">
+                  <a href="actividad1.html">Actividad 1 – NotPetya Maersk</a>
+                  <a href="actividad2.html">Actividad 2 – Análisis de servicios de seguridad (X.800 y RFC 4949)</a>
+                  <a href="actividad3.html">Actividad 3 – Interpretación y traducción de políticas de filtrado en iptables</a>
+                  <a href="actividad4.html">Actividad 4 – Mecanismos de defensa en red</a>
+                  <a href="actividad5.html">Actividad 5 – Cartografiando el pentesting: análisis comparativo de
+                    metodologías de seguridad informática</a>
+                  <a href="actividad6.html">Actividad 6 – Implementación de IPSec VPN</a>
+                </div>
+              </div>
+              <div class="submenu">
+                    <a href="#">Parcial 2 ▸</a>
+                    <div class="submenu-content">
+                        <a href="PR2.html">Proyecto - Investigacion de ingenieria social y phishing</a>
+                    </div>
+              </div>
+              <a href="#">Parcial 3 (próximamente)</a>
+            </div>
+          </div>
+          <a href="#perfil"><i class="fas fa-user"></i> Perfil</a>
+          <a href="#info-tecnica"><i class="fas fa-code"></i> Tecnologías</a>
+          <a href="#contacto"><i class="fas fa-envelope"></i> Contacto</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" id="actividad-main">
+    <!-- Encabezado -->
+    <section class="actividad-header">
+      <h1 class="section-title">📧 Proyecto Parcial 2</h1>
+      <p class="actividad-subtitulo">Simulación de Phishing: Análisis de plataformas y concientización del factor humano</p>
+      <div class="actividad-meta">
+        <span><i class="fas fa-user"></i> Cabrera Meza Jorge Alejandro – 181591</span>
+        <span><i class="fas fa-calendar-alt"></i> 06 – Marzo – 2026</span>
+        <span><i class="fas fa-tag"></i> Ingeniería social · Phishing · Plataformas</span>
+      </div>
+      
+      <!-- Botón de exportar a PDF -->
+      <div class="pdf-export-container">
+        <button id="exportarPDF" class="btn btn--primary">
+          <i class="fas fa-file-pdf"></i> Exportar a PDF
+        </button>
+        <p class="form-note muted"><i class="fas fa-info-circle"></i> Descarga el documento completo del proyecto.</p>
+      </div>
+    </section>
+
+    <!-- 1. Marco Teórico -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-book"></i> 1. Marco Teórico</h2>
+      
+      <div class="card">
+        <h3>1.1 Ingeniería social y el factor humano</h3>
+        <p>La ingeniería social es un conjunto de técnicas de manipulación psicológica utilizadas por atacantes para influir en las personas y lograr que revelen información confidencial, realicen acciones inseguras o permitan acceso a sistemas protegidos. A diferencia de los ataques puramente técnicos, la ingeniería social explota principalmente el factor humano, considerado el eslabón más vulnerable dentro de la seguridad informática.</p>
+        <p>Según el informe de Verizon (2023), el phishing continúa siendo una de las principales técnicas utilizadas en ataques cibernéticos, lo que evidencia la importancia de entrenar a los usuarios para identificar amenazas potenciales.</p>
+      </div>
+
+      <div class="card" style="margin-top: 1.5rem;">
+        <h3>1.2 Phishing como técnica principal de ingeniería social</h3>
+        <p>El phishing consiste en el envío de mensajes fraudulentos que aparentan provenir de fuentes legítimas con el objetivo de obtener información sensible. Generalmente se distribuyen a través de correos electrónicos, aunque también pueden aparecer en redes sociales o mensajes SMS.</p>
+        <p>Dentro del ámbito de la capacitación en seguridad informática, se utilizan <strong>simulaciones de phishing</strong> como estrategia educativa para evaluar el nivel de conciencia de los usuarios frente a estas amenazas, sin generar riesgos reales.</p>
+      </div>
+
+      <div class="card" style="margin-top: 1.5rem;">
+        <h3>1.3 Simulación de Phishing y concientización</h3>
+        <p>Las simulaciones de phishing consisten en enviar correos electrónicos controlados que imitan ataques reales para medir el comportamiento de los usuarios. El propósito no es castigar, sino generar aprendizaje y retroalimentación inmediata.</p>
+        <p><strong>Métricas clave:</strong></p>
+        <div class="metricas-grid">
+          <div class="metrica-card">
+            <i class="fas fa-envelope-open-text"></i>
+            <h4>Tasa de apertura</h4>
+            <p>Porcentaje de usuarios que abrieron el correo simulado.</p>
+          </div>
+          <div class="metrica-card">
+            <i class="fas fa-mouse-pointer"></i>
+            <h4>Tasa de clic</h4>
+            <p>Porcentaje que hizo clic en el enlace.</p>
+          </div>
+          <div class="metrica-card">
+            <i class="fas fa-key"></i>
+            <h4>Ingreso de credenciales</h4>
+            <p>Porcentaje que introdujo datos sensibles.</p>
+          </div>
+          <div class="metrica-card">
+            <i class="fas fa-flag"></i>
+            <h4>Tasa de reporte</h4>
+            <p>Porcentaje que identificó y reportó el ataque.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Principales plataformas de simulación -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-server"></i> 2. Plataformas de simulación de phishing</h2>
+      
+      <div class="card">
+        <p>A continuación se describen las plataformas más reconocidas a nivel mundial para la simulación de phishing y concientización:</p>
+        <ul style="margin-left: 1.5rem;">
+          <li><strong>Hoxhunt:</strong> Entrenamiento adaptativo con IA y gamificación.</li>
+          <li><strong>KnowBe4:</strong> Plataforma integral con campañas automatizadas y biblioteca de contenido.</li>
+          <li><strong>Cofense:</strong> Combina simulaciones con detección y respuesta ante correos maliciosos.</li>
+          <li><strong>Phished:</strong> Personalización automática basada en comportamiento del usuario.</li>
+          <li><strong>Infosec IQ:</strong> Simulaciones + módulos educativos y evaluaciones.</li>
+          <li><strong>Mimecast Awareness Training:</strong> Integración con protección de correo.</li>
+          <li><strong>Proofpoint Security Awareness:</strong> Identifica usuarios de alto riesgo y personaliza entrenamiento.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 3. Tabla comparativa técnica -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-table"></i> 3. Tabla comparativa de plataformas</h2>
+      
+      <div class="card">
+        <div class="table-responsive">
+          <table class="tabla-plataformas">
+            <thead>
+              <tr>
+                <th>Plataforma</th>
+                <th>Tipo de solución</th>
+                <th>Características principales</th>
+                <th>Métricas y analítica</th>
+                <th>Integraciones</th>
+                <th>Enfoque de entrenamiento</th>
+                <th>Consideraciones éticas / limitaciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Hoxhunt</td>
+                <td>Entrenamiento con simulaciones</td>
+                <td>IA personalizada, gamificación</td>
+                <td>Comportamiento del usuario, resiliencia</td>
+                <td>Microsoft 365, Google Workspace, SIEM</td>
+                <td>Adaptativo basado en riesgo</td>
+                <td>Requiere integración técnica inicial</td>
+              </tr>
+              <tr>
+                <td>KnowBe4</td>
+                <td>Capacitación integral</td>
+                <td>Campañas automatizadas, videos, evaluaciones</td>
+                <td>Phish-prone %, clics, reportes, mejora</td>
+                <td>AD, Microsoft 365, Google, SIEM</td>
+                <td>Estructurado con campañas periódicas</td>
+                <td>Puede saturar si hay muchas campañas</td>
+              </tr>
+              <tr>
+                <td>Cofense</td>
+                <td>Defensa contra phishing</td>
+                <td>Simulaciones + detección y respuesta</td>
+                <td>Análisis de correos reportados, detección temprana</td>
+                <td>Plataformas de correo, SOC</td>
+                <td>Detección y reporte</td>
+                <td>Orientado a equipos avanzados</td>
+              </tr>
+              <tr>
+                <td>Phished</td>
+                <td>Simulación con IA</td>
+                <td>Personalización automática</td>
+                <td>Riesgo humano, progreso, vulnerabilidad</td>
+                <td>Microsoft 365, Google Workspace</td>
+                <td>Aprendizaje continuo impulsado por IA</td>
+                <td>Requiere datos de comportamiento</td>
+              </tr>
+              <tr>
+                <td>Infosec IQ</td>
+                <td>Capacitación en concientización</td>
+                <td>Simulaciones, módulos educativos, evaluaciones</td>
+                <td>Desempeño, clics, reportes, tendencias</td>
+                <td>LMS, AD, Microsoft 365</td>
+                <td>Estructurado con contenido educativo</td>
+                <td>Adaptación cultural necesaria</td>
+              </tr>
+              <tr>
+                <td>Mimecast Awareness</td>
+                <td>Concientización integrada</td>
+                <td>Campañas simuladas + protección de correo</td>
+                <td>Interacción, vulnerabilidad</td>
+                <td>Mimecast, sistemas empresariales</td>
+                <td>Integrado con protección activa</td>
+                <td>Dependencia del ecosistema Mimecast</td>
+              </tr>
+              <tr>
+                <td>Proofpoint Awareness</td>
+                <td>Concientización y simulación</td>
+                <td>Análisis de comportamiento, identificación de alto riesgo</td>
+                <td>Riesgo humano, tendencias</td>
+                <td>Proofpoint, SIEM</td>
+                <td>Dirigido a usuarios de alto riesgo</td>
+                <td>Requiere infraestructura empresarial</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Métricas de evaluación del error humano -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-chart-line"></i> 4. Métricas de evaluación del error humano</h2>
+      <div class="card">
+        <p>El análisis del riesgo humano se basa en la medición del comportamiento de los usuarios. Las principales métricas son:</p>
+        <ul>
+          <li><strong>Phish-prone percentage:</strong> porcentaje de usuarios que caen en simulaciones.</li>
+          <li><strong>Tiempo de detección:</strong> tiempo que tarda un usuario en identificar o reportar un intento.</li>
+          <li><strong>Nivel de repetición de errores:</strong> frecuencia con la que un usuario vuelve a caer.</li>
+          <li><strong>Tasa de mejora:</strong> reducción del riesgo humano a lo largo del tiempo.</li>
+        </ul>
+        <p>Estas métricas permiten a las organizaciones identificar áreas de mejora y diseñar estrategias de capacitación más efectivas.</p>
+      </div>
+    </section>
+
+    <!-- 5. Ética en las simulaciones -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-balance-scale"></i> 5. Ética en las simulaciones de ingeniería social</h2>
+      <div class="card">
+        <p>El uso de simulaciones de phishing debe realizarse bajo principios éticos que protejan la privacidad y el bienestar de los participantes. Las buenas prácticas incluyen:</p>
+        <ul>
+          <li>Informar previamente sobre la existencia de campañas de entrenamiento.</li>
+          <li>No recopilar credenciales reales ni información sensible.</li>
+          <li>Proporcionar retroalimentación educativa en lugar de castigos.</li>
+          <li>Mantener la confidencialidad de los resultados individuales.</li>
+        </ul>
+        <p>El objetivo principal es fortalecer la cultura de ciberseguridad, promoviendo el aprendizaje continuo y la reducción del riesgo humano.</p>
+      </div>
+    </section>
+
+    <!-- 6. Referencias -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-book"></i> 6. Referencias</h2>
+      <ul class="referencias-lista">
+        <li>Cofense. (2023). <em>Phishing awareness and training platform overview</em>. <a href="https://cofense.com" target="_blank">https://cofense.com</a></li>
+        <li>Infosec Institute. (2023). <em>Infosec IQ security awareness and phishing simulation platform</em>. <a href="https://www.infosecinstitute.com" target="_blank">https://www.infosecinstitute.com</a></li>
+        <li>KnowBe4. (2024). <em>Security awareness training and simulated phishing platform</em>. <a href="https://www.knowbe4.com" target="_blank">https://www.knowbe4.com</a></li>
+        <li>Phished. (2023). <em>AI-driven phishing simulation and awareness training</em>. <a href="https://phished.io" target="_blank">https://phished.io</a></li>
+        <li>Verizon. (2023). <em>Data breach investigations report</em>. Verizon Enterprise.</li>
+        <li>Hoxhunt. (2024). <em>Security awareness and phishing training platform</em>. <a href="https://hoxhunt.com" target="_blank">https://hoxhunt.com</a></li>
+      </ul>
+    </section>
+
+    <!-- Botón PDF secundario -->
+    <div style="text-align: center; margin: 2rem 0;">
+      <a href="181591_PR2.1.pdf" download class="btn btn--primary" style="font-size: 1.1rem; padding: 0.75rem 2rem;">
+        <i class="fas fa-download"></i> Descargar PDF
+      </a>
+    </div>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <h3>Jorge Alejandro Cabrera</h3>
+          <p>Ingeniero en Tecnologías de la Información</p>
+        </div>
+        <div class="footer-info">
+          <a href="https://www.upslp.edu.mx" target="_blank" class="footer-link">
+            <i class="fas fa-university"></i> Universidad Politécnica de San Luis Potosí
+          </a>
+          <p><i class="fas fa-map-marker-alt"></i> San Luis Potosí, México</p>
+          <p><i class="fas fa-envelope"></i> 181591@upslp.edu.mx</p>
+        </div>
+        <div class="footer-social">
+          <a href="https://github.com/jorgeeemz" target="_blank" class="social-icon"><i class="fab fa-github"></i></a>
+          <a href="mailto:181591@upslp.edu.mx" class="social-icon"><i class="fas fa-envelope"></i></a>
+          <a href="Jorge resume.pdf" download class="social-icon"><i class="fas fa-file-pdf"></i></a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Jorge Alejandro Cabrera. Todos los derechos reservados.</p>
+        <p>Portafolio profesional - Seguridad Informática</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function exportarActividadPDF() {
+      const elemento = document.querySelector('main.container');
+      const botones = document.querySelectorAll('#exportarPDF, #exportarPDF2');
+      botones.forEach(btn => btn.disabled = true);
+      
+      const opt = {
+        margin:        [0.5, 0.5, 0.5, 0.5],
+        filename:     'Proyecto_Parcial2_Phishing.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, letterRendering: true, useCORS: true },
+        jsPDF:        { unit: 'in', format: 'letter', orientation: 'landscape' } // landscape para tabla ancha
+      };
+      
+      html2pdf().set(opt).from(elemento).save().then(() => {
+        botones.forEach(btn => btn.disabled = false);
+      }).catch((error) => {
+        console.error('Error al generar PDF:', error);
+        botones.forEach(btn => btn.disabled = false);
+        alert('Hubo un problema al generar el PDF. Por favor intenta de nuevo.');
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const btn1 = document.getElementById('exportarPDF');
+      const btn2 = document.getElementById('exportarPDF2');
+      if (btn1) btn1.addEventListener('click', exportarActividadPDF);
+      if (btn2) btn2.addEventListener('click', exportarActividadPDF);
+    });
+  </script>
+</body>
+</html>
