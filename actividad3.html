@@ -14,27 +14,393 @@
 </head>
 <body>
 
-  <!-- HEADER (idéntico al portafolio, con menú corregido) -->
   <header class="site-header" role="banner">
     <div class="container">
       <div class="header-content">
-        <div class="brand">
-          <h1 class="brand__title">Jorge Alejandro Cabrera</h1>
-          <p class="brand__subtitle"><strong>CNO V – Seguridad Informática</strong></p>
-          <p class="brand__subtitle">Universidad Politécnica de San Luis Potosí</p>
-          <p class="brand__subtitle">8vo Semestre</p>
+        <div class="brand" aria-hidden="false">
+          <h1 class="brand__title" style="margin:0;">Jorge Alejandro Cabrera - SentinelJCM</h1>
+          <p class="brand__subtitle" style="margin:4px 0 0 0;"><strong>CNO V – Seguridad Informática</strong></p>
+          <p class="brand__subtitle" style="margin:2px 0 0 0;">Universidad Politécnica de San Luis Potosí</p>
+          <p class="brand__subtitle" style="margin:2px 0 0 0;">8vo Semestre</p>
         </div>
+
         <nav class="nav" aria-label="Navegación principal">
-          <a href="index.html"><i class="fas fa-home"></i> Inicio</a>
+          <a href="Index.html"><i class="fas fa-home"></i> Inicio</a>
+          <div class="dropdown">
+            <a href="#" class="dropbtn"><i class="fas fa-trophy"></i> ROAD TO HALL OF FAME</a>
+            <div class="dropdown-content">
+              <a href="road-to-hall-of-fame.html">SQL Injection</a>
+            </div>
+          </div>
           <div class="dropdown">
             <a href="#" class="dropbtn"><i class="fas fa-folder-open"></i> Actividades</a>
             <div class="dropdown-content">
-              <!-- Parcial 1 con submenú -->
               <div class="submenu">
                 <a href="#">Parcial 1 ▸</a>
                 <div class="submenu-content">
-                    <a href="actividad1.html">Actividad 1 – NotPetya Maersk</a>
-                    <a href="actividad2.html">Actividad 2 – Análisis de servicios de seguridad (X.800 y RFC 4949)</a>
+                  <a href="actividad1.html">Actividad 1 – NotPetya Maersk</a>
+                  <a href="actividad2.html">Actividad 2 – Análisis de servicios de seguridad (X.800 y RFC 4949)</a>
+                  <a href="actividad3.html">Actividad 3 – Interpretación y traducción de políticas de filtrado en iptables</a>
+                  <a href="actividad4.html">Actividad 4 – Mecanismos de defensa en red</a>
+                  <a href="actividad5.html">Actividad 5 – Cartografiando el pentesting: análisis comparativo de
+                    metodologías de seguridad informática</a>
+                  <a href="actividad6.html">Actividad 6 – Implementación de IPSec VPN</a>
+                </div>
+              </div>
+              <div class="submenu">
+                    <a href="#">Parcial 2 ▸</a>
+                    <div class="submenu-content">
+                        <a href="PR2.html">Proyecto - Investigacion de ingenieria social y phishing</a>
+                    </div>
+              </div>
+              <a href="#">Parcial 3 (próximamente)</a>
+            </div>
+          </div>
+          <a href="#perfil"><i class="fas fa-user"></i> Perfil</a>
+          <a href="#info-tecnica"><i class="fas fa-code"></i> Tecnologías</a>
+          <a href="#contacto"><i class="fas fa-envelope"></i> Contacto</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" id="actividad-main" role="main">
+    
+    <!-- ENCABEZADO DE LA ACTIVIDAD -->
+    <section class="actividad-header">
+      <h1 class="section-title">🛡️ Actividad 3 – Parcial 1</h1>
+      <p class="actividad-subtitulo">Iptables: Firewall en Linux – Ejercicios prácticos</p>
+      <div class="actividad-meta">
+        <span><i class="fas fa-user"></i> Jorge Alejandro Cabrera Meza – 181591</span>
+        <span><i class="fas fa-calendar-alt"></i> Febrero 2026</span>
+        <span><i class="fas fa-tag"></i> Netfilter · Tablas · Cadenas · Reglas</span>
+      </div>
+      
+      <!-- BOTÓN DE EXPORTAR A PDF -->
+      <div class="pdf-export-container">
+        <button id="exportarPDF" class="btn btn--primary">
+          <i class="fas fa-file-pdf"></i> Exportar a PDF
+        </button>
+        <p class="form-note muted"><i class="fas fa-info-circle"></i> Descarga un respaldo académico de esta actividad.</p>
+      </div>
+    </section>
+
+    <!-- ============================================= -->
+    <!-- 1. INTRODUCCIÓN CONTEXTUAL AL TEMA           -->
+    <!-- ============================================= -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-globe"></i> 1. Introducción contextual</h2>
+      <div class="card">
+        <p><strong>Iptables</strong> es la herramienta de firewall por excelencia en sistemas Linux. Actúa como interfaz de usuario del marco <strong>Netfilter</strong> del kernel, permitiendo definir reglas que inspeccionan, modifican, aceptan o rechazan paquetes según criterios como dirección IP, puerto, protocolo o estado de la conexión.</p>
+        <p>Su arquitectura se organiza en <strong>tablas</strong> (filter, nat, mangle, raw, security) y <strong>cadenas</strong> (INPUT, OUTPUT, FORWARD, PREROUTING, POSTROUTING). Cada tabla tiene un propósito específico y contiene cadenas predefinidas o creadas por el usuario.</p>
+        <p>Esta actividad práctica refuerza el conocimiento de la anatomía de los comandos iptables, la interpretación de reglas y la resolución de casos comunes de filtrado. Se presentan ejercicios de completado, relación de tablas y escritura de reglas, basados en escenarios típicos de administración de firewalls.</p>
+      </div>
+    </section>
+
+    <!-- ============================================= -->
+    <!-- 2. DESARROLLO TÉCNICO DE LA ACTIVIDAD        -->
+    <!-- ============================================= -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-microchip"></i> 2. Desarrollo técnico</h2>
+      <div class="card">
+        <p style="margin-bottom: 1.5rem;">A continuación se presentan los ejercicios resueltos de la actividad. Se muestran tanto las <strong>respuestas originales</strong> del estudiante como las <strong>correcciones técnicas</strong> (cuando aplica) para fines didácticos.</p>
+
+        <!-- EJERCICIO 1: Flujo del paquete -->
+        <div class="ejercicio">
+          <h3><i class="fas fa-question-circle"></i> 1. Flujo del paquete en iptables</h3>
+          <p><strong>Enunciado original:</strong> "Cuando un paquete llega al sistema, primero pasa por una ________, después por una ________, finalmente se ejecuta una ________."</p>
+          <p><strong>Respuesta:</strong> <span class="tag-sugerencia">Sugerencia técnica: tabla → cadena → regla</span></p>
+          <p class="muted"><i class="fas fa-info-circle"></i> En Netfilter, el paquete recorre las cadenas dentro de cada tabla según el hook correspondiente.</p>
+        </div>
+
+        <!-- EJERCICIO 2: Relación de tablas -->
+        <div class="ejercicio">
+          <h3><i class="fas fa-table"></i> 2. Relación de tablas con su propósito</h3>
+          <div class="table-responsive">
+            <table class="tabla-tecnica">
+              <thead>
+                <tr><th>Tabla</th><th>Propósito</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>FILTER</strong></td><td>filtrado de opcionales</td></tr>
+                <tr><td><strong>NAT</strong></td><td>traducción de direcciones</td></tr>
+                <tr><td><strong>MANGLE</strong></td><td>modificación avanzada</td></tr>
+                <tr><td><strong>RAW</strong></td><td>experiencia del seguimiento paso libre de paquetes</td></tr>
+                <tr><td><strong>SECURITY</strong></td><td>aplicar etiquetas de dar acceso al servicio seguridad</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- EJERCICIO 3: Anatomía de un comando -->
+        <div class="ejercicio">
+          <h3><i class="fas fa-code"></i> 3. Anatomía de un comando iptables</h3>
+          <pre><code>iptables -A INPUT -p tcp -m multiports 80,443 -j ACCEPT</code></pre>
+          <p><strong>Respuesta:</strong></p>
+          <p><strong>Interpretación técnica correcta:</strong></p>
+          <ul>
+            <li><code>-A INPUT</code>: Agrega la regla al final de la cadena INPUT.</li>
+            <li><code>-p tcp</code>: Protocolo TCP.</li>
+            <li><code>-m multiport --dports 80,443</code>: (corrección: el módulo se llama <code>multiport</code> y la opción es <code>--dports</code>).</li>
+            <li><code>-j ACCEPT</code>: Acepta el paquete.</li>
+          </ul>
+        </div>
+
+        <!-- EJERCICIO 4: Descripción del comando anterior -->
+        <div class="ejercicio">
+          <h3><i class="fas fa-info-circle"></i> 4. Este comando permite:</h3>
+          <p><strong>respuesta:</strong> "En el puerto 80,443, tabla INPUT se agrega la regla que acepta los paquetes mediante tcp".</p>
+          <p><strong>Corrección:</strong> Se acepta tráfico TCP entrante hacia los puertos 80 y 443 en la cadena INPUT.</p>
+        </div>
+
+        <!-- EJERCICIO 5: Variables y opciones comunes -->
+        <div class="ejercicio">
+          <h3><i class="fas fa-sliders-h"></i> 5. Variables y opciones comunes</h3>
+          <ul style="list-style-type: none; padding-left: 0;">
+            <li><strong>a) Limitar intentos por minuto:</strong> <code>-m limit --limit 1/minute</code> <code>--limit s/minute</code></li>
+            <li><strong>b) Filtrar por IP de origen:</strong> <code>-s 192.168.1.0/24</code> <code>- - s / - - source 192.16.5.1.0/24</code></li>
+            <li><strong>c) Ver solo números, sin DNS:</strong> <code>iptables -L -n</code><code>- L - n</code></li>
+            <li><strong>d) Ver reglas con contadores:</strong> <code>iptables -L -v</code><code>L - V</code></li>
+          </ul>
+        </div>
+
+        <!-- EJERCICIO 6: Interpretación de regla compleja -->
+        <div class="ejercicio">
+          <h3><i class="fas fa-search"></i> 6. ¿Qué hace esta regla?</h3>
+          <pre><code>iptables -A INPUT -i eth0 -p tcp -m multiports -dports 22,80,443 \
+    -m state --state NEW,ESTABLISHED -j ACCEPT</code></pre>
+          <p><strong>Respuesta: </strong> "Permitir tráfico TCP entrante por la interfaz eth0, en el puerto 22,80,443, solo si es una conexión nueva o ya establecida."</p>
+          <p><span class="tag-exito">✓ Correcion: </span> (salvo el detalle de <code>multiports</code> → <code>multiport</code>).</p>
+        </div>
+
+        <!-- EJERCICIOS 7-11 (página 2) -->
+        <h3 style="margin-top: 2rem;">📝 Ejercicios de escritura de reglas (página 2)</h3>
+        
+        <div class="ejercicio">
+          <p><strong>7. Permitir tráfico HTTP entrante</strong></p>
+          <p><em>Respuesta:</em> <code>IPtables -A INPUT -P TCP -dport 50 -on state New -J ACCEPT</code></p>
+          <p><em>Corrección:</em> <code>iptables -A INPUT -p tcp --dport 80 -j ACCEPT</code></p>
+        </div>
+
+        <div class="ejercicio">
+          <p><strong>8. Permitir todo el tráfico saliente</strong></p>
+          <p><em>Respuesta</em> <code>IPtables -A OUTPUT -J ACCEPT</code></p>
+          <p><em>Corrección:</em> <code>iptables -A OUTPUT -j ACCEPT</code></p>
+        </div>
+
+        <div class="ejercicio">
+          <p><strong>9. Permitir SSH solo desde la IP 192.168.1.50</strong></p>
+          <p><em>Respuesta:</em> <code>Ptable -A INPUT -P TCP -S 192.168.1.50 -dport 22 -m state NEW,</code> (incompleto)</p>
+          <p><em>Corrección:</em> <code>iptables -A INPUT -p tcp -s 192.168.1.50 --dport 22 -j ACCEPT</code></p>
+        </div>
+
+        <div class="ejercicio">
+          <p><strong>10. Permitir tráfico TCP entrante a puertos 80 y 443 solo si es conexión establecida o relacionada</strong></p>
+          <p><em>Respuesta:</em> <code>IPtables -A INPUT -P TCP -m multiport 80, 443 -J ACCEPT m state -state RELATED -j ACCEPT</code> (mezclado)</p>
+          <p><em>Corrección:</em> <code>iptables -A INPUT -p tcp -m multiport --dports 80,443 -m state --state ESTABLISHED,RELATED -j ACCEPT</code></p>
+        </div>
+
+        <div class="ejercicio">
+          <p><strong>11. Permitir tráfico TCP entrante por eth0 a 22, 80 y 443, registrar intentos y permitir solo NEW y ESTABLISHED</strong></p>
+          <p><em>Respuesta:</em> <code>IPtables -A INPUT -I eth0 -P TCP -m multiport -dports 22,80,443 -m state -state NEW 10,6 -log-pictix</code></p>
+          <p><em>Corrección:</em></p>
+          <pre><code>iptables -A INPUT -i eth0 -p tcp -m multiport --dports 22,80,443 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -A INPUT -i eth0 -p tcp -m multiport --dports 22,80,443 -j LOG --log-prefix "IPT-ENTRANTE: "</code></pre>
+        </div>
+
+        <p class="muted" style="margin-top: 1.5rem;"><i class="fas fa-info-circle"></i> Se han corregido los errores sintácticos para mostrar la versión funcional; las respuestas originales se conservan como evidencia del aprendizaje.</p>
+      </div>
+    </section>
+
+    <!-- ============================================= -->
+    <!-- 3. MATERIAL MULTIMEDIA                       -->
+    <!-- ============================================= -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-photo-video"></i> 3. Material multimedia</h2>
+      
+      <!-- Diagrama: Flujo de iptables / Netfilter -->
+      <h3>🧩 Diagrama: Recorrido de un paquete en Netfilter</h3>
+      <div class="diagrama-container" style="background: white; overflow-x: auto;">
+        <div style="min-width: 600px;">
+          <div style="display: flex; justify-content: center; margin-bottom: 1rem;">
+            <span style="background: #3b82f6; color: white; padding: 0.5rem 1rem; border-radius: 20px;">🖧 PAQUETE DE RED</span>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;">
+            <div style="background: #f1f5f9; border-radius: var(--radius); padding: 1rem; border: 2px solid #cbd5e1;">
+              <div style="font-weight: bold; margin-bottom: 0.5rem;">PREROUTING</div>
+              <div style="font-size: 0.8rem;">raw, mangle, nat</div>
+            </div>
+            <div style="font-size: 1.5rem; color: #64748b;">➡️</div>
+            <div style="background: #f1f5f9; border-radius: var(--radius); padding: 1rem; border: 2px solid #cbd5e1;">
+              <div style="font-weight: bold; margin-bottom: 0.5rem;">INPUT</div>
+              <div style="font-size: 0.8rem;">mangle, filter, security</div>
+              <div style="margin-top: 0.5rem; background: #e2e8f0; padding: 0.2rem;">➡️ PROCESO LOCAL</div>
+            </div>
+            <div style="font-size: 1.5rem; color: #64748b;">⬇️</div>
+            <div style="background: #f1f5f9; border-radius: var(--radius); padding: 1rem; border: 2px solid #cbd5e1;">
+              <div style="font-weight: bold; margin-bottom: 0.5rem;">FORWARD</div>
+              <div style="font-size: 0.8rem;">mangle, filter</div>
+            </div>
+            <div style="font-size: 1.5rem; color: #64748b;">➡️</div>
+            <div style="background: #f1f5f9; border-radius: var(--radius); padding: 1rem; border: 2px solid #cbd5e1;">
+              <div style="font-weight: bold; margin-bottom: 0.5rem;">POSTROUTING</div>
+              <div style="font-size: 0.8rem;">mangle, nat</div>
+            </div>
+          </div>
+          <div style="display: flex; justify-content: center; margin-top: 1rem;">
+            <span style="background: #10b981; color: white; padding: 0.5rem 1rem; border-radius: 20px;">📤 PAQUETE PROCESADO</span>
+          </div>
+        </div>
+        <p class="muted" style="margin-top: 1rem;">Flujo simplificado de un paquete a través de las cadenas de iptables/Netfilter.</p>
+      </div>
+
+      <!-- Captura de pantalla simulada (código de ejemplo) -->
+      <h3 style="margin-top: 2rem;">💻 Captura: Listado de reglas con contadores</h3>
+      <pre><code>$ sudo iptables -L -n -v
+Chain INPUT (policy DROP 0 packets, 0 bytes)
+ pkts bytes target     prot opt in     out     source               destination         
+ 1234  123K ACCEPT     tcp  --  eth0   *       0.0.0.0/0            0.0.0.0/0            tcp dpt:22
+  567  789K ACCEPT     tcp  --  eth0   *       0.0.0.0/0            0.0.0.0/0            tcp dpt:80 state NEW,ESTABLISHED
+</code></pre>
+      <p class="muted">Ejemplo de salida real de <code>iptables -L -n -v</code> (simulado).</p>
+
+      <!-- Video explicativo (referenciado) -->
+      <h3 style="margin-top: 2rem;">📹 Video: Introducción a iptables (Netfilter)</h3>
+      <div class="video-wrapper">
+        <iframe width="560" height="315" src="https://www.youtube.com/watch?v=EglDJKXrJGQ" title="Iptables tutorial" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <p class="muted">Video: "Iptables Complete Guide" – explicación detallada de tablas, cadenas y reglas.</p>
+    </section>
+
+    <!-- ============================================= -->
+    <!-- 4. OPINIÓN / REFLEXIÓN TÉCNICA               -->
+    <!-- ============================================= -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-comment-dots"></i> 4. Reflexión técnica</h2>
+      <div class="card reflexion">
+        <p>La práctica con iptables evidencia un conocimiento <strong>sólido en la sintaxis básica</strong>, pero también muestra errores comunes en el uso de opciones como <code>multiport</code>, <code>--dports</code> o la correcta escritura de <code>-j</code> (no <code>-J</code>). Estos fallos son típicos de principiantes con el firewall de Linux y reflejan la necesidad de <strong>practicar con entornos reales</strong> y no solo con ejercicios de papel.</p>
+        <p>Personalmente, considero que iptables es una herramienta <strong>indispensable</strong> para cualquier profesional de seguridad, pues permite comprender cómo se filtra el tráfico a bajo nivel. Aunque actualmente <strong>nftables</strong> es su sucesor, la lógica de cadenas, tablas y hooks se mantiene. Dominar iptables facilita la transición a nftables y a firewalls comerciales.</p>
+        <p>En entornos corporativos, una mala regla puede abrir brechas de seguridad o interrumpir servicios. Por ello, actividades como esta —donde se analizan reglas defectuosas y se corrigen— son fundamentales para desarrollar el <strong>criterio técnico</strong> necesario en la administración de firewalls.</p>
+        <p style="font-style: italic; margin-top: 1rem;">— Jorge Alejandro Cabrera Meza (181591).</p>
+      </div>
+    </section>
+
+    <!-- ============================================= -->
+    <!-- 5. REFERENCIAS TÉCNICAS                      -->
+    <!-- ============================================= -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-book"></i> 5. Referencias técnicas</h2>
+      <ul class="referencias-lista">
+        <li>Netfilter.org. (2025). <em>The netfilter.org project</em>. <a href="https://www.netfilter.org/" target="_blank">https://www.netfilter.org/</a></li>
+        <li>Rusty Russell. (2002). <em>Linux 2.4 Packet Filtering HOWTO</em>. The Linux Documentation Project.</li>
+        <li>Andreasson, O. (2006). <em>Iptables Tutorial 1.2.2</em>. <a href="https://www.frozentux.net/iptables-tutorial/iptables-tutorial.html" target="_blank">https://www.frozentux.net/iptables-tutorial/</a></li>
+        <li>NIST. (2024). <em>Guide to IPsec VPNs (SP 800-77 Rev. 1)</em> – contexto de filtrado de paquetes.</li>
+        <li>Manual man de iptables (8).</li>
+      </ul>
+    </section>
+
+    <div style="text-align: center; margin: 2rem 0;">
+      <a href="ACT03_181591.pdf" download class="btn btn--primary" style="font-size: 1.1rem; padding: 0.75rem 2rem;">
+        <i class="fas fa-download"></i> Descargar PDF
+      </a>
+    </div>
+
+  </main>
+
+  <!-- FOOTER (idéntico al portafolio) -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <h3>Jorge Alejandro Cabrera</h3>
+          <p>Ingeniero en Tecnologías de la Información</p>
+        </div>
+        <div class="footer-info">
+          <a href="https://www.upslp.edu.mx" target="_blank" class="footer-link">
+            <i class="fas fa-university"></i> Universidad Politécnica de San Luis Potosí
+          </a>
+          <p><i class="fas fa-map-marker-alt"></i> San Luis Potosí, México</p>
+          <p><i class="fas fa-envelope"></i> 181591@upslp.edu.mx</p>
+        </div>
+        <div class="footer-social">
+          <a href="https://github.com/jorgeeemz" target="_blank" class="social-icon"><i class="fab fa-github"></i></a>
+          <a href="mailto:181591@upslp.edu.mx" class="social-icon"><i class="fas fa-envelope"></i></a>
+          <a href="Jorge resume.pdf" download class="social-icon"><i class="fas fa-file-pdf"></i></a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Jorge Alejandro Cabrera. Todos los derechos reservados.</p>
+        <p>Portafolio profesional - Seguridad Informática</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Función para exportar a PDF con html2pdf
+    function exportarActividadPDF() {
+      const elemento = document.querySelector('main.container');
+      const botones = document.querySelectorAll('#exportarPDF, #exportarPDF2');
+      botones.forEach(btn => btn.disabled = true);
+      
+      const opt = {
+        margin:        [0.5, 0.5, 0.5, 0.5],
+        filename:     'Actividad3_Iptables_Ejercicios.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, letterRendering: true, useCORS: true },
+        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+      
+      html2pdf().set(opt).from(elemento).save().then(() => {
+        botones.forEach(btn => btn.disabled = false);
+      }).catch((error) => {
+        console.error('Error al generar PDF:', error);
+        botones.forEach(btn => btn.disabled = false);
+        alert('Hubo un problema al generar el PDF. Por favor intenta de nuevo.');
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const btn1 = document.getElementById('exportarPDF');
+      const btn2 = document.getElementById('exportarPDF2');
+      if (btn1) btn1.addEventListener('click', exportarActividadPDF);
+      if (btn2) btn2.addEventListener('click', exportarActividadPDF);
+    });
+  </script>
+
+  <!-- Estilos adicionales para esta página -->
+  <style>
+    .ejercicio {
+      background: var(--bg);
+      padding: 1.25rem;
+      border-radius: var(--radius-sm);
+      margin-bottom: 1.25rem;
+      border-left: 4px solid var(--primary);
+    }
+    .ejercicio h3 {
+      margin-top: 0;
+      margin-bottom: 0.75rem;
+      font-size: 1.2rem;
+      color: var(--heading);
+    }
+    .tag-sugerencia {
+      background: #f59e0b;
+      color: white;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .tag-exito {
+      background: #10b981;
+      color: white;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+  </style>
+</body>
+</html>                    <a href="actividad2.html">Actividad 2 – Análisis de servicios de seguridad (X.800 y RFC 4949)</a>
                     <a href="actividad3.html">Actividad 3 – Interpretación y traducción de políticas de filtrado en iptables</a>
                     <a href="actividad4.html">Actividad 4 – Mecanismos de defensa en red</a>
                     <a href="actividad5.html">Actividad 5 – Cartografiando el pentesting: análisis comparativo de
