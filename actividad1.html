@@ -232,23 +232,6 @@ mimikatz # sekurlsa::logonpasswords</code></pre>
       if (btn1) btn1.addEventListener('click', exportarActividadPDF);
       if (btn2) btn2.addEventListener('click', exportarActividadPDF);
     });
-
-    // Ajusta el padding-top del main y el scroll-padding-top para anclas
-function adjustLayoutForStickyHeader() {
-  const header = document.querySelector('.site-header');
-  const main = document.querySelector('main');
-  if (header) {
-    const headerHeight = header.offsetHeight;
-    if (main) {
-      main.style.paddingTop = headerHeight + 'px';
-    }
-    // Para que los enlaces internos no queden ocultos
-    document.documentElement.style.scrollPaddingTop = headerHeight + 'px';
-  }
-}
-
-window.addEventListener('load', adjustLayoutForStickyHeader);
-window.addEventListener('resize', adjustLayoutForStickyHeader);
   </script>
 </body>
 </html>
