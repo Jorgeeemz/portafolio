@@ -23,7 +23,7 @@
         </div>
 
         <nav class="nav" aria-label="Navegación principal">
-          <a href="Index.html"><i class="fas fa-home"></i> Inicio</a>
+          <a href="index.html"><i class="fas fa-home"></i> Inicio</a>
           <div class="dropdown">
             <a href="#" class="dropbtn"><i class="fas fa-trophy"></i> ROAD TO HALL OF FAME</a>
             <div class="dropdown-content">
@@ -532,5 +532,23 @@
   </footer>
 
   <script src="script.js"></script>
+  <script>
+    // Ajusta el padding-top del main y el scroll-padding-top para anclas
+function adjustLayoutForStickyHeader() {
+  const header = document.querySelector('.site-header');
+  const main = document.querySelector('main');
+  if (header) {
+    const headerHeight = header.offsetHeight;
+    if (main) {
+      main.style.paddingTop = headerHeight + 'px';
+    }
+    // Para que los enlaces internos no queden ocultos
+    document.documentElement.style.scrollPaddingTop = headerHeight + 'px';
+  }
+}
+
+window.addEventListener('load', adjustLayoutForStickyHeader);
+window.addEventListener('resize', adjustLayoutForStickyHeader);
+  </script>
 </body>
 </html>
