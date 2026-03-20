@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Quiz: Pon a prueba lo aprendido · Phishing</title>
+  <meta name="description" content="Cuestionario interactivo sobre phishing e ingeniería social" />
+  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Estilos específicos para el quiz */
+    .quiz-container {
+      max-width: 900px;
+      margin: 40px auto;
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 40px;
+    }
+
+    .quiz-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .quiz-header h1 {
+      font-size: 2.5rem;
+      color: var(--heading);
+      margin-bottom: 10px;
+    }
+
+    .quiz-header p {
+      color: var(--muted);
+      font-size: 1.1rem;
+    }
+
+    .question-card {
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+      padding: 25px;
+      margin-bottom: 30px;
+      border-left: 5px solid var(--primary);
+      transition: all 0.2s;
+    }
+
+    .question-card.incorrect {
+      border-left-color: #ef4444;
+      background: rgba(239, 68, 68, 0.03);
+    }
+
+    .question-card.correct {
+      border-left-color: #10b981;
+      background: rgba(16, 185, 129, 0.03);
+    }
+
+    .question-number {
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+    }
+
+    .question-scenario {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--heading);
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--surface);
+      padding: 12px 18px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .option:hover {
+      background: rgba(59, 130, 246, 0.05);
+      border-color: var(--primary);
+    }
+
+    .option input[type="radio"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    .option label {
+      flex: 1;
+      cursor: pointer;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .explanation {
+      background: #f1f5f9;
+      padding: 15px;
+      border-radius: var(--radius-sm);
+      margin-top: 15px;
+      font-size: 0.95rem;
+      border-left: 3px solid var(--primary);
+      display: none;
+    }
+
+    .explanation.show {
+      display: block;
+    }
+
+    .explanation i {
+      color: var(--primary);
+      margin-right: 8px;
+    }
+
+    .quiz-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin: 40px 0 20px;
+    }
+
+    .btn-quiz {
+      padding: 14px 30px;
+      font-size: 1.1rem;
+      border-radius: 50px;
+      min-width: 200px;
+    }
+
+    .score-board {
+      text-align: center;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 25px;
+      border-radius: var(--radius);
+      margin: 30px 0;
+    }
+
+    .score-board h2 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .score-board .score {
+      font-size: 3.5rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .score-board .result-message {
+      font-size: 1.3rem;
+      margin-top: 10px;
+    }
+
+    .reset-btn {
+      background: var(--muted);
+      color: white;
+      border: none;
+    }
+
+    .reset-btn:hover {
+      background: #4b5563;
+    }
+
+    .footer-note {
+      text-align: center;
+      color: var(--muted);
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+
+    <header class="site-header" role="banner">
+        <div class="container">
+          <div class="header-content">
+            <div class="brand" aria-hidden="false">
+              <h1 class="brand__title" style="margin:0;">Jorge Alejandro Cabrera - SentinelJCM</h1>
+              <p class="brand__subtitle" style="margin:4px 0 0 0;"><strong>CNO V – Seguridad Informática</strong></p>
+              <p class="brand__subtitle" style="margin:2px 0 0 0;">Universidad Politécnica de San Luis Potosí</p>
+              <p class="brand__subtitle" style="margin:2px 0 0 0;">8vo Semestre</p>
+            </div>
+    
+            <nav class="nav" aria-label="Navegación principal">
+              <a href="index.html"><i class="fas fa-home"></i> Inicio</a>
+              <div class="dropdown">
+                <a href="#" class="dropbtn"><i class="fas fa-trophy"></i> ROAD TO HALL OF FAME</a>
+                <div class="dropdown-content">
+                  <a href="road-to-hall-of-fame.html">SQL Injection</a>
+                </div>
+              </div>
+              <div class="dropdown">
+                <a href="#" class="dropbtn"><i class="fas fa-folder-open"></i> Actividades</a>
+                <div class="dropdown-content">
+                  <div class="submenu">
+                    <a href="#">Parcial 1 ▸</a>
+                    <div class="submenu-content">
+                      <a href="actividad1.html">Actividad 1 – NotPetya Maersk</a>
+                      <a href="actividad2.html">Actividad 2 – Análisis de servicios de seguridad (X.800 y RFC 4949)</a>
+                      <a href="actividad3.html">Actividad 3 – Interpretación y traducción de políticas de filtrado en iptables</a>
+                      <a href="actividad4.html">Actividad 4 – Mecanismos de defensa en red</a>
+                      <a href="actividad5.html">Actividad 5 – Cartografiando el pentesting: análisis comparativo de
+                        metodologías de seguridad informática</a>
+                      <a href="actividad6.html">Actividad 6 – Implementación de IPSec VPN</a>
+                    </div>
+                  </div>
+                  <div class="submenu">
+                    <a href="#">Parcial 2 ▸</a>
+                    <div class="submenu-content">
+                      <a href="PR2.html">Proyecto - Investigacion de ingenieria social y phishing</a>
+                    </div>
+                  </div>
+                  <a href="#">Parcial 3 (próximamente)</a>
+                </div>
+              </div>
+              <a href="#perfil"><i class="fas fa-user"></i> Perfil</a>
+              <a href="#info-tecnica"><i class="fas fa-code"></i> Tecnologías</a>
+              <a href="#contacto"><i class="fas fa-envelope"></i> Contacto</a>
+            </nav>
+          </div>
+        </div>
+      </header>
+
+  <main class="container">
+    <div class="quiz-container">
+      <div class="quiz-header">
+        <h1><i class="fas fa-shield-alt"></i> Pon a prueba lo aprendido</h1>
+        <p>A partir de 10 escenarios aleatorios sobre phishing e ingeniería social contesta con la mejor opcion sobre como evitar estos ataques.</p>
+      </div>
+
+      <div id="questionsContainer"></div>
+
+      <div class="quiz-actions">
+        <button id="gradeBtn" class="btn btn--primary btn-quiz">
+          <i class="fas fa-check-circle"></i> Calificar
+        </button>
+        <button id="resetBtn" class="btn btn-quiz reset-btn">
+          <i class="fas fa-undo-alt"></i> Reiniciar 
+        </button>
+      </div>
+
+      <div id="scoreBoard" class="score-board" style="display: none;"></div>
+
+      <div class="footer-note">
+        <p><i class="fas fa-info-circle"></i> Mínimo para aprobar: 7 aciertos. Las preguntas se renuevan al reiniciar.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <h3>Jorge Alejandro Cabrera</h3>
+          <p>Ingeniero en Tecnologías de la Información</p>
+        </div>
+        <div class="footer-info">
+          <a href="https://www.upslp.edu.mx" target="_blank" class="footer-link">
+            <i class="fas fa-university"></i> Universidad Politécnica de San Luis Potosí
+          </a>
+          <p><i class="fas fa-map-marker-alt"></i> San Luis Potosí, México</p>
+          <p><i class="fas fa-envelope"></i> 181591@upslp.edu.mx</p>
+        </div>
+        <div class="footer-social">
+          <a href="https://github.com/jorgeeemz" target="_blank" class="social-icon"><i class="fab fa-github"></i></a>
+          <a href="mailto:181591@upslp.edu.mx" class="social-icon"><i class="fas fa-envelope"></i></a>
+          <a href="Jorge resume.pdf" download class="social-icon"><i class="fas fa-file-pdf"></i></a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Jorge Alejandro Cabrera. Todos los derechos reservados.</p>
+        <p>Portafolio profesional - Seguridad Informática</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Incluir el archivo de preguntas (20 preguntas) -->
+  <script src="Preguntas.js"></script>
+  <script>
+    (function() {
+      // Referencias DOM
+      const container = document.getElementById('questionsContainer');
+      const gradeBtn = document.getElementById('gradeBtn');
+      const resetBtn = document.getElementById('resetBtn');
+      const scoreBoard = document.getElementById('scoreBoard');
+
+      // Estado actual
+      let currentQuestions = [];      // Array con las 10 preguntas actuales
+      let selectedAnswers = [];       // Respuestas seleccionadas (índice de opción o null)
+
+      // Función para obtener 10 preguntas aleatorias del banco global 'questions'
+      function getRandomQuestions() {
+        // Hacer una copia y barajar (shuffle)
+        const shuffled = [...questions];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        // Tomar las primeras 10
+        return shuffled.slice(0, 10);
+      }
+
+      // Renderizar las preguntas actuales
+      function renderQuestions() {
+        let html = '';
+        currentQuestions.forEach((q, idx) => {
+          html += `
+            <div class="question-card" id="q-${idx}">
+              <div class="question-number">Pregunta ${idx + 1}</div>
+              <div class="question-scenario">${q.scenario}</div>
+              <div class="options" data-qindex="${idx}">
+          `;
+          q.options.forEach((opt, optIdx) => {
+            const letter = String.fromCharCode(65 + optIdx); // A, B, C, D...
+            html += `
+              <div class="option">
+                <input type="radio" name="q${idx}" value="${optIdx}" id="q${idx}opt${optIdx}" ${selectedAnswers[idx] === optIdx ? 'checked' : ''}>
+                <label for="q${idx}opt${optIdx}"><strong>${letter}.</strong> ${opt}</label>
+              </div>
+            `;
+          });
+          html += `
+              </div>
+              <div class="explanation" id="exp-${idx}">
+                <i class="fas fa-lightbulb"></i> ${q.explanation}
+              </div>
+            </div>
+          `;
+        });
+        container.innerHTML = html;
+
+        // Añadir event listeners a los radios para actualizar el estado
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+          radio.addEventListener('change', function(e) {
+            const name = this.name; // ej. "q0"
+            const qIndex = parseInt(name.substring(1));
+            const optValue = parseInt(this.value);
+            selectedAnswers[qIndex] = optValue;
+          });
+        });
+      }
+
+      // Función para calificar el quiz actual
+      function gradeQuiz() {
+        let correctCount = 0;
+        const total = currentQuestions.length;
+
+        // Resetear clases y explicaciones
+        document.querySelectorAll('.question-card').forEach(card => {
+          card.classList.remove('correct', 'incorrect');
+        });
+        document.querySelectorAll('.explanation').forEach(exp => {
+          exp.classList.remove('show');
+        });
+
+        // Evaluar cada pregunta
+        currentQuestions.forEach((q, index) => {
+          const selected = selectedAnswers[index];
+          const isCorrect = (selected === q.correct);
+          if (isCorrect) correctCount++;
+
+          const card = document.getElementById(`q-${index}`);
+          if (selected !== null) {
+            card.classList.add(isCorrect ? 'correct' : 'incorrect');
+          }
+
+          const exp = document.getElementById(`exp-${index}`);
+          // Mostrar explicación SOLO si es incorrecta y se ha respondido
+          if (selected !== null && !isCorrect) {
+            exp.classList.add('show');
+          }
+        });
+
+        // Mostrar puntuación
+        const passed = correctCount >= 7;
+        scoreBoard.style.display = 'block';
+        scoreBoard.innerHTML = `
+          <h2>Resultado</h2>
+          <div class="score">${correctCount}/${total}</div>
+          <div class="result-message">
+            ${passed ? '✅ ¡Aprobado! Excelente trabajo.' : '❌ No aprobado. Revisa las explicaciones y vuelve a intentarlo.'}
+          </div>
+          <p style="margin-top:15px;opacity:0.9;">${passed ? 'Felicidades, has superado el mínimo (7/10).' : 'Mínimo requerido: 7/10.'}</p>
+        `;
+      }
+
+      // Función para reiniciar el quiz (nuevo set de preguntas aleatorias)
+      function resetQuiz() {
+        // Obtener nuevas 10 preguntas aleatorias
+        currentQuestions = getRandomQuestions();
+        // Reiniciar respuestas seleccionadas (null para cada pregunta)
+        selectedAnswers = new Array(currentQuestions.length).fill(null);
+        // Volver a renderizar
+        renderQuestions();
+        // Ocultar scoreboard
+        scoreBoard.style.display = 'none';
+      }
+
+      // Inicialización
+      function init() {
+        currentQuestions = getRandomQuestions();
+        selectedAnswers = new Array(currentQuestions.length).fill(null);
+        renderQuestions();
+      }
+
+      // Event listeners
+      gradeBtn.addEventListener('click', gradeQuiz);
+      resetBtn.addEventListener('click', resetQuiz);
+
+      init();
+    })();
+  </script>
+</body>
+</html>
