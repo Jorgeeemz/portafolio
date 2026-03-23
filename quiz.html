@@ -4,13 +4,13 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Quiz: Pon a prueba lo aprendido · Phishing</title>
-  <meta name="description" content="Cuestionario interactivo sobre phishing e ingeniería social" />
+  <meta name="description" content="Cuestionario interactivo sobre phishing e ingeniería social con registro de puntuaciones globales" />
   
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="styles.css">
   <style>
-    /* Estilos específicos para el quiz */
+    /* Estilos específicos para el quiz (complementan a styles.css) */
     .quiz-container {
       max-width: 900px;
       margin: 40px auto;
@@ -19,23 +19,35 @@
       box-shadow: var(--shadow);
       padding: 40px;
     }
-
     .quiz-header {
       text-align: center;
       margin-bottom: 40px;
     }
-
     .quiz-header h1 {
       font-size: 2.5rem;
       color: var(--heading);
       margin-bottom: 10px;
     }
-
     .quiz-header p {
       color: var(--muted);
       font-size: 1.1rem;
     }
-
+    .alias-section {
+      text-align: center;
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 30px;
+      margin-bottom: 30px;
+      border: 1px solid var(--border);
+    }
+    .alias-section input {
+      max-width: 300px;
+      margin: 20px auto;
+      text-align: center;
+      font-size: 1.1rem;
+      padding: 12px;
+      display: block;
+    }
     .question-card {
       background: var(--bg);
       border-radius: var(--radius-sm);
@@ -44,24 +56,20 @@
       border-left: 5px solid var(--primary);
       transition: all 0.2s;
     }
-
     .question-card.incorrect {
       border-left-color: #ef4444;
       background: rgba(239, 68, 68, 0.03);
     }
-
     .question-card.correct {
       border-left-color: #10b981;
       background: rgba(16, 185, 129, 0.03);
     }
-
     .question-number {
       font-weight: 700;
       color: var(--primary);
       margin-bottom: 10px;
       font-size: 1.1rem;
     }
-
     .question-scenario {
       font-size: 1.2rem;
       font-weight: 600;
@@ -69,14 +77,12 @@
       margin-bottom: 20px;
       line-height: 1.5;
     }
-
     .options {
       display: flex;
       flex-direction: column;
       gap: 12px;
       margin-bottom: 15px;
     }
-
     .option {
       display: flex;
       align-items: center;
@@ -88,26 +94,22 @@
       cursor: pointer;
       transition: all 0.2s;
     }
-
     .option:hover {
       background: rgba(59, 130, 246, 0.05);
       border-color: var(--primary);
     }
-
     .option input[type="radio"] {
       width: 18px;
       height: 18px;
       accent-color: var(--primary);
       cursor: pointer;
     }
-
     .option label {
       flex: 1;
       cursor: pointer;
       font-weight: 500;
       color: var(--text);
     }
-
     .explanation {
       background: #f1f5f9;
       padding: 15px;
@@ -117,16 +119,13 @@
       border-left: 3px solid var(--primary);
       display: none;
     }
-
     .explanation.show {
       display: block;
     }
-
     .explanation i {
       color: var(--primary);
       margin-right: 8px;
     }
-
     .quiz-actions {
       display: flex;
       flex-wrap: wrap;
@@ -134,14 +133,20 @@
       justify-content: center;
       margin: 40px 0 20px;
     }
-
     .btn-quiz {
       padding: 14px 30px;
       font-size: 1.1rem;
       border-radius: 50px;
       min-width: 200px;
     }
-
+    .reset-btn {
+      background: var(--muted);
+      color: white;
+      border: none;
+    }
+    .reset-btn:hover {
+      background: #4b5563;
+    }
     .score-board {
       text-align: center;
       background: linear-gradient(135deg, var(--primary), var(--secondary));
@@ -150,33 +155,24 @@
       border-radius: var(--radius);
       margin: 30px 0;
     }
-
-    .score-board h2 {
-      font-size: 2rem;
-      margin-bottom: 10px;
-    }
-
     .score-board .score {
       font-size: 3.5rem;
       font-weight: 800;
-      line-height: 1;
     }
-
-    .score-board .result-message {
-      font-size: 1.3rem;
-      margin-top: 10px;
+    .link-scoreboard {
+      display: inline-block;
+      margin-top: 20px;
+      background: white;
+      color: var(--primary);
+      padding: 10px 20px;
+      border-radius: 40px;
+      text-decoration: none;
+      font-weight: 600;
     }
-
-    .reset-btn {
-      background: var(--muted);
-      color: white;
-      border: none;
+    .link-scoreboard:hover {
+      background: #f1f5f9;
+      transform: translateY(-2px);
     }
-
-    .reset-btn:hover {
-      background: #4b5563;
-    }
-
     .footer-note {
       text-align: center;
       color: var(--muted);
@@ -186,72 +182,81 @@
 </head>
 <body>
 
-    <header class="site-header" role="banner">
-        <div class="container">
-          <div class="header-content">
-            <div class="brand" aria-hidden="false">
-              <h1 class="brand__title" style="margin:0;">Jorge Alejandro Cabrera - SentinelJCM</h1>
-            </div>
-    
-            <nav class="nav" aria-label="Navegación principal">
-              <a href="index.html"><i class="fas fa-home"></i> Inicio</a>
-              <div class="dropdown">
-                <a href="#" class="dropbtn"><i class="fas fa-trophy"></i> ROAD TO HALL OF FAME</a>
-                <div class="dropdown-content">
-                  <a href="road-to-hall-of-fame.html">SQL Injection</a>
-                </div>
-              </div>
-              <div class="dropdown">
-                <a href="#" class="dropbtn"><i class="fas fa-folder-open"></i> Actividades</a>
-                <div class="dropdown-content">
-                  <div class="submenu">
-                    <a href="#">Parcial 1 ▸</a>
-                    <div class="submenu-content">
-                      <a href="actividad1.html">Actividad 1 – NotPetya Maersk</a>
-                      <a href="actividad2.html">Actividad 2 – Análisis de servicios de seguridad (X.800 y RFC 4949)</a>
-                      <a href="actividad3.html">Actividad 3 – Interpretación y traducción de políticas de filtrado en iptables</a>
-                      <a href="actividad4.html">Actividad 4 – Mecanismos de defensa en red</a>
-                      <a href="actividad5.html">Actividad 5 – Cartografiando el pentesting: análisis comparativo de
-                        metodologías de seguridad informática</a>
-                      <a href="actividad6.html">Actividad 6 – Implementación de IPSec VPN</a>
-                    </div>
-                  </div>
-                  <div class="submenu">
-                    <a href="#">Parcial 2 ▸</a>
-                    <div class="submenu-content">
-                      <a href="PR2.html">Proyecto - Investigacion de ingenieria social y phishing</a>
-                    </div>
-                  </div>
-                  <a href="#">Parcial 3 (próximamente)</a>
-                </div>
-              </div>
-              <a href="#perfil"><i class="fas fa-user"></i> Perfil</a>
-              <a href="#info-tecnica"><i class="fas fa-code"></i> Tecnologías</a>
-              <a href="#contacto"><i class="fas fa-envelope"></i> Contacto</a>
-            </nav>
-          </div>
+  <!-- Header idéntico al resto del portafolio -->
+  <header class="site-header" role="banner">
+    <div class="container">
+      <div class="header-content">
+        <div class="brand" aria-hidden="false">
+          <h1 class="brand__title" style="margin:0;">Jorge Alejandro Cabrera - SentinelJCM</h1>
         </div>
-      </header>
+        <nav class="nav" aria-label="Navegación principal">
+          <a href="index.html"><i class="fas fa-home"></i> Inicio</a>
+          <div class="dropdown">
+            <a href="#" class="dropbtn"><i class="fas fa-trophy"></i> ROAD TO HALL OF FAME</a>
+            <div class="dropdown-content">
+              <a href="road-to-hall-of-fame.html">SQL Injection</a>
+            </div>
+          </div>
+          <div class="dropdown">
+            <a href="#" class="dropbtn"><i class="fas fa-folder-open"></i> Actividades</a>
+            <div class="dropdown-content">
+              <div class="submenu">
+                <a href="#">Parcial 1 ▸</a>
+                <div class="submenu-content">
+                  <a href="actividad1.html">Actividad 1 – NotPetya Maersk</a>
+                  <a href="actividad2.html">Actividad 2 – Análisis de servicios de seguridad (X.800 y RFC 4949)</a>
+                  <a href="actividad3.html">Actividad 3 – Interpretación y traducción de políticas de filtrado en iptables</a>
+                  <a href="actividad4.html">Actividad 4 – Mecanismos de defensa en red</a>
+                  <a href="actividad5.html">Actividad 5 – Cartografiando el pentesting: análisis comparativo de metodologías de seguridad informática</a>
+                  <a href="actividad6.html">Actividad 6 – Implementación de IPSec VPN</a>
+                </div>
+              </div>
+              <div class="submenu">
+                <a href="#">Parcial 2 ▸</a>
+                <div class="submenu-content">
+                  <a href="PR2.html">Proyecto - Investigación de ingeniería social y phishing</a>
+                  <a href="scoreboard.html">📊 Score Global - Ranking y estadísticas</a>
+                </div>
+              </div>
+              <a href="#">Parcial 3 (próximamente)</a>
+            </div>
+          </div>
+          <a href="#perfil"><i class="fas fa-user"></i> Perfil</a>
+          <a href="#info-tecnica"><i class="fas fa-code"></i> Tecnologías</a>
+          <a href="#contacto"><i class="fas fa-envelope"></i> Contacto</a>
+        </nav>
+      </div>
+    </div>
+  </header>
 
   <main class="container">
     <div class="quiz-container">
       <div class="quiz-header">
         <h1><i class="fas fa-shield-alt"></i> Pon a prueba lo aprendido</h1>
-        <p>A partir de 10 escenarios aleatorios sobre phishing e ingeniería social contesta con la mejor opcion sobre como evitar estos ataques.</p>
+        <p>A partir de 10 escenarios aleatorios sobre phishing e ingeniería social, selecciona la mejor opción para evitar estos ataques.</p>
       </div>
 
-      <div id="questionsContainer"></div>
-
-      <div class="quiz-actions">
-        <button id="gradeBtn" class="btn btn--primary btn-quiz">
-          <i class="fas fa-check-circle"></i> Calificar
-        </button>
-        <button id="resetBtn" class="btn btn-quiz reset-btn">
-          <i class="fas fa-undo-alt"></i> Reiniciar 
-        </button>
+      <!-- Sección de identificación -->
+      <div id="aliasSection" class="alias-section">
+        <h3><i class="fas fa-user-plus"></i> Identifícate</h3>
+        <p>Ingresa tu nombre o alias para registrar tu puntuación en el ranking global.</p>
+        <input type="text" id="userAlias" placeholder="Ej: JuanPérez" maxlength="30" autocomplete="off">
+        <button id="startQuizBtn" class="btn btn--primary">Comenzar cuestionario</button>
       </div>
 
-      <div id="scoreBoard" class="score-board" style="display: none;"></div>
+      <!-- Contenido del quiz (oculto inicialmente) -->
+      <div id="quizContent" style="display: none;">
+        <div id="questionsContainer"></div>
+        <div class="quiz-actions">
+          <button id="gradeBtn" class="btn btn--primary btn-quiz">
+            <i class="fas fa-check-circle"></i> Calificar
+          </button>
+          <button id="resetBtn" class="btn btn-quiz reset-btn">
+            <i class="fas fa-undo-alt"></i> Reiniciar
+          </button>
+        </div>
+        <div id="scoreBoard" class="score-board" style="display: none;"></div>
+      </div>
 
       <div class="footer-note">
         <p><i class="fas fa-info-circle"></i> Mínimo para aprobar: 7 aciertos. Las preguntas se renuevan al reiniciar.</p>
@@ -286,33 +291,34 @@
     </div>
   </footer>
 
-  <!-- Incluir el archivo de preguntas (20 preguntas) -->
   <script src="Preguntas.js"></script>
   <script>
     (function() {
-      // Referencias DOM
-      const container = document.getElementById('questionsContainer');
+      // Elementos DOM
+      const aliasSection = document.getElementById('aliasSection');
+      const quizContent = document.getElementById('quizContent');
+      const startBtn = document.getElementById('startQuizBtn');
       const gradeBtn = document.getElementById('gradeBtn');
       const resetBtn = document.getElementById('resetBtn');
-      const scoreBoard = document.getElementById('scoreBoard');
+      const questionsContainer = document.getElementById('questionsContainer');
+      const scoreBoardDiv = document.getElementById('scoreBoard');
 
-      // Estado actual
-      let currentQuestions = [];      // Array con las 10 preguntas actuales
-      let selectedAnswers = [];       // Respuestas seleccionadas (índice de opción o null)
+      let currentQuestions = [];
+      let selectedAnswers = [];
+      let startTime = null;
+      let alias = '';
 
-      // Función para obtener 10 preguntas aleatorias del banco global 'questions'
+      // Obtener 10 preguntas aleatorias
       function getRandomQuestions() {
-        // Hacer una copia y barajar (shuffle)
         const shuffled = [...questions];
         for (let i = shuffled.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
           [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
         }
-        // Tomar las primeras 10
         return shuffled.slice(0, 10);
       }
 
-      // Renderizar las preguntas actuales
+      // Renderizar preguntas
       function renderQuestions() {
         let html = '';
         currentQuestions.forEach((q, idx) => {
@@ -323,7 +329,7 @@
               <div class="options" data-qindex="${idx}">
           `;
           q.options.forEach((opt, optIdx) => {
-            const letter = String.fromCharCode(65 + optIdx); // A, B, C, D...
+            const letter = String.fromCharCode(65 + optIdx);
             html += `
               <div class="option">
                 <input type="radio" name="q${idx}" value="${optIdx}" id="q${idx}opt${optIdx}" ${selectedAnswers[idx] === optIdx ? 'checked' : ''}>
@@ -339,12 +345,12 @@
             </div>
           `;
         });
-        container.innerHTML = html;
+        questionsContainer.innerHTML = html;
 
-        // Añadir event listeners a los radios para actualizar el estado
+        // Eventos para los radios
         document.querySelectorAll('input[type="radio"]').forEach(radio => {
           radio.addEventListener('change', function(e) {
-            const name = this.name; // ej. "q0"
+            const name = this.name;
             const qIndex = parseInt(name.substring(1));
             const optValue = parseInt(this.value);
             selectedAnswers[qIndex] = optValue;
@@ -352,74 +358,109 @@
         });
       }
 
-      // Función para calificar el quiz actual
+      // Guardar intento en localStorage
+      function saveAttempt(alias, score, total, incorrectIds, duration) {
+        const attempts = JSON.parse(localStorage.getItem('phishing_attempts') || '[]');
+        attempts.push({
+          alias: alias,
+          score: score,
+          total: total,
+          incorrectIds: incorrectIds,
+          timestamp: Date.now(),
+          duration: duration
+        });
+        localStorage.setItem('phishing_attempts', JSON.stringify(attempts));
+      }
+
+      // Calificar
       function gradeQuiz() {
         let correctCount = 0;
         const total = currentQuestions.length;
 
-        // Resetear clases y explicaciones
+        // Limpiar estilos
         document.querySelectorAll('.question-card').forEach(card => {
           card.classList.remove('correct', 'incorrect');
         });
         document.querySelectorAll('.explanation').forEach(exp => {
-          exp.classList.remove('show');
+          exp.style.display = 'none';
         });
 
-        // Evaluar cada pregunta
-        currentQuestions.forEach((q, index) => {
-          const selected = selectedAnswers[index];
+        const incorrectIds = [];
+
+        currentQuestions.forEach((q, idx) => {
+          const selected = selectedAnswers[idx];
           const isCorrect = (selected === q.correct);
           if (isCorrect) correctCount++;
 
-          const card = document.getElementById(`q-${index}`);
+          const card = document.getElementById(`q-${idx}`);
           if (selected !== null) {
             card.classList.add(isCorrect ? 'correct' : 'incorrect');
-          }
-
-          const exp = document.getElementById(`exp-${index}`);
-          // Mostrar explicación SOLO si es incorrecta y se ha respondido
-          if (selected !== null && !isCorrect) {
-            exp.classList.add('show');
+            if (!isCorrect) {
+              const exp = document.getElementById(`exp-${idx}`);
+              if (exp) exp.style.display = 'block';
+              incorrectIds.push(q.id);
+            }
+          } else {
+            // No respondida → incorrecta
+            card.classList.add('incorrect');
+            const exp = document.getElementById(`exp-${idx}`);
+            if (exp) exp.style.display = 'block';
+            incorrectIds.push(q.id);
           }
         });
 
-        // Mostrar puntuación
         const passed = correctCount >= 7;
-        scoreBoard.style.display = 'block';
-        scoreBoard.innerHTML = `
+        scoreBoardDiv.style.display = 'block';
+        scoreBoardDiv.innerHTML = `
           <h2>Resultado</h2>
           <div class="score">${correctCount}/${total}</div>
           <div class="result-message">
             ${passed ? '✅ ¡Aprobado! Excelente trabajo.' : '❌ No aprobado. Revisa las explicaciones y vuelve a intentarlo.'}
           </div>
           <p style="margin-top:15px;opacity:0.9;">${passed ? 'Felicidades, has superado el mínimo (7/10).' : 'Mínimo requerido: 7/10.'}</p>
+          <a href="scoreboard.html" class="link-scoreboard"><i class="fas fa-chart-line"></i> Ver ranking global</a>
         `;
+
+        if (startTime && alias) {
+          const duration = Math.round((Date.now() - startTime) / 1000);
+          saveAttempt(alias, correctCount, total, incorrectIds, duration);
+          startTime = null;
+        }
       }
 
-      // Función para reiniciar el quiz (nuevo set de preguntas aleatorias)
+      // Reiniciar (nuevas preguntas, limpiar respuestas)
       function resetQuiz() {
-        // Obtener nuevas 10 preguntas aleatorias
-        currentQuestions = getRandomQuestions();
-        // Reiniciar respuestas seleccionadas (null para cada pregunta)
-        selectedAnswers = new Array(currentQuestions.length).fill(null);
-        // Volver a renderizar
-        renderQuestions();
-        // Ocultar scoreboard
-        scoreBoard.style.display = 'none';
-      }
-
-      // Inicialización
-      function init() {
         currentQuestions = getRandomQuestions();
         selectedAnswers = new Array(currentQuestions.length).fill(null);
         renderQuestions();
+        scoreBoardDiv.style.display = 'none';
+        if (quizContent.style.display !== 'none') {
+          startTime = Date.now();
+        }
       }
 
-      // Event listeners
+      // Inicializar quiz (al comenzar)
+      function initQuiz() {
+        currentQuestions = getRandomQuestions();
+        selectedAnswers = new Array(currentQuestions.length).fill(null);
+        renderQuestions();
+        scoreBoardDiv.style.display = 'none';
+        startTime = Date.now();
+      }
+
+      startBtn.addEventListener('click', () => {
+        alias = document.getElementById('userAlias').value.trim();
+        if (alias === '') {
+          alert('Por favor ingresa tu alias para continuar.');
+          return;
+        }
+        aliasSection.style.display = 'none';
+        quizContent.style.display = 'block';
+        initQuiz();
+      });
+
       gradeBtn.addEventListener('click', gradeQuiz);
       resetBtn.addEventListener('click', resetQuiz);
-
-      init();
     })();
   </script>
 </body>
