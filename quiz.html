@@ -358,19 +358,17 @@
         });
       }
 
-      // Guardar intento en localStorage
-      function saveAttempt(alias, score, total, incorrectIds, duration) {
-        const attempts = JSON.parse(localStorage.getItem('phishing_attempts') || '[]');
-        attempts.push({
-          alias: alias,
-          score: score,
-          total: total,
-          incorrectIds: incorrectIds,
-          timestamp: Date.now(),
-          duration: duration
-        });
-        localStorage.setItem('phishing_attempts', JSON.stringify(attempts));
-      }
+     async function saveAttempt(alias, score, total, incorrectIds, duration) {
+      const attemptsRef = ref(database, 'attempts');
+      await push(attemptsRef, {
+        alias: alias,
+        score: score,
+        total: total,
+        incorrectIds: incorrectIds,
+        timestamp: Date.now(),
+        duration: duration
+      });
+    }
 
       // Calificar
       function gradeQuiz() {
@@ -463,5 +461,23 @@
       resetBtn.addEventListener('click', resetQuiz);
     })();
   </script>
+
+  <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+      import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+    
+     const firebaseConfig = {
+      apiKey: "AIzaSyDNxa9tT9ZcYThQhTmWfeFb2wkA_lZYMDA",
+      authDomain: "fishing-ranking.firebaseapp.com",
+      projectId: "fishing-ranking",
+      storageBucket: "fishing-ranking.firebasestorage.app",
+      messagingSenderId: "403569817982",
+      appId: "1:403569817982:web:99f0b7776a064ff4961b2f"
+    };
+    
+      const app = initializeApp(firebaseConfig);
+      const database = getDatabase(app);
+      window.firebaseDB = database;
+</script>
 </body>
 </html>
