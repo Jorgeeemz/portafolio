@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Score Global · Phishing Quiz</title>
-  <meta name="description" content="Ranking y estadísticas del cuestionario de phishing" />
+  <meta name="description" content="Ranking y estadísticas globales del cuestionario de phishing" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="styles.css">
@@ -74,7 +74,6 @@
 </head>
 <body>
 
-  <!-- Header idéntico al portafolio -->
   <header class="site-header" role="banner">
     <div class="container">
       <div class="header-content">
@@ -107,7 +106,7 @@
                 <a href="#">Parcial 2 ▸</a>
                 <div class="submenu-content">
                   <a href="PR2.html">Proyecto - Investigación de ingeniería social y phishing</a>
-                  <a href="scoreboard.html"> Score Global - Ranking y estadísticas</a>
+                  <a href="scoreboard.html">📊 Score Global - Ranking y estadísticas</a>
                 </div>
               </div>
               <a href="#">Parcial 3 (próximamente)</a>
@@ -175,13 +174,38 @@
     </div>
   </footer>
 
-  <script src="Preguntas.js"></script>
-  <script>
-    // Cargar y mostrar scoreboard
-    function loadScoreboard() {
-      const attempts = JSON.parse(localStorage.getItem('phishing_attempts') || '[]');
-      // Ordenar por puntuación descendente y luego por fecha
-      attempts.sort((a,b) => b.score - a.score || b.timestamp - a.timestamp);
+  <!-- Importación de Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+   
+    const firebaseConfig = {
+        apiKey: "AIzaSyDNxa9tT9ZcYThQhTmWfeFb2wkA_lZYMDA",
+        authDomain: "fishing-ranking.firebaseapp.com",
+        projectId: "fishing-ranking",
+        storageBucket: "fishing-ranking.firebasestorage.app",
+        messagingSenderId: "403569817982",
+        appId: "1:403569817982:web:99f0b7776a064ff4961b2f"
+  };
+
+    // Inicializar Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    // Función para cargar y mostrar el scoreboard
+    async function loadScoreboard() {
+      const attemptsRef = ref(database, 'attempts');
+      const snapshot = await get(attemptsRef);
+      let attempts = [];
+      if (snapshot.exists()) {
+        // Convertir objeto a array de valores
+        const data = snapshot.val();
+        attempts = Object.values(data);
+      }
+
+      // Ordenar por puntuación descendente y luego por fecha (más reciente primero)
+      attempts.sort((a, b) => b.score - a.score || b.timestamp - a.timestamp);
 
       const tbody = document.getElementById('rankingBody');
       tbody.innerHTML = '';
@@ -197,7 +221,7 @@
         });
       }
 
-      // Estadísticas
+      // Estadísticas generales
       if (attempts.length === 0) {
         document.getElementById('stats').innerHTML = '<div class="stat-card"><i class="fas fa-info-circle"></i><h3>0</h3><p>Participantes</p></div>';
         return;
@@ -207,7 +231,7 @@
       const avgScore = (totalScore / attempts.length).toFixed(1);
       const avgDuration = Math.round(attempts.reduce((sum, att) => sum + att.duration, 0) / attempts.length);
 
-      // Escenario más fallado (usar preguntas de Preguntas.js)
+      // Contar IDs de preguntas falladas (incorrectIds)
       const allIncorrectIds = attempts.flatMap(att => att.incorrectIds);
       const freq = {};
       allIncorrectIds.forEach(id => { freq[id] = (freq[id] || 0) + 1; });
@@ -217,9 +241,22 @@
         if (count > maxCount) { maxCount = count; mostFailedId = id; }
       }
       let mostFailedText = 'N/A';
-      if (mostFailedId && typeof questions !== 'undefined') {
-        const q = questions.find(q => q.id === parseInt(mostFailedId));
-        mostFailedText = q ? q.scenario.substring(0, 80) + '…' : 'ID ' + mostFailedId;
+      if (mostFailedId) {
+        // Necesitamos el archivo Preguntas.js para obtener el texto de la pregunta.
+        // Usaremos una carga dinámica con un script.
+        try {
+          const response = await fetch('Preguntas.js');
+          const text = await response.text();
+          // Extraer el array questions (hack simple)
+          const match = text.match(/const questions = (\[[\s\S]*?\]);/);
+          if (match) {
+            const questions = eval(match[1]);
+            const q = questions.find(q => q.id === parseInt(mostFailedId));
+            mostFailedText = q ? q.scenario.substring(0, 80) + '…' : 'ID ' + mostFailedId;
+          }
+        } catch (e) {
+          mostFailedText = 'ID ' + mostFailedId;
+        }
       }
 
       document.getElementById('stats').innerHTML = `
@@ -230,13 +267,15 @@
       `;
     }
 
-    document.getElementById('resetDataBtn')?.addEventListener('click', () => {
+    // Botón para resetear todos los datos (requiere confirmación)
+    document.getElementById('resetDataBtn')?.addEventListener('click', async () => {
       if (confirm('⚠️ ¿Eliminar todos los resultados del scoreboard? Esta acción no se puede deshacer.')) {
-        localStorage.removeItem('phishing_attempts');
+        await set(ref(database, 'attempts'), null);
         loadScoreboard();
       }
     });
 
+    // Cargar datos al inicio
     loadScoreboard();
   </script>
 </body>
