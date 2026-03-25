@@ -4,13 +4,13 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Quiz: Pon a prueba lo aprendido · Phishing</title>
-  <meta name="description" content="Cuestionario interactivo sobre phishing e ingeniería social con registro global" />
+  <meta name="description" content="Cuestionario interactivo sobre phishing e ingeniería social con registro de puntuaciones globales" />
   
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="styles.css">
   <style>
-    /* Estilos específicos para el quiz */
+    /* Estilos específicos para el quiz (complementan a styles.css) */
     .quiz-container {
       max-width: 900px;
       margin: 40px auto;
@@ -182,6 +182,7 @@
 </head>
 <body>
 
+  <!-- Header idéntico al resto del portafolio -->
   <header class="site-header" role="banner">
     <div class="container">
       <div class="header-content">
@@ -290,47 +291,7 @@
     </div>
   </footer>
 
-  <!-- Cargar preguntas -->
   <script src="Preguntas.js"></script>
-
-  <!-- Firebase módulo -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-
-    // Configuración de Firebase (proporcionada por el usuario)
-    const firebaseConfig = {
-      apiKey: "AIzaSyDNxa9tT9ZcYThQhTmWfeFb2wkA_lZYMDA",
-      authDomain: "fishing-ranking.firebaseapp.com",
-      databaseURL: "https://fishing-ranking-default-rtdb.firebaseio.com",
-      projectId: "fishing-ranking",
-      storageBucket: "fishing-ranking.firebasestorage.app",
-      messagingSenderId: "403569817982",
-      appId: "1:403569817982:web:99f0b7776a064ff4961b2f"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const database = getDatabase(app);
-
-    // Hacer que database esté disponible globalmente para otras funciones
-    window.firebaseDB = database;
-    window.pushToFirebase = async (alias, score, total, incorrectIds, duration) => {
-      try {
-        await push(ref(database, 'attempts'), {
-          alias,
-          score,
-          total,
-          incorrectIds,
-          timestamp: Date.now(),
-          duration
-        });
-        console.log('✅ Intento guardado en Firebase');
-      } catch (error) {
-        console.error('❌ Error al guardar en Firebase:', error);
-      }
-    };
-  </script>
-
   <script>
     (function() {
       // Elementos DOM
@@ -397,17 +358,22 @@
         });
       }
 
-      // Guardar intento usando Firebase (función global)
-      async function saveAttemptToFirebase(alias, score, total, incorrectIds, duration) {
-        if (window.pushToFirebase) {
-          await window.pushToFirebase(alias, score, total, incorrectIds, duration);
-        } else {
-          console.warn('Firebase no disponible, intento no guardado.');
-        }
+      // Guardar intento en localStorage
+      function saveAttempt(alias, score, total, incorrectIds, duration) {
+        const attempts = JSON.parse(localStorage.getItem('phishing_attempts') || '[]');
+        attempts.push({
+          alias: alias,
+          score: score,
+          total: total,
+          incorrectIds: incorrectIds,
+          timestamp: Date.now(),
+          duration: duration
+        });
+        localStorage.setItem('phishing_attempts', JSON.stringify(attempts));
       }
 
       // Calificar
-      async function gradeQuiz() {
+      function gradeQuiz() {
         let correctCount = 0;
         const total = currentQuestions.length;
 
@@ -457,8 +423,8 @@
 
         if (startTime && alias) {
           const duration = Math.round((Date.now() - startTime) / 1000);
-          await saveAttemptToFirebase(alias, correctCount, total, incorrectIds, duration);
-          startTime = null; // evitar guardar de nuevo si se recalifica
+          saveAttempt(alias, correctCount, total, incorrectIds, duration);
+          startTime = null;
         }
       }
 
