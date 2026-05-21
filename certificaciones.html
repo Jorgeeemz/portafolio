@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Certificaciones — Jorge Alejandro Cabrera - SentinelJCM</title>
+  <meta name="description" content="Certificaciones profesionales de Jorge Alejandro Cabrera en ciberseguridad y redes - Cisco NetAcad" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    /* ===== CORRECCIONES DE HEADER Y ESPACIADO ===== */
+    .site-header .header-content {
+      padding: 10px 0 !important;
+      gap: 12px !important;
+      flex-wrap: nowrap !important;
+      align-items: center !important;
+    }
+
+    .brand__title {
+      font-size: 1.05rem !important;
+      white-space: nowrap;
+    }
+
+    .brand__subtitle {
+      font-size: 0.75rem !important;
+      margin: 1px 0 0 0 !important;
+    }
+
+    .nav {
+      gap: 2px !important;
+      flex-wrap: nowrap !important;
+    }
+
+    .nav > a,
+    .nav > .dropdown > a,
+    .nav .dropbtn {
+      padding: 5px 9px !important;
+      font-size: 0.8rem !important;
+      white-space: nowrap !important;
+      gap: 5px !important;
+    }
+
+    main {
+      padding-top: 70px !important;
+    }
+
+    html {
+      scroll-padding-top: 70px !important;
+    }
+
+    .cert-hero {
+      margin-top: 24px !important;
+    }
+
+    /* ===== SECCIÓN HERO DE CERTIFICACIONES ===== */
+    .cert-hero {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
+      border-radius: var(--radius);
+      padding: 56px 48px;
+      margin: 48px 0 64px;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cert-hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 400px;
+      height: 400px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 50%;
+    }
+
+    .cert-hero::after {
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      right: 15%;
+      width: 250px;
+      height: 250px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 50%;
+    }
+
+    .cert-hero-icon {
+      font-size: 5rem;
+      opacity: 0.9;
+      flex-shrink: 0;
+      z-index: 1;
+    }
+
+    .cert-hero-content {
+      z-index: 1;
+    }
+
+    .cert-hero-content h2 {
+      font-family: "Merriweather", Georgia, serif;
+      font-size: 2.2rem;
+      margin-bottom: 16px;
+      color: white;
+    }
+
+    .cert-hero-content p {
+      font-size: 1.05rem;
+      opacity: 0.88;
+      line-height: 1.7;
+      max-width: 680px;
+    }
+
+    .cert-hero-stats {
+      display: flex;
+      gap: 32px;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
+
+    .cert-stat {
+      text-align: center;
+    }
+
+    .cert-stat-number {
+      font-size: 2rem;
+      font-weight: 700;
+      display: block;
+    }
+
+    .cert-stat-label {
+      font-size: 0.85rem;
+      opacity: 0.75;
+    }
+
+    /* ===== FILTROS ===== */
+    .cert-filters {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+      align-items: center;
+    }
+
+    .cert-filters-label {
+      font-weight: 600;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .filter-btn {
+      padding: 8px 18px;
+      border: 2px solid var(--border);
+      border-radius: 20px;
+      background: var(--surface);
+      color: var(--text);
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      font-family: "Inter", sans-serif;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .filter-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+
+    /* ===== GRID DE CERTIFICACIONES ===== */
+    .cert-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 28px;
+      margin-bottom: 80px;
+    }
+
+    /* ===== TARJETA DE CERTIFICACIÓN ===== */
+    .cert-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cert-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.15);
+    }
+
+    .cert-card-header {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+      padding: 24px 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cert-card-header::before {
+      content: '';
+      position: absolute;
+      top: -20px;
+      right: -20px;
+      width: 120px;
+      height: 120px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 50%;
+    }
+
+    .cert-number {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      font-size: 3rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.12);
+      font-family: "Merriweather", Georgia, serif;
+      line-height: 1;
+    }
+
+    .cert-icon-wrap {
+      width: 52px;
+      height: 52px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+      backdrop-filter: blur(4px);
+    }
+
+    .cert-icon-wrap i {
+      font-size: 1.5rem;
+      color: white;
+    }
+
+    .cert-card-header h3 {
+      color: white;
+      font-size: 1.05rem;
+      font-weight: 700;
+      line-height: 1.3;
+      margin: 0;
+      padding-right: 40px;
+    }
+
+    .cert-provider {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.9);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 12px;
+      margin-top: 12px;
+    }
+
+    .cert-card-body {
+      padding: 24px 28px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Reseña */
+    .cert-resena {
+      font-size: 0.92rem;
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .cert-resena-full {
+      display: none;
+    }
+
+    .cert-resena.expanded .cert-resena-preview {
+      display: none;
+    }
+
+    .cert-resena.expanded .cert-resena-full {
+      display: block;
+    }
+
+    .btn-toggle-resena {
+      background: none;
+      border: none;
+      color: var(--primary);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 0;
+      font-family: "Inter", sans-serif;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 4px;
+      transition: color 0.2s;
+    }
+
+    .btn-toggle-resena:hover {
+      color: var(--heading);
+    }
+
+    /* Tags de habilidades */
+    .cert-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .cert-tag {
+      background: rgba(59, 130, 246, 0.08);
+      color: var(--primary);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    /* Badge y PDF */
+    .cert-evidencias {
+      display: flex;
+      gap: 10px;
+      margin-top: auto;
+      flex-wrap: wrap;
+    }
+
+    .cert-badge-area {
+      width: 72px;
+      height: 72px;
+      border: 2px dashed var(--border);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      transition: all 0.25s ease;
+      cursor: pointer;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .cert-badge-area:hover {
+      border-color: var(--secondary);
+      background: rgba(16, 185, 129, 0.05);
+    }
+
+    .cert-badge-area img {
+      width: 52px;
+      height: 52px;
+      object-fit: contain;
+    }
+
+    .cert-badge-area i {
+      font-size: 1.4rem;
+      color: var(--muted);
+    }
+
+    .cert-badge-area span {
+      font-size: 0.65rem;
+      color: var(--muted);
+      text-align: center;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    .cert-badge-area:hover i,
+    .cert-badge-area:hover span {
+      color: var(--secondary);
+    }
+
+    .cert-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .cert-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      border: none;
+      cursor: pointer;
+      font-family: "Inter", sans-serif;
+    }
+
+    .cert-btn--pdf {
+      background: rgba(239, 68, 68, 0.08);
+      color: #dc2626;
+      border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+
+    .cert-btn--pdf:hover {
+      background: #dc2626;
+      color: white;
+      text-decoration: none;
+    }
+
+    .cert-btn--curso {
+      background: rgba(59, 130, 246, 0.08);
+      color: var(--primary);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+    }
+
+    .cert-btn--curso:hover {
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+    }
+
+    /* Placeholder PDF */
+    .cert-btn--pdf.placeholder {
+      opacity: 0.55;
+      cursor: not-allowed;
+      pointer-events: none;
+      border-style: dashed;
+    }
+
+    /* ===== DIVIDER CON ÍCONO ===== */
+    .cert-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0;
+    }
+
+    /* ===== NOTA INFORMATIVA ===== */
+    .cert-info-note {
+      background: rgba(59, 130, 246, 0.05);
+      border: 1px solid rgba(59, 130, 246, 0.15);
+      border-left: 4px solid var(--primary);
+      border-radius: var(--radius-sm);
+      padding: 16px 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 40px;
+      font-size: 0.92rem;
+      color: var(--text);
+    }
+
+    .cert-info-note i {
+      color: var(--primary);
+      font-size: 1.1rem;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    /* ===== SECCIÓN DE RUTA DE APRENDIZAJE ===== */
+    .learning-path {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 40px;
+      margin-bottom: 80px;
+    }
+
+    .learning-path h3 {
+      font-size: 1.3rem;
+      color: var(--heading);
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .learning-path h3 i {
+      color: var(--primary);
+    }
+
+    .path-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+    }
+
+    .path-item {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      position: relative;
+    }
+
+    .path-item:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      left: 19px;
+      top: 44px;
+      width: 2px;
+      height: calc(100% - 4px);
+      background: linear-gradient(to bottom, var(--primary), var(--secondary));
+      opacity: 0.3;
+    }
+
+    .path-dot {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+
+    .path-content {
+      padding: 8px 0 28px;
+      flex: 1;
+    }
+
+    .path-content strong {
+      display: block;
+      color: var(--heading);
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+
+    .path-content span {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    /* ===== MODAL BADGE ===== */
+    .badge-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+
+    .badge-modal.open {
+      display: flex;
+    }
+
+    .badge-modal-content {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 40px;
+      max-width: 420px;
+      width: 90%;
+      text-align: center;
+      position: relative;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(-20px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .badge-modal-close {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--muted);
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .badge-modal-close:hover {
+      color: var(--heading);
+    }
+
+    .badge-modal-img {
+      width: 140px;
+      height: 140px;
+      object-fit: contain;
+      margin: 0 auto 20px;
+      display: block;
+    }
+
+    .badge-modal-placeholder {
+      width: 140px;
+      height: 140px;
+      border: 3px dashed var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+
+    .badge-modal-placeholder i {
+      font-size: 3rem;
+      color: var(--muted);
+    }
+
+    .badge-modal-content h4 {
+      color: var(--heading);
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+    }
+
+    .badge-modal-content p {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .cert-hero {
+        flex-direction: column;
+        padding: 36px 28px;
+        text-align: center;
+      }
+
+      .cert-hero-stats {
+        justify-content: center;
+      }
+
+      .cert-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .learning-path {
+        padding: 28px 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .cert-hero-content h2 {
+        font-size: 1.7rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER (idéntico al Index.html) -->
+  <header class="site-header" role="banner">
+    <div class="container">
+      <div class="header-content">
+        <div class="brand">
+          <h1 class="brand__title" style="margin:0;">Jorge Alejandro Cabrera - SentinelJCM</h1>
+          <p class="brand__subtitle" style="margin:4px 0 0 0;"><strong>CNO V – Seguridad Informática</strong></p>
+          <p class="brand__subtitle" style="margin:2px 0 0 0;">Universidad Politécnica de San Luis Potosí</p>
+          <p class="brand__subtitle" style="margin:2px 0 0 0;">8vo Semestre</p>
+        </div>
+
+        <nav class="nav" aria-label="Navegación principal">
+          <a href="Index.html"><i class="fas fa-home"></i> Inicio</a>
+          <div class="dropdown">
+            <a href="#" class="dropbtn"><i class="fas fa-trophy"></i> ROAD TO HALL OF FAME</a>
+            <div class="dropdown-content">
+              <a href="road-to-hall-of-fame.html">SQL Injection</a>
+            </div>
+          </div>
+          <div class="dropdown">
+            <a href="#" class="dropbtn"><i class="fas fa-folder-open"></i> Actividades</a>
+            <div class="dropdown-content">
+              <div class="submenu">
+                <a href="#">Parcial 1 ▸</a>
+                <div class="submenu-content">
+                  <a href="actividad1.html">Actividad 1 – NotPetya Maersk</a>
+                  <a href="actividad2.html">Actividad 2 – Análisis de servicios de seguridad (X.800 y RFC 4949)</a>
+                  <a href="actividad3.html">Actividad 3 – Interpretación y traducción de políticas de filtrado en iptables</a>
+                  <a href="actividad4.html">Actividad 4 – Mecanismos de defensa en red</a>
+                  <a href="actividad5.html">Actividad 5 – Cartografiando el pentesting: análisis comparativo de metodologías de seguridad informática</a>
+                  <a href="actividad6.html">Actividad 6 – Implementación de IPSec VPN</a>
+                </div>
+              </div>
+              <div class="submenu">
+                <a href="#">Parcial 2 ▸</a>
+                <div class="submenu-content">
+                  <a href="PR2.html">Proyecto - Investigacion de ingenieria social y phishing</a>
+                </div>
+              </div>
+              <a href="#">Parcial 3 (próximamente)</a>
+            </div>
+          </div>
+          <a href="certificaciones.html" style="color: var(--primary);"><i class="fas fa-certificate"></i> Certificaciones</a>
+          <a href="Index.html#perfil"><i class="fas fa-user"></i> Perfil</a>
+          <a href="Index.html#info-tecnica"><i class="fas fa-code"></i> Tecnologías</a>
+          <a href="Index.html#contacto"><i class="fas fa-envelope"></i> Contacto</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" role="main">
+
+    <!-- HERO -->
+    <div class="cert-hero">
+      <div class="cert-hero-icon">
+        <i class="fas fa-shield-halved"></i>
+      </div>
+      <div class="cert-hero-content">
+        <h2>Certificaciones Profesionales</h2>
+        <p>
+          Formación acreditada en ciberseguridad, redes y análisis de amenazas a través de la plataforma 
+          Cisco NetAcad, respaldada por uno de los líderes mundiales en tecnología de redes y seguridad informática.
+        </p>
+        <div class="cert-hero-stats">
+          <div class="cert-stat">
+            <span class="cert-stat-number">7</span>
+            <span class="cert-stat-label">Certificaciones</span>
+          </div>
+          <div class="cert-stat">
+            <span class="cert-stat-number">Cisco</span>
+            <span class="cert-stat-label">Plataforma</span>
+          </div>
+          <div class="cert-stat">
+            <span class="cert-stat-number">2025–26</span>
+            <span class="cert-stat-label">Período</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOTA INFORMATIVA -->
+    <div class="cert-info-note">
+      <i class="fas fa-circle-info"></i>
+      <p>
+        Cada certificación incluye una reseña del contenido aprendido, así como la evidencia oficial en PDF y el badge digital emitido por Cisco NetAcad. 
+        Los archivos de evidencia y badges se irán agregando conforme estén disponibles.
+      </p>
+    </div>
+
+    <!-- FILTROS -->
+    <div class="cert-filters">
+      <span class="cert-filters-label"><i class="fas fa-filter"></i> Filtrar:</span>
+      <button class="filter-btn active" data-filter="all">Todas</button>
+      <button class="filter-btn" data-filter="redes">Redes</button>
+      <button class="filter-btn" data-filter="seguridad">Seguridad</button>
+      <button class="filter-btn" data-filter="carrera">Carrera profesional</button>
+    </div>
+
+    <!-- GRID DE CERTIFICACIONES -->
+    <div class="cert-grid" id="certGrid">
+
+      <!-- 1. Introducción a la Ciberseguridad -->
+      <div class="cert-card" data-category="seguridad">
+        <div class="cert-card-header">
+          <span class="cert-number">01</span>
+          <div class="cert-icon-wrap"><i class="fas fa-shield-alt"></i></div>
+          <h3>Introducción a la Ciberseguridad</h3>
+          <span class="cert-provider"><i class="fas fa-network-wired"></i> Cisco NetAcad</span>
+        </div>
+        <div class="cert-card-body">
+          <div class="cert-tags">
+            <span class="cert-tag">Ciberseguridad</span>
+            <span class="cert-tag">Amenazas</span>
+            <span class="cert-tag">Privacidad</span>
+          </div>
+          <div class="cert-resena" id="resena-1">
+            <p class="cert-resena-preview">
+              Este curso ofrece una visión panorámica del mundo de la ciberseguridad, explorando el panorama actual de amenazas digitales y la importancia de proteger la información en un entorno cada vez más conectado...
+            </p>
+            <p class="cert-resena-full">
+              Este curso ofrece una visión panorámica del mundo de la ciberseguridad, explorando el panorama actual de amenazas digitales y la importancia de proteger la información en un entorno cada vez más conectado. A lo largo del curso se analizan los tipos de ataques más comunes —como malware, phishing, ransomware e ingeniería social— y se comprende cómo los cibercriminales explotan vulnerabilidades técnicas y humanas. Se estudian los fundamentos de la tríada CIA (Confidencialidad, Integridad y Disponibilidad), pilar conceptual de cualquier estrategia de seguridad informática. El curso también introduce la importancia de las políticas de seguridad, la gestión de identidades y el control de accesos como mecanismos de defensa organizacional. Se exploran casos reales de incidentes de seguridad que han impactado a empresas y gobiernos a nivel global, permitiendo comprender las consecuencias económicas y reputacionales de no contar con medidas adecuadas de protección. Finalmente, se abordan las oportunidades de carrera en el campo de la ciberseguridad, motivando al estudiante a profundizar en especializaciones como análisis forense, ethical hacking y gestión de riesgos. Esta certificación sienta las bases conceptuales imprescindibles para cualquier profesional que desee incursionar en el mundo de la seguridad informática con fundamentos sólidos y actualizados.
+            </p>
+          </div>
+          <button class="btn-toggle-resena" onclick="toggleResena('resena-1', this)">
+            <i class="fas fa-chevron-down"></i> Leer más
+          </button>
+          <hr class="cert-divider">
+          <div class="cert-evidencias">
+            <!-- Badge placeholder -->
+            <div class="cert-badge-area" onclick="openBadgeModal('badge-1', 'Introducción a la Ciberseguridad')" title="Ver badge digital">
+              <i class="fas fa-award"></i>
+              <span>Badge<br>digital</span>
+            </div>
+            <!-- Acciones -->
+            <div class="cert-actions">
+              <a href="#" class="cert-btn cert-btn--pdf placeholder" title="Próximamente">
+                <i class="fas fa-file-pdf"></i> Evidencia PDF
+              </a>
+              <a href="https://www.netacad.com/es/courses/introduction-to-cybersecurity?courseLang=es-XL&instance_id=96e0a816-2c7e-4bce-8b96-5234cdeb8852" target="_blank" class="cert-btn cert-btn--curso">
+                <i class="fas fa-external-link-alt"></i> Ver curso
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Conceptos básicos de redes -->
+      <div class="cert-card" data-category="redes">
+        <div class="cert-card-header">
+          <span class="cert-number">02</span>
+          <div class="cert-icon-wrap"><i class="fas fa-network-wired"></i></div>
+          <h3>Conceptos Básicos de Redes</h3>
+          <span class="cert-provider"><i class="fas fa-network-wired"></i> Cisco NetAcad</span>
+        </div>
+        <div class="cert-card-body">
+          <div class="cert-tags">
+            <span class="cert-tag">Redes</span>
+            <span class="cert-tag">TCP/IP</span>
+            <span class="cert-tag">Protocolos</span>
+          </div>
+          <div class="cert-resena" id="resena-2">
+            <p class="cert-resena-preview">
+              Este curso introduce los fundamentos esenciales del networking moderno, proporcionando una comprensión sólida de cómo funcionan las redes de computadoras y cómo fluye la información a través de ellas...
+            </p>
+            <p class="cert-resena-full">
+              Este curso introduce los fundamentos esenciales del networking moderno, proporcionando una comprensión sólida de cómo funcionan las redes de computadoras y cómo fluye la información a través de ellas. Se estudia el modelo OSI y el modelo TCP/IP como marcos de referencia para comprender la comunicación en red, analizando cada capa y su función específica en el proceso de transmisión de datos. El curso explora los tipos de redes (LAN, WAN, MAN) y las topologías de red más comunes, así como los medios de transmisión: cables de cobre, fibra óptica y conexiones inalámbricas. Se profundiza en el direccionamiento IP, tanto en su versión IPv4 como IPv6, aprendiendo a segmentar redes mediante el uso de subredes y máscaras. Además, se estudian protocolos fundamentales como DNS, DHCP y HTTP, comprendiendo el rol que cada uno desempeña en la funcionalidad de Internet. A través de prácticas con simuladores de red, se configura el equipamiento básico de networking y se verifican conectividades entre dispositivos. Esta certificación es un prerequisito fundamental para cualquier especialización en redes o seguridad, ya que el conocimiento de la infraestructura de comunicaciones es indispensable para identificar vulnerabilidades y diseñar soluciones de protección efectivas en entornos empresariales.
+            </p>
+          </div>
+          <button class="btn-toggle-resena" onclick="toggleResena('resena-2', this)">
+            <i class="fas fa-chevron-down"></i> Leer más
+          </button>
+          <hr class="cert-divider">
+          <div class="cert-evidencias">
+            <div class="cert-badge-area" onclick="openBadgeModal('badge-2', 'Conceptos Básicos de Redes')" title="Ver badge digital">
+              <i class="fas fa-award"></i>
+              <span>Badge<br>digital</span>
+            </div>
+            <div class="cert-actions">
+              <a href="#" class="cert-btn cert-btn--pdf placeholder">
+                <i class="fas fa-file-pdf"></i> Evidencia PDF
+              </a>
+              <a href="https://www.netacad.com/es/courses/networking-basics?courseLang=es-XL&instance_id=42b301e7-ae75-4c71-99a6-7adbc392f881" target="_blank" class="cert-btn cert-btn--curso">
+                <i class="fas fa-external-link-alt"></i> Ver curso
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Dispositivos de red y configuración inicial -->
+      <div class="cert-card" data-category="redes">
+        <div class="cert-card-header">
+          <span class="cert-number">03</span>
+          <div class="cert-icon-wrap"><i class="fas fa-server"></i></div>
+          <h3>Dispositivos de Red y Configuración Inicial</h3>
+          <span class="cert-provider"><i class="fas fa-network-wired"></i> Cisco NetAcad</span>
+        </div>
+        <div class="cert-card-body">
+          <div class="cert-tags">
+            <span class="cert-tag">Switches</span>
+            <span class="cert-tag">Routers</span>
+            <span class="cert-tag">Cisco IOS</span>
+          </div>
+          <div class="cert-resena" id="resena-3">
+            <p class="cert-resena-preview">
+              Este curso profundiza en el conocimiento y configuración práctica de los dispositivos de red que conforman la infraestructura de cualquier organización moderna, con énfasis en equipos Cisco...
+            </p>
+            <p class="cert-resena-full">
+              Este curso profundiza en el conocimiento y configuración práctica de los dispositivos de red que conforman la infraestructura de cualquier organización moderna, con énfasis en equipos Cisco. Se estudia la arquitectura interna de switches y routers, comprendiendo sus diferencias funcionales y los escenarios donde cada uno es adecuado. A través del sistema operativo Cisco IOS, se aprenden los comandos básicos para acceder, configurar y administrar dispositivos de red mediante CLI (Command Line Interface), incluyendo la configuración de interfaces, rutas estáticas y protocolos de enrutamiento básicos. El curso aborda la segmentación lógica de redes mediante VLANs, permitiendo organizar el tráfico de red de forma eficiente y segura, y se introduce el concepto de enrutamiento inter-VLAN. También se exploran mecanismos de redundancia y alta disponibilidad en la capa de acceso, así como protocolos de spanning tree para evitar bucles en la red. Las prácticas de laboratorio en Cisco Packet Tracer permiten simular escenarios reales de configuración, diagnóstico y resolución de problemas de conectividad. Esta certificación aporta habilidades técnicas tangibles para administrar infraestructura de red, siendo un pilar para roles como administrador de redes, soporte técnico o analista de seguridad que requieran interactuar directamente con el hardware de networking.
+            </p>
+          </div>
+          <button class="btn-toggle-resena" onclick="toggleResena('resena-3', this)">
+            <i class="fas fa-chevron-down"></i> Leer más
+          </button>
+          <hr class="cert-divider">
+          <div class="cert-evidencias">
+            <div class="cert-badge-area" onclick="openBadgeModal('badge-3', 'Dispositivos de Red y Configuración Inicial')" title="Ver badge digital">
+              <i class="fas fa-award"></i>
+              <span>Badge<br>digital</span>
+            </div>
+            <div class="cert-actions">
+              <a href="#" class="cert-btn cert-btn--pdf placeholder">
+                <i class="fas fa-file-pdf"></i> Evidencia PDF
+              </a>
+              <a href="https://www.netacad.com/es/courses/networking-devices-and-initial-configuration?courseLang=es-XL&instance_id=be86b6fc-b9f1-4c65-bad6-90f985f28945" target="_blank" class="cert-btn cert-btn--curso">
+                <i class="fas fa-external-link-alt"></i> Ver curso
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Seguridad en Terminales -->
+      <div class="cert-card" data-category="seguridad">
+        <div class="cert-card-header">
+          <span class="cert-number">04</span>
+          <div class="cert-icon-wrap"><i class="fas fa-laptop-code"></i></div>
+          <h3>Seguridad en Terminales</h3>
+          <span class="cert-provider"><i class="fas fa-network-wired"></i> Cisco NetAcad</span>
+        </div>
+        <div class="cert-card-body">
+          <div class="cert-tags">
+            <span class="cert-tag">Endpoint</span>
+            <span class="cert-tag">Antivirus</span>
+            <span class="cert-tag">Hardening</span>
+          </div>
+          <div class="cert-resena" id="resena-4">
+            <p class="cert-resena-preview">
+              Este curso se enfoca en la protección de dispositivos terminales (endpoints) como computadoras, laptops, teléfonos móviles y servidores, que representan los puntos de acceso más frecuentemente atacados en cualquier red corporativa...
+            </p>
+            <p class="cert-resena-full">
+              Este curso se enfoca en la protección de dispositivos terminales (endpoints) como computadoras, laptops, teléfonos móviles y servidores, que representan los puntos de acceso más frecuentemente atacados en cualquier red corporativa. Se estudian las principales amenazas dirigidas a endpoints: ransomware, spyware, rootkits y ataques de día cero, comprendiendo los vectores de infección más comunes y las técnicas que utilizan los atacantes para comprometer estos dispositivos. El curso aborda las estrategias de hardening de sistemas operativos Windows y Linux, incluyendo la gestión de parches, la configuración segura de servicios, la eliminación de software innecesario y el principio de mínimo privilegio. Se exploran herramientas de protección como antivirus de próxima generación (NGAV), EDR (Endpoint Detection and Response) y soluciones de control de aplicaciones. También se introduce el concepto de concienciación en seguridad (security awareness) como medida preventiva ante ataques de ingeniería social. Las configuraciones de firewall personal, gestión de contraseñas y autenticación multifactor (MFA) son tratadas como controles indispensables en cualquier política de seguridad de terminales. Esta certificación dota al profesional de los conocimientos necesarios para diseñar e implementar políticas de seguridad endpoint que reduzcan significativamente la superficie de ataque en entornos empresariales.
+            </p>
+          </div>
+          <button class="btn-toggle-resena" onclick="toggleResena('resena-4', this)">
+            <i class="fas fa-chevron-down"></i> Leer más
+          </button>
+          <hr class="cert-divider">
+          <div class="cert-evidencias">
+            <div class="cert-badge-area" onclick="openBadgeModal('badge-4', 'Seguridad en Terminales')" title="Ver badge digital">
+              <i class="fas fa-award"></i>
+              <span>Badge<br>digital</span>
+            </div>
+            <div class="cert-actions">
+              <a href="#" class="cert-btn cert-btn--pdf placeholder">
+                <i class="fas fa-file-pdf"></i> Evidencia PDF
+              </a>
+              <a href="https://www.netacad.com/es/courses/endpoint-security?courseLang=es-XL&instance_id=27c27471-28ab-4848-9b2e-01963cf92e2a" target="_blank" class="cert-btn cert-btn--curso">
+                <i class="fas fa-external-link-alt"></i> Ver curso
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. Administración de Amenazas Cibernéticas -->
+      <div class="cert-card" data-category="seguridad">
+        <div class="cert-card-header">
+          <span class="cert-number">05</span>
+          <div class="cert-icon-wrap"><i class="fas fa-bug"></i></div>
+          <h3>Administración de Amenazas Cibernéticas</h3>
+          <span class="cert-provider"><i class="fas fa-network-wired"></i> Cisco NetAcad</span>
+        </div>
+        <div class="cert-card-body">
+          <div class="cert-tags">
+            <span class="cert-tag">Threat Management</span>
+            <span class="cert-tag">SOC</span>
+            <span class="cert-tag">SIEM</span>
+          </div>
+          <div class="cert-resena" id="resena-5">
+            <p class="cert-resena-preview">
+              Este curso aborda la gestión integral de amenazas cibernéticas desde la perspectiva de un Centro de Operaciones de Seguridad (SOC), dotando al estudiante de habilidades para detectar, analizar y responder a incidentes de seguridad...
+            </p>
+            <p class="cert-resena-full">
+              Este curso aborda la gestión integral de amenazas cibernéticas desde la perspectiva de un Centro de Operaciones de Seguridad (SOC), dotando al estudiante de habilidades para detectar, analizar y responder a incidentes de seguridad en tiempo real. Se estudian los marcos de trabajo más utilizados en la industria, como MITRE ATT&CK y el Cyber Kill Chain, que permiten comprender y categorizar el comportamiento de los actores de amenaza a lo largo de un ataque. El curso introduce el funcionamiento de herramientas SIEM (Security Information and Event Management) para la correlación de eventos y la generación de alertas, así como el análisis de logs de diferentes fuentes como firewalls, IDS/IPS y sistemas operativos. Se exploran las fases de respuesta a incidentes: identificación, contención, erradicación, recuperación y lecciones aprendidas, siguiendo estándares como NIST SP 800-61. También se aborda la inteligencia de amenazas (Threat Intelligence) y cómo integrarla en los procesos de detección temprana. Las actividades prácticas incluyen análisis de escenarios de ataque reales, identificación de indicadores de compromiso (IoCs) y elaboración de reportes de incidentes. Esta certificación prepara al profesional para desempeñarse como analista de seguridad nivel 1 o 2 en un SOC, con capacidad de responder eficientemente ante incidentes cibernéticos complejos.
+            </p>
+          </div>
+          <button class="btn-toggle-resena" onclick="toggleResena('resena-5', this)">
+            <i class="fas fa-chevron-down"></i> Leer más
+          </button>
+          <hr class="cert-divider">
+          <div class="cert-evidencias">
+            <div class="cert-badge-area" onclick="openBadgeModal('badge-5', 'Administración de Amenazas Cibernéticas')" title="Ver badge digital">
+              <i class="fas fa-award"></i>
+              <span>Badge<br>digital</span>
+            </div>
+            <div class="cert-actions">
+              <a href="#" class="cert-btn cert-btn--pdf placeholder">
+                <i class="fas fa-file-pdf"></i> Evidencia PDF
+              </a>
+              <a href="https://www.netacad.com/es/courses/cyber-threat-management?courseLang=es-XL&instance_id=750696aa-a2dc-477d-81f4-03cdc26d5e0a" target="_blank" class="cert-btn cert-btn--curso">
+                <i class="fas fa-external-link-alt"></i> Ver curso
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. Carrera Profesional Analista Junior -->
+      <div class="cert-card" data-category="carrera">
+        <div class="cert-card-header" style="background: linear-gradient(135deg, #0d6f3a 0%, #10b981 100%);">
+          <span class="cert-number">06</span>
+          <div class="cert-icon-wrap"><i class="fas fa-id-badge"></i></div>
+          <h3>Carrera Profesional: Analista Junior en Ciberseguridad</h3>
+          <span class="cert-provider"><i class="fas fa-network-wired"></i> Cisco NetAcad</span>
+        </div>
+        <div class="cert-card-body">
+          <div class="cert-tags">
+            <span class="cert-tag" style="color: #059669; border-color: rgba(5,150,105,0.3); background: rgba(5,150,105,0.08);">Certificación de Carrera</span>
+            <span class="cert-tag" style="color: #059669; border-color: rgba(5,150,105,0.3); background: rgba(5,150,105,0.08);">Junior Analyst</span>
+            <span class="cert-tag" style="color: #059669; border-color: rgba(5,150,105,0.3); background: rgba(5,150,105,0.08);">Pathway</span>
+          </div>
+          <div class="cert-resena" id="resena-6">
+            <p class="cert-resena-preview">
+              Esta certificación de ruta de carrera representa la culminación del programa de formación en ciberseguridad de Cisco NetAcad, validando las competencias integrales adquiridas para desempeñarse como Analista Junior en Ciberseguridad...
+            </p>
+            <p class="cert-resena-full">
+              Esta certificación de ruta de carrera representa la culminación del programa de formación en ciberseguridad de Cisco NetAcad, validando las competencias integrales adquiridas para desempeñarse como Analista Junior en Ciberseguridad en entornos organizacionales reales. A diferencia de las certificaciones individuales de curso, esta credencial de pathway demuestra que el candidato ha completado y dominado una serie de conocimientos progresivos que abarcan desde los fundamentos de redes y seguridad hasta la gestión avanzada de amenazas y la protección de endpoints. El analista junior certificado está capacitado para monitorear eventos de seguridad en tiempo real, investigar alertas generadas por sistemas SIEM, documentar incidentes y escalar casos que requieran intervención especializada. Posee conocimientos suficientes para comprender las tácticas, técnicas y procedimientos (TTPs) que utilizan los actores de amenaza, y puede aplicar frameworks de respuesta como NIST o ISO 27001. Esta certificación es reconocida a nivel internacional como una credencial de entrada al mercado laboral en ciberseguridad, siendo valorada por empleadores que buscan candidatos con formación estructurada y práctica. Obtenerla implica no solo haber aprobado los exámenes correspondientes, sino haber desarrollado un pensamiento analítico y proactivo frente a los desafíos de la seguridad digital contemporánea.
+            </p>
+          </div>
+          <button class="btn-toggle-resena" onclick="toggleResena('resena-6', this)">
+            <i class="fas fa-chevron-down"></i> Leer más
+          </button>
+          <hr class="cert-divider">
+          <div class="cert-evidencias">
+            <div class="cert-badge-area" onclick="openBadgeModal('badge-6', 'Analista Junior en Ciberseguridad')" title="Ver badge digital">
+              <i class="fas fa-award"></i>
+              <span>Badge<br>digital</span>
+            </div>
+            <div class="cert-actions">
+              <a href="#" class="cert-btn cert-btn--pdf placeholder">
+                <i class="fas fa-file-pdf"></i> Evidencia PDF
+              </a>
+              <a href="https://www.netacad.com/es/exams/cybersecurity-pathway?courseLang=es-XL&instance_id=99ca524a-cec5-43f8-9cc1-25fc693ba01f" target="_blank" class="cert-btn cert-btn--curso">
+                <i class="fas fa-external-link-alt"></i> Ver certificación
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. Hacker Ético -->
+      <div class="cert-card" data-category="seguridad">
+        <div class="cert-card-header" style="background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 100%);">
+          <span class="cert-number">07</span>
+          <div class="cert-icon-wrap"><i class="fas fa-user-secret"></i></div>
+          <h3>Hacker Ético</h3>
+          <span class="cert-provider"><i class="fas fa-network-wired"></i> Cisco NetAcad</span>
+        </div>
+        <div class="cert-card-body">
+          <div class="cert-tags">
+            <span class="cert-tag" style="color: #7c3aed; border-color: rgba(124,58,237,0.25); background: rgba(124,58,237,0.08);">Pentesting</span>
+            <span class="cert-tag" style="color: #7c3aed; border-color: rgba(124,58,237,0.25); background: rgba(124,58,237,0.08);">Ethical Hacking</span>
+            <span class="cert-tag" style="color: #7c3aed; border-color: rgba(124,58,237,0.25); background: rgba(124,58,237,0.08);">Vulnerabilidades</span>
+          </div>
+          <div class="cert-resena" id="resena-7">
+            <p class="cert-resena-preview">
+              Este curso introduce al estudiante en el fascinante y exigente campo del hacking ético, enseñando a pensar como un atacante para poder defender con mayor eficacia los sistemas y redes de una organización...
+            </p>
+            <p class="cert-resena-full">
+              Este curso introduce al estudiante en el fascinante y exigente campo del hacking ético, enseñando a pensar como un atacante para poder defender con mayor eficacia los sistemas y redes de una organización. Se estudia la metodología completa de una prueba de penetración (pentest): reconocimiento, escaneo, enumeración, explotación, post-explotación y elaboración de informes, siguiendo estándares como PTES y OWASP. El curso aborda herramientas ampliamente utilizadas en la industria, incluyendo Nmap para descubrimiento de hosts y servicios, Metasploit como framework de explotación, y técnicas de fuerza bruta y cracking de credenciales. Se exploran vulnerabilidades comunes en aplicaciones web como SQL Injection, Cross-Site Scripting (XSS) y broken authentication, analizando cómo son explotadas y cómo mitigarlas. También se trata el hacking de redes inalámbricas y los ataques a protocolos como WPA2, así como técnicas de evasión de sistemas de detección de intrusos. La ética y el marco legal que rigen las pruebas de penetración son tratados con especial atención, estableciendo claramente la diferencia entre un hacker ético certificado y un actor malicioso. Esta certificación posiciona al profesional como capaz de realizar auditorías de seguridad ofensiva de manera controlada, ética y profesional, siendo altamente demandada en el mercado laboral de ciberseguridad.
+            </p>
+          </div>
+          <button class="btn-toggle-resena" onclick="toggleResena('resena-7', this)">
+            <i class="fas fa-chevron-down"></i> Leer más
+          </button>
+          <hr class="cert-divider">
+          <div class="cert-evidencias">
+            <div class="cert-badge-area" onclick="openBadgeModal('badge-7', 'Hacker Ético')" title="Ver badge digital">
+              <i class="fas fa-award"></i>
+              <span>Badge<br>digital</span>
+            </div>
+            <div class="cert-actions">
+              <a href="#" class="cert-btn cert-btn--pdf placeholder">
+                <i class="fas fa-file-pdf"></i> Evidencia PDF
+              </a>
+              <a href="https://www.netacad.com/es/courses/ethical-hacker?courseLang=es-XL&instance_id=3b07bfc3-9b21-4dbd-909b-a235416df136" target="_blank" class="cert-btn cert-btn--curso">
+                <i class="fas fa-external-link-alt"></i> Ver curso
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /cert-grid -->
+
+    <!-- RUTA DE APRENDIZAJE -->
+    <section class="learning-path">
+      <h3><i class="fas fa-route"></i> Ruta de Aprendizaje en Cisco NetAcad</h3>
+      <div class="path-timeline">
+        <div class="path-item">
+          <div class="path-dot">1</div>
+          <div class="path-content">
+            <strong>Introducción a la Ciberseguridad</strong>
+            <span>Base conceptual: panorama de amenazas, tríada CIA y carreras en ciberseguridad</span>
+          </div>
+        </div>
+        <div class="path-item">
+          <div class="path-dot">2</div>
+          <div class="path-content">
+            <strong>Conceptos Básicos de Redes</strong>
+            <span>Modelos OSI/TCP-IP, protocolos, direccionamiento IP y medios de transmisión</span>
+          </div>
+        </div>
+        <div class="path-item">
+          <div class="path-dot">3</div>
+          <div class="path-content">
+            <strong>Dispositivos de Red y Configuración Inicial</strong>
+            <span>Switches, routers, Cisco IOS CLI, VLANs y enrutamiento básico</span>
+          </div>
+        </div>
+        <div class="path-item">
+          <div class="path-dot">4</div>
+          <div class="path-content">
+            <strong>Seguridad en Terminales</strong>
+            <span>Protección de endpoints, hardening, EDR y políticas de control de acceso</span>
+          </div>
+        </div>
+        <div class="path-item">
+          <div class="path-dot">5</div>
+          <div class="path-content">
+            <strong>Administración de Amenazas Cibernéticas</strong>
+            <span>SOC, SIEM, MITRE ATT&CK, respuesta a incidentes e inteligencia de amenazas</span>
+          </div>
+        </div>
+        <div class="path-item">
+          <div class="path-dot">6</div>
+          <div class="path-content">
+            <strong>Carrera Profesional: Analista Junior en Ciberseguridad</strong>
+            <span>Certificación de pathway que valida las competencias del programa completo</span>
+          </div>
+        </div>
+        <div class="path-item">
+          <div class="path-dot">7</div>
+          <div class="path-content">
+            <strong>Hacker Ético</strong>
+            <span>Metodología de pentesting, explotación controlada y auditorías de seguridad</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL DE BADGE -->
+  <div class="badge-modal" id="badgeModal" role="dialog" aria-modal="true" aria-labelledby="badgeModalTitle">
+    <div class="badge-modal-content">
+      <button class="badge-modal-close" onclick="closeBadgeModal()" aria-label="Cerrar">&times;</button>
+      <div class="badge-modal-placeholder" id="badgePlaceholder">
+        <i class="fas fa-award"></i>
+      </div>
+      <img class="badge-modal-img" id="badgeImg" src="" alt="Badge digital" style="display:none;">
+      <h4 id="badgeModalTitle">Badge Digital</h4>
+      <p id="badgeModalDesc">El badge digital de esta certificación será agregado próximamente.</p>
+    </div>
+  </div>
+
+  <!-- FOOTER (idéntico al Index.html) -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <h3>Jorge Alejandro Cabrera</h3>
+          <p>Ingeniero en Tecnologías de la Información</p>
+        </div>
+        <div class="footer-info">
+          <a href="https://www.upslp.edu.mx" target="_blank" class="footer-link">
+            <i class="fas fa-university"></i> Universidad Politécnica de San Luis Potosí
+          </a>
+          <p><i class="fas fa-map-marker-alt"></i> San Luis Potosí, México</p>
+          <p><i class="fas fa-envelope"></i> 181591@upslp.edu.mx</p>
+        </div>
+        <div class="footer-social">
+          <a href="https://github.com/jorgeeemz" target="_blank" class="social-icon">
+            <i class="fab fa-github"></i>
+          </a>
+          <a href="mailto:181591@upslp.edu.mx" class="social-icon">
+            <i class="fas fa-envelope"></i>
+          </a>
+          <a href="Jorge resume.pdf" download class="social-icon">
+            <i class="fas fa-file-pdf"></i>
+          </a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Jorge Alejandro Cabrera. Todos los derechos reservados.</p>
+        <p>Portafolio profesional - Seguridad Informática</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    // Sobreescribir adjustHeaderSpacing para que el padding-top no sea excesivo
+    // Se llama después de que script.js lo define, reemplazándolo
+    function adjustHeaderSpacing() {
+      const header = document.querySelector('.site-header');
+      const main = document.querySelector('main');
+      if (!header) return;
+      const headerHeight = header.offsetHeight;
+      if (main) {
+        main.style.paddingTop = Math.min(headerHeight, 72) + 'px';
+      }
+      document.documentElement.style.scrollPaddingTop = Math.min(headerHeight, 72) + 'px';
+    }
+    window.addEventListener('load', adjustHeaderSpacing);
+    window.addEventListener('resize', adjustHeaderSpacing);
+    /* ===== TOGGLE RESEÑA ===== */
+    function toggleResena(id, btn) {
+      const el = document.getElementById(id);
+      const isExpanded = el.classList.contains('expanded');
+      el.classList.toggle('expanded');
+      btn.innerHTML = isExpanded
+        ? '<i class="fas fa-chevron-down"></i> Leer más'
+        : '<i class="fas fa-chevron-up"></i> Leer menos';
+    }
+
+    /* ===== FILTROS ===== */
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+
+        const filter = this.dataset.filter;
+        document.querySelectorAll('.cert-card').forEach(card => {
+          if (filter === 'all' || card.dataset.category === filter) {
+            card.style.display = '';
+            card.style.animation = 'fadeInCard 0.35s ease forwards';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    /* ===== BADGE MODAL ===== */
+    // Mapa de badges: para agregar un badge real, pon la ruta de imagen aquí
+    // Ejemplo: 'badge-1': 'img/badge_intro_cyber.png'
+    const badgeImages = {
+      'badge-1': null,
+      'badge-2': null,
+      'badge-3': null,
+      'badge-4': null,
+      'badge-5': null,
+      'badge-6': null,
+      'badge-7': null,
+    };
+
+    const badgeDescriptions = {
+      'badge-1': 'Badge digital de Introducción a la Ciberseguridad — Cisco NetAcad.',
+      'badge-2': 'Badge digital de Conceptos Básicos de Redes — Cisco NetAcad.',
+      'badge-3': 'Badge digital de Dispositivos de Red y Configuración Inicial — Cisco NetAcad.',
+      'badge-4': 'Badge digital de Seguridad en Terminales — Cisco NetAcad.',
+      'badge-5': 'Badge digital de Administración de Amenazas Cibernéticas — Cisco NetAcad.',
+      'badge-6': 'Badge digital de Analista Junior en Ciberseguridad (Pathway) — Cisco NetAcad.',
+      'badge-7': 'Badge digital de Hacker Ético — Cisco NetAcad.',
+    };
+
+    function openBadgeModal(badgeId, title) {
+      const modal = document.getElementById('badgeModal');
+      const titleEl = document.getElementById('badgeModalTitle');
+      const descEl = document.getElementById('badgeModalDesc');
+      const imgEl = document.getElementById('badgeImg');
+      const placeholder = document.getElementById('badgePlaceholder');
+
+      titleEl.textContent = title;
+
+      const imgSrc = badgeImages[badgeId];
+      if (imgSrc) {
+        imgEl.src = imgSrc;
+        imgEl.style.display = 'block';
+        placeholder.style.display = 'none';
+        descEl.textContent = badgeDescriptions[badgeId];
+      } else {
+        imgEl.style.display = 'none';
+        placeholder.style.display = 'flex';
+        descEl.textContent = 'El badge digital de esta certificación será agregado próximamente.';
+      }
+
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeBadgeModal() {
+      document.getElementById('badgeModal').classList.remove('open');
+      document.body.style.overflow = 'auto';
+    }
+
+    // Cerrar modal al hacer clic fuera
+    document.getElementById('badgeModal').addEventListener('click', function(e) {
+      if (e.target === this) closeBadgeModal();
+    });
+
+    // Cerrar modal con Escape
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeBadgeModal();
+    });
+
+    /* ===== ANIMACIÓN DE ENTRADA PARA TARJETAS ===== */
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes fadeInCard {
+        from { opacity: 0; transform: translateY(16px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Intersection Observer para animación al entrar al viewport
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.animation = 'fadeInCard 0.5s ease forwards';
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.cert-card').forEach(card => {
+      card.style.opacity = '0';
+      observer.observe(card);
+    });
+  </script>
+</body>
+</html>
