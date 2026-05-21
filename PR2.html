@@ -100,18 +100,15 @@
                 </div>
               </div>
               <div class="submenu">
-                    <a href="#">Parcial 2 ▸</a>
-                    <div class="submenu-content">
-                        <a href="PR2.html">Proyecto - Investigacion de ingenieria social y phishing</a>
-                      <a href="scoreboard.html"> Score Global - Ranking y estadísticas</a>
-                    </div>
+                <a href="#">Parcial 2 ▸</a>
+                <div class="submenu-content">
+                  <a href="PR2.html">Proyecto - Investigacion de ingenieria social y phishing</a>
+                </div>
               </div>
               <a href="#">Parcial 3 (próximamente)</a>
             </div>
           </div>
-          <a href="#perfil"><i class="fas fa-user"></i> Perfil</a>
-          <a href="#info-tecnica"><i class="fas fa-code"></i> Tecnologías</a>
-          <a href="#contacto"><i class="fas fa-envelope"></i> Contacto</a>
+          <a href="certificaciones.html"><i class="fas fa-certificate"></i> Certificaciones</a>
         </nav>
       </div>
     </div>
@@ -318,6 +315,7 @@
       </div>
     </section>
 
+    <!-- === NUEVO BOTÓN PARA EL CUESTIONARIO === -->
     <section class="actividad-seccion" style="text-align: center; margin: 3rem 0;">
       <h2><i class="fas fa-graduation-cap"></i> Pon a prueba lo aprendido</h2>
       <p style="max-width: 700px; margin: 0 auto 2rem; color: var(--muted);">
@@ -388,7 +386,7 @@
         filename:     'Proyecto_Parcial2_Phishing.pdf',
         image:        { type: 'jpeg', quality: 0.98 },
         html2canvas:  { scale: 2, letterRendering: true, useCORS: true },
-        jsPDF:        { unit: 'in', format: 'letter', orientation: 'landscape' } // landscape para tabla ancha
+        jsPDF:        { unit: 'in', format: 'letter', orientation: 'landscape' }
       };
       
       html2pdf().set(opt).from(elemento).save().then(() => {
@@ -406,7 +404,6 @@
       if (btn1) btn1.addEventListener('click', exportarActividadPDF);
       if (btn2) btn2.addEventListener('click', exportarActividadPDF);
     });
-
   </script>
 </body>
 </html>
