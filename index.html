@@ -9,6 +9,657 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="styles.css">
+
+  <style>
+    /* ===== CORRECCIONES DE HEADER Y ESPACIADO ===== */
+    .site-header .header-content {
+      padding: 10px 0 !important;
+      gap: 12px !important;
+      flex-wrap: nowrap !important;
+      align-items: center !important;
+    }
+
+    .brand__title {
+      font-size: 1.05rem !important;
+      white-space: nowrap;
+    }
+
+    .brand__subtitle {
+      font-size: 0.75rem !important;
+      margin: 1px 0 0 0 !important;
+    }
+
+    .nav {
+      gap: 2px !important;
+      flex-wrap: nowrap !important;
+    }
+
+    .nav > a,
+    .nav > .dropdown > a,
+    .nav .dropbtn {
+      padding: 5px 9px !important;
+      font-size: 0.8rem !important;
+      white-space: nowrap !important;
+      gap: 5px !important;
+    }
+
+    main {
+      padding-top: 70px !important;
+    }
+
+    html {
+      scroll-padding-top: 70px !important;
+    }
+
+    .cert-hero {
+      margin-top: 24px !important;
+    }
+
+    /* ===== SECCIÓN HERO DE CERTIFICACIONES ===== */
+    .cert-hero {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
+      border-radius: var(--radius);
+      padding: 56px 48px;
+      margin: 48px 0 64px;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cert-hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -10%;
+      width: 400px;
+      height: 400px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 50%;
+    }
+
+    .cert-hero::after {
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      right: 15%;
+      width: 250px;
+      height: 250px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 50%;
+    }
+
+    .cert-hero-icon {
+      font-size: 5rem;
+      opacity: 0.9;
+      flex-shrink: 0;
+      z-index: 1;
+    }
+
+    .cert-hero-content {
+      z-index: 1;
+    }
+
+    .cert-hero-content h2 {
+      font-family: "Merriweather", Georgia, serif;
+      font-size: 2.2rem;
+      margin-bottom: 16px;
+      color: white;
+    }
+
+    .cert-hero-content p {
+      font-size: 1.05rem;
+      opacity: 0.88;
+      line-height: 1.7;
+      max-width: 680px;
+    }
+
+    .cert-hero-stats {
+      display: flex;
+      gap: 32px;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
+
+    .cert-stat {
+      text-align: center;
+    }
+
+    .cert-stat-number {
+      font-size: 2rem;
+      font-weight: 700;
+      display: block;
+    }
+
+    .cert-stat-label {
+      font-size: 0.85rem;
+      opacity: 0.75;
+    }
+
+    /* ===== FILTROS ===== */
+    .cert-filters {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+      align-items: center;
+    }
+
+    .cert-filters-label {
+      font-weight: 600;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .filter-btn {
+      padding: 8px 18px;
+      border: 2px solid var(--border);
+      border-radius: 20px;
+      background: var(--surface);
+      color: var(--text);
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      font-family: "Inter", sans-serif;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .filter-btn.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+
+    /* ===== GRID DE CERTIFICACIONES ===== */
+    .cert-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 28px;
+      margin-bottom: 80px;
+    }
+
+    /* ===== TARJETA DE CERTIFICACIÓN ===== */
+    .cert-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cert-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.15);
+    }
+
+    .cert-card-header {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+      padding: 24px 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cert-card-header::before {
+      content: '';
+      position: absolute;
+      top: -20px;
+      right: -20px;
+      width: 120px;
+      height: 120px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 50%;
+    }
+
+    .cert-number {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      font-size: 3rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.12);
+      font-family: "Merriweather", Georgia, serif;
+      line-height: 1;
+    }
+
+    .cert-icon-wrap {
+      width: 52px;
+      height: 52px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+      backdrop-filter: blur(4px);
+    }
+
+    .cert-icon-wrap i {
+      font-size: 1.5rem;
+      color: white;
+    }
+
+    .cert-card-header h3 {
+      color: white;
+      font-size: 1.05rem;
+      font-weight: 700;
+      line-height: 1.3;
+      margin: 0;
+      padding-right: 40px;
+    }
+
+    .cert-provider {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.9);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 12px;
+      margin-top: 12px;
+    }
+
+    .cert-card-body {
+      padding: 24px 28px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Reseña */
+    .cert-resena {
+      font-size: 0.92rem;
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .cert-resena-full {
+      display: none;
+    }
+
+    .cert-resena.expanded .cert-resena-preview {
+      display: none;
+    }
+
+    .cert-resena.expanded .cert-resena-full {
+      display: block;
+    }
+
+    .btn-toggle-resena {
+      background: none;
+      border: none;
+      color: var(--primary);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 0;
+      font-family: "Inter", sans-serif;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 4px;
+      transition: color 0.2s;
+    }
+
+    .btn-toggle-resena:hover {
+      color: var(--heading);
+    }
+
+    /* Tags de habilidades */
+    .cert-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .cert-tag {
+      background: rgba(59, 130, 246, 0.08);
+      color: var(--primary);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    /* Badge y PDF */
+    .cert-evidencias {
+      display: flex;
+      gap: 10px;
+      margin-top: auto;
+      flex-wrap: wrap;
+    }
+
+    .cert-badge-area {
+      width: 72px;
+      height: 72px;
+      border: 2px dashed var(--border);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      transition: all 0.25s ease;
+      cursor: pointer;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .cert-badge-area:hover {
+      border-color: var(--secondary);
+      background: rgba(16, 185, 129, 0.05);
+    }
+
+    .cert-badge-area img {
+      width: 52px;
+      height: 52px;
+      object-fit: contain;
+    }
+
+    .cert-badge-area i {
+      font-size: 1.4rem;
+      color: var(--muted);
+    }
+
+    .cert-badge-area span {
+      font-size: 0.65rem;
+      color: var(--muted);
+      text-align: center;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    .cert-badge-area:hover i,
+    .cert-badge-area:hover span {
+      color: var(--secondary);
+    }
+
+    .cert-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .cert-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      border: none;
+      cursor: pointer;
+      font-family: "Inter", sans-serif;
+    }
+
+    .cert-btn--pdf {
+      background: rgba(239, 68, 68, 0.08);
+      color: #dc2626;
+      border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+
+    .cert-btn--pdf:hover {
+      background: #dc2626;
+      color: white;
+      text-decoration: none;
+    }
+
+    .cert-btn--curso {
+      background: rgba(59, 130, 246, 0.08);
+      color: var(--primary);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+    }
+
+    .cert-btn--curso:hover {
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+    }
+
+    /* Placeholder PDF */
+    .cert-btn--pdf.placeholder {
+      opacity: 0.55;
+      cursor: not-allowed;
+      pointer-events: none;
+      border-style: dashed;
+    }
+
+    /* ===== DIVIDER CON ÍCONO ===== */
+    .cert-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 0;
+    }
+
+    /* ===== NOTA INFORMATIVA ===== */
+    .cert-info-note {
+      background: rgba(59, 130, 246, 0.05);
+      border: 1px solid rgba(59, 130, 246, 0.15);
+      border-left: 4px solid var(--primary);
+      border-radius: var(--radius-sm);
+      padding: 16px 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 40px;
+      font-size: 0.92rem;
+      color: var(--text);
+    }
+
+    .cert-info-note i {
+      color: var(--primary);
+      font-size: 1.1rem;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    /* ===== SECCIÓN DE RUTA DE APRENDIZAJE ===== */
+    .learning-path {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 40px;
+      margin-bottom: 80px;
+    }
+
+    .learning-path h3 {
+      font-size: 1.3rem;
+      color: var(--heading);
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .learning-path h3 i {
+      color: var(--primary);
+    }
+
+    .path-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+    }
+
+    .path-item {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      position: relative;
+    }
+
+    .path-item:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      left: 19px;
+      top: 44px;
+      width: 2px;
+      height: calc(100% - 4px);
+      background: linear-gradient(to bottom, var(--primary), var(--secondary));
+      opacity: 0.3;
+    }
+
+    .path-dot {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+
+    .path-content {
+      padding: 8px 0 28px;
+      flex: 1;
+    }
+
+    .path-content strong {
+      display: block;
+      color: var(--heading);
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+
+    .path-content span {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    /* ===== MODAL BADGE ===== */
+    .badge-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+
+    .badge-modal.open {
+      display: flex;
+    }
+
+    .badge-modal-content {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 40px;
+      max-width: 420px;
+      width: 90%;
+      text-align: center;
+      position: relative;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(-20px) scale(0.97); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .badge-modal-close {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--muted);
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .badge-modal-close:hover {
+      color: var(--heading);
+    }
+
+    .badge-modal-img {
+      width: 140px;
+      height: 140px;
+      object-fit: contain;
+      margin: 0 auto 20px;
+      display: block;
+    }
+
+    .badge-modal-placeholder {
+      width: 140px;
+      height: 140px;
+      border: 3px dashed var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+    }
+
+    .badge-modal-placeholder i {
+      font-size: 3rem;
+      color: var(--muted);
+    }
+
+    .badge-modal-content h4 {
+      color: var(--heading);
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+    }
+
+    .badge-modal-content p {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .cert-hero {
+        flex-direction: column;
+        padding: 36px 28px;
+        text-align: center;
+      }
+
+      .cert-hero-stats {
+        justify-content: center;
+      }
+
+      .cert-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .learning-path {
+        padding: 28px 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .cert-hero-content h2 {
+        font-size: 1.7rem;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -23,7 +674,7 @@
         </div>
 
         <nav class="nav" aria-label="Navegación principal">
-          <a href="index.html"><i class="fas fa-home"></i> Inicio</a>
+          <a href="Index.html"><i class="fas fa-home"></i> Inicio</a>
           <div class="dropdown">
             <a href="#" class="dropbtn"><i class="fas fa-trophy"></i> ROAD TO HALL OF FAME</a>
             <div class="dropdown-content">
@@ -49,12 +700,12 @@
                     <a href="#">Parcial 2 ▸</a>
                     <div class="submenu-content">
                         <a href="PR2.html">Proyecto - Investigacion de ingenieria social y phishing</a>
-                      <a href="scoreboard.html"> Score Global - Ranking y estadísticas</a>
                     </div>
               </div>
               <a href="#">Parcial 3 (próximamente)</a>
             </div>
           </div>
+          <a href="certificaciones.html"><i class="fas fa-certificate"></i> Certificaciones</a>
           <a href="#perfil"><i class="fas fa-user"></i> Perfil</a>
           <a href="#info-tecnica"><i class="fas fa-code"></i> Tecnologías</a>
           <a href="#contacto"><i class="fas fa-envelope"></i> Contacto</a>
@@ -287,269 +938,5 @@
   </footer>
 
   <script src="script.js"></script>
-</body>
-</html>                  <a href="actividad4.html">Actividad 4 – Mecanismos de defensa en red</a>
-                  <a href="actividad5.html">Actividad 5 – Cartografiando el pentesting: análisis comparativo de
-                    metodologías de seguridad informática</a>
-                  <a href="actividad6.html">Actividad 6 – Implementación de IPSec VPN</a>
-                </div>
-              </div>
-              <a href="#">Parcial 2 (próximamente)</a>
-              <a href="#">Parcial 3 (próximamente)</a>
-            </div>
-          </div>
-          <a href="#perfil"><i class="fas fa-user"></i> Perfil</a>
-          <a href="#info-tecnica"><i class="fas fa-code"></i> Tecnologías</a>
-          <a href="#contacto"><i class="fas fa-envelope"></i> Contacto</a>
-          
-          <!-- DROPDOWN DE ACTIVIDADES -->
-          
-        </nav>
-      </div>
-    </div>
-  </header>
-
-  <main class="container" id="inicio" role="main">
-    <!-- Sección Hero ... (se mantiene igual) -->
-    <section id="presentacion" aria-labelledby="titulo-presentacion" class="hero-section">
-      <div class="hero-content">
-        <h2 id="titulo-presentacion" class="section-title">Portafolio Profesional</h2>
-        <p class="hero-description">
-          Ingeniero en Tecnologías de la Información desarrollándose en seguridad informática, 
-          desarrollo de aplicaciones y gestión de proyectos, apasionado por las tecnologías y las soluciones innovadoras.
-        </p>
-        <div class="hero-actions">
-          <a href="#contacto" class="btn btn--primary">Contactar</a>
-          <a href="Jorge resume.pdf" download class="btn btn--secondary">Descargar CV</a>
-        </div>
-      </div>
-      <div class="profile-image-container">
-        <div class="profile-image">
-          <img src="Fotop.JPG" alt="Jorge Alejandro Cabrera - Perfil profesional">
-          <div class="image-overlay">
-            <p>Ing. Tecnologías de la Información</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Introducción -->
-    <section class="intro-section" aria-labelledby="intro-title">
-      <h2 id="intro-title" class="section-title">Introducción</h2>
-      <p>
-        Este portafolio digital documenta las competencias y actividades realizadas en el curso de Seguridad Informática, 
-        evidenciando el aprendizaje práctico y aplicado en el ámbito de la ciberseguridad.
-      </p>
-      <div class="intro-cards">
-        <div class="intro-card">
-          <i class="fas fa-bullseye"></i>
-          <h3>Propósito</h3>
-          <p>Presentar evidencias del aprendizaje y trabajos realizados durante el curso de seguridad informática.</p>
-        </div>
-        <div class="intro-card">
-          <i class="fas fa-shield-alt"></i>
-          <h3>Enfoque</h3>
-          <p>Seguridad informática, pruebas de penetración y análisis de vulnerabilidades.</p>
-        </div>
-        <div class="intro-card">
-          <i class="fas fa-chart-line"></i>
-          <h3>Importancia</h3>
-          <p>Evidencia técnica del proceso de aprendizaje y aplicación práctica de contenidos.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Perfil Profesional -->
-    <section id="perfil" aria-labelledby="titulo-perfil" class="profile-section">
-      <h2 id="titulo-perfil" class="section-title">Perfil Profesional</h2>
-      <div class="profile-grid">
-        <div class="profile-card">
-          <h3><i class="fas fa-graduation-cap"></i> Formación Académica</h3>
-          <p>Ingeniero en Tecnologías de la Información cursando 8vo semestre, desarrollándose profesionalmente 
-             en el campo de la seguridad informática.</p>
-        </div>
-        <div class="profile-card">
-          <h3><i class="fas fa-briefcase"></i> Experiencia</h3>
-          <p>Actualmente ejerciendo en el área de creación de aplicaciones y administración de proyectos 
-             relacionados con low-code en Robert Bosch planta SlpP.</p>
-        </div>
-        <div class="profile-card">
-          <h3><i class="fas fa-heart"></i> Intereses</h3>
-          <p>Seguridad informática, ciberseguridad, creación de aplicaciones, project management, 
-             comercio electrónico, bases de datos, programación en alto nivel y programacion en low-code.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Información Técnica -->
-    <section id="info-tecnica" aria-labelledby="titulo-info" class="tech-section">
-      <h2 id="titulo-info" class="section-title">Stack Tecnológico</h2>
-      <div class="tech-container">
-        <div class="tech-list">
-          <h3><i class="fas fa-code"></i> Tecnologías Dominadas</h3>
-          <div class="skills-grid">
-            <span class="skill-tag">C</span>
-            <span class="skill-tag">Java</span>
-            <span class="skill-tag">HTML5</span>
-            <span class="skill-tag">CSS3</span>
-            <span class="skill-tag">JavaScript</span>
-            <span class="skill-tag">SQL</span>
-            <span class="skill-tag">Python</span>
-            <span class="skill-tag">PHP</span>
-            <span class="skill-tag">Linux</span>
-            <span class="skill-tag">Redes</span>
-            <span class="skill-tag">Office 365</span>
-            <span class="skill-tag">Git/GitHub</span>
-          </div>
-        </div>
-        
-        <div class="tech-platforms">
-          <h3><i class="fas fa-cloud"></i> Plataformas</h3>
-          <a href="https://jorgeeemz.github.io/Seguridad_informatica/" target="_blank" class="platform-link">
-            <i class="fab fa-github"></i> GitHub Portfolio
-          </a>
-          <a href="Jorge resume.pdf" download class="platform-link">
-            <i class="fas fa-download"></i> Descargar CV Completo
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- Formulario de Contacto Corregido -->
-    <section id="contacto" aria-labelledby="titulo-contacto" class="contact-section">
-      <h2 id="titulo-contacto" class="section-title">Contáctame</h2>
-      <p class="contact-description">Completa el formulario para enviarme un mensaje directamente</p>
-
-      <form id="contactForm" action="https://formspree.io/f/mrekappr" method="POST" class="contact-form" aria-describedby="contact-help">
-        <p id="contact-help" class="muted">Tu mensaje será enviado directamente a mi correo institucional</p>
-        
-        <!-- CORRECCIÓN: Solo un destinatario para evitar el error de duplicado -->
-        <input type="hidden" name="_replyto" value="181591@upslp.edu.mx">
-        
-        <div class="form-row">
-          <label for="name"><i class="fas fa-user"></i> Nombre Completo</label>
-          <input type="text" id="name" name="name" placeholder="Ej. Juan Pérez" required>
-        </div>
-
-        <div class="form-row">
-          <label for="email"><i class="fas fa-envelope"></i> Correo Electrónico</label>
-          <input type="email" id="email" name="email" placeholder="tu-correo@outlook.com" required>
-        </div>
-
-        <div class="form-row">
-          <label for="subject"><i class="fas fa-tag"></i> Asunto</label>
-          <input type="text" id="subject" name="_subject" placeholder="Motivo del contacto" required>
-        </div>
-
-        <div class="form-row">
-          <label for="message"><i class="fas fa-comment"></i> Mensaje</label>
-          <textarea id="message" name="message" rows="5" placeholder="Escribe aquí los detalles..." required></textarea>
-        </div>
-
-        <!-- Campos ocultos para Formspree CORREGIDOS -->
-        <!-- Removido el campo _cc que causaba el duplicado -->
-        <!-- En su lugar, usamos redirect para mostrar confirmación -->
-        <input type="hidden" name="_next" value="?success=true">
-        <input type="text" name="_gotcha" style="display:none">
-
-        <button type="submit" class="btn btn--primary">
-          <i class="fas fa-paper-plane"></i> Enviar Formulario
-        </button>
-        
-        <p class="form-note muted">
-          <i class="fas fa-info-circle"></i> Recibirás una confirmación en tu correo electrónico.
-        </p>
-      </form>
-    </section>
-
-    <!-- Modal Mejorado -->
-    <div id="confirmationModal" class="modal">
-      <div class="modal-content">
-        <span class="close-modal">&times;</span>
-        <div class="modal-header">
-          <i class="fas fa-paper-plane"></i>
-          <h3>Enviando a través de Formspree</h3>
-        </div>
-        <div class="modal-body">
-          <p><strong>Procesando tu mensaje...</strong></p>
-          <p>Tu formulario está siendo enviado a través del servicio seguro de Formspree.</p>
-          <div class="modal-info">
-            <p><i class="fas fa-clock"></i> Tiempo estimado: 2-3 segundos</p>
-            <p><i class="fas fa-envelope"></i> Destinatario: 181591@upslp.edu.mx</p>
-            <p><i class="fas fa-shield-alt"></i> Servicio: formspree.io/f/mrekappr</p>
-          </div>
-          <div class="loading-spinner">
-            <div class="spinner"></div>
-            <p>Procesando envío...</p>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button id="cancelBtn" class="btn btn--secondary">Cancelar</button>
-        </div>
-      </div>
-    </div>
-
-  </main>
-
-  <!-- Footer de ancho completo -->
-  <footer class="site-footer" role="contentinfo">
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-logo">
-          <h3>Jorge Alejandro Cabrera</h3>
-          <p>Ingeniero en Tecnologías de la Información</p>
-        </div>
-        
-        <div class="footer-info">
-          <a href="https://www.upslp.edu.mx" target="_blank" class="footer-link">
-            <i class="fas fa-university"></i> Universidad Politécnica de San Luis Potosí
-          </a>
-          <p><i class="fas fa-map-marker-alt"></i> San Luis Potosí, México</p>
-          <p><i class="fas fa-envelope"></i> 181591@upslp.edu.mx</p>
-        </div>
-        
-        <div class="footer-social">
-          <a href="https://github.com/jorgeeemz" target="_blank" class="social-icon">
-            <i class="fab fa-github"></i>
-          </a>
-          <a href="mailto:181591@upslp.edu.mx" class="social-icon">
-            <i class="fas fa-envelope"></i>
-          </a>
-          <a href="Jorge resume.pdf" download class="social-icon">
-            <i class="fas fa-file-pdf"></i>
-          </a>
-        </div>
-      </div>
-      
-      <div class="footer-bottom">
-        <p>&copy; 2026 Jorge Alejandro Cabrera. Todos los derechos reservados.</p>
-        <p>Portafolio profesional - Seguridad Informática</p>
-        <p style="font-size: 0.85rem; margin-top: 8px; color: rgba(255,255,255,0.6);">
-          <i class="fas fa-shield-alt"></i> Formulario protegido por 
-          <a href="https://formspree.io" target="_blank" style="color: rgba(255,255,255,0.8);">Formspree</a>
-        </p>
-      </div>
-    </div>
-  </footer>
-
-  <script src="script.js"></script>
-  <script>
-    // Ajusta el padding-top del main y el scroll-padding-top para anclas
-function adjustLayoutForStickyHeader() {
-  const header = document.querySelector('.site-header');
-  const main = document.querySelector('main');
-  if (header) {
-    const headerHeight = header.offsetHeight;
-    if (main) {
-      main.style.paddingTop = headerHeight + 'px';
-    }
-    // Para que los enlaces internos no queden ocultos
-    document.documentElement.style.scrollPaddingTop = headerHeight + 'px';
-  }
-}
-
-window.addEventListener('load', adjustLayoutForStickyHeader);
-window.addEventListener('resize', adjustLayoutForStickyHeader);
-  </script>
 </body>
 </html>
