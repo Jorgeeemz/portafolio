@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Actividad 17 – Evaluación de Vulnerabilidades con CVSS v3.1</title>
+  <meta name="description" content="Construcción del vector CVSS v3.1, interpretación técnica y cálculo de puntuación base para una vulnerabilidad en sistema web interno." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    .vector-display {
+      background: linear-gradient(135deg, #1e1e2f 0%, #0f172a 100%);
+      border-radius: var(--radius);
+      padding: 1.4rem 2rem;
+      text-align: center;
+      margin: 1.5rem 0;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+    .vector-label {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 0.5rem;
+    }
+    .vector-string {
+      font-family: 'Courier New', monospace;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #f1fa8c;
+      word-break: break-all;
+    }
+    .score-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #f59e0b;
+      color: #1a1a1a;
+      border-radius: 24px;
+      padding: 6px 20px;
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin: 0.75rem 0;
+    }
+    .score-badge.medium { background: #f59e0b; }
+    .score-badge.high { background: #ef4444; color: white; }
+    .score-badge.low { background: #10b981; color: white; }
+    .score-badge.critical { background: #7c3aed; color: white; }
+    .metric-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      gap: 1rem;
+    }
+    .metric-row:last-child { border-bottom: none; }
+    .metric-label {
+      font-weight: 600;
+      color: var(--heading);
+      font-size: 0.92rem;
+      min-width: 220px;
+    }
+    .metric-abbr {
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-family: 'Courier New', monospace;
+    }
+    .metric-value {
+      background: var(--primary);
+      color: white;
+      padding: 3px 12px;
+      border-radius: 12px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      font-family: 'Courier New', monospace;
+      white-space: nowrap;
+    }
+    .metric-desc {
+      font-size: 0.87rem;
+      color: var(--text);
+      flex: 1;
+      text-align: right;
+    }
+    .severity-scale {
+      display: flex;
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin: 1rem 0;
+      height: 44px;
+    }
+    .severity-seg {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: white;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .severity-seg span { font-size: 0.65rem; opacity: 0.85; }
+    .severity-seg.low { background: #10b981; }
+    .severity-seg.medium { background: #f59e0b; color: #1a1a1a; border: 3px solid #92400e; }
+    .severity-seg.high { background: #ef4444; }
+    .severity-seg.critical { background: #7c3aed; }
+    .escenario-box {
+      background: linear-gradient(135deg, rgba(59,130,246,0.07) 0%, rgba(16,185,129,0.05) 100%);
+      border: 1.5px solid rgba(59,130,246,0.25);
+      border-left: 5px solid var(--primary);
+      border-radius: var(--radius);
+      padding: 1.4rem 1.6rem;
+      margin: 1.5rem 0;
+    }
+    .escenario-box ul { margin: 0.5rem 0 0 1.2rem; }
+    .escenario-box li { margin-bottom: 0.3rem; color: var(--text); font-size: 0.95rem; }
+  </style>
+</head>
+<body>
+
+  <header class="site-header" role="banner">
+    <div class="container">
+      <div class="header-content">
+        <div class="brand" aria-hidden="false">
+          <h1 class="brand__title" style="margin:0;">Jorge Alejandro Cabrera - SentinelJCM</h1>
+          <p class="brand__subtitle" style="margin:4px 0 0 0;"><strong>CNO V – Seguridad Informática</strong></p>
+          <p class="brand__subtitle" style="margin:2px 0 0 0;">Universidad Politécnica de San Luis Potosí</p>
+          <p class="brand__subtitle" style="margin:2px 0 0 0;">8vo Semestre</p>
+        </div>
+        <nav class="nav" aria-label="Navegación principal">
+          <a href="Index.html"><i class="fas fa-home"></i> Inicio</a>
+          <div class="dropdown">
+            <a href="#" class="dropbtn"><i class="fas fa-trophy"></i> ROAD TO HALL OF FAME</a>
+            <div class="dropdown-content">
+              <a href="road-to-hall-of-fame.html">SQL Injection</a>
+            </div>
+          </div>
+          <div class="dropdown">
+            <a href="#" class="dropbtn"><i class="fas fa-folder-open"></i> Actividades</a>
+            <div class="dropdown-content">
+              <div class="submenu">
+                <a href="#">Parcial 1 ▸</a>
+                <div class="submenu-content">
+                  <a href="actividad1.html">Actividad 1 – NotPetya Maersk</a>
+                  <a href="actividad2.html">Actividad 2 – Análisis de servicios de seguridad (X.800 y RFC 4949)</a>
+                  <a href="actividad3.html">Actividad 3 – Interpretación y traducción de políticas de filtrado en iptables</a>
+                  <a href="actividad4.html">Actividad 4 – Mecanismos de defensa en red</a>
+                  <a href="actividad5.html">Actividad 5 – Cartografiando el pentesting: análisis comparativo de metodologías de seguridad informática</a>
+                  <a href="actividad6.html">Actividad 6 – Implementación de IPSec VPN</a>
+                </div>
+              </div>
+              <div class="submenu">
+                <a href="#">Parcial 2 ▸</a>
+                <div class="submenu-content">
+                  <a href="PR2.html">Proyecto - Investigación de ingeniería social y phishing</a>
+                </div>
+              </div>
+              <div class="submenu">
+                <a href="#">Parcial 3 ▸</a>
+                <div class="submenu-content">
+                  <a href="actividad16.html">Actividad 16 – Dilemas éticos en Ciberseguridad</a>
+                  <a href="actividad17.html">Actividad 17 – Evaluación de Vulnerabilidades con CVSS v3.1</a>
+                  <a href="actividad18.html">Actividad 18 – Análisis de Intrusiones con el Modelo Diamante</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <a href="certificaciones.html"><i class="fas fa-certificate"></i> Certificaciones</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" id="actividad-main" role="main">
+
+    <!-- ENCABEZADO -->
+    <section class="actividad-header">
+      <h1 class="section-title">🛡️ Actividad 17 – Parcial 3</h1>
+      <p class="actividad-subtitulo">Evaluación de Vulnerabilidades con CVSS v3.1</p>
+      <div class="actividad-meta">
+        <span><i class="fas fa-users"></i> Equipo 02 – Cabrera Meza Jorge Alejandro</span>
+        <span><i class="fas fa-calendar-alt"></i> Mayo 2026</span>
+        <span><i class="fas fa-tag"></i> CVSS · Vulnerabilidades · Gestión de Riesgos</span>
+      </div>
+      <div class="pdf-export-container">
+        <button id="exportarPDF" class="btn btn--primary">
+          <i class="fas fa-file-pdf"></i> Exportar a PDF
+        </button>
+        <p class="form-note muted"><i class="fas fa-info-circle"></i> Descarga un respaldo académico de esta actividad.</p>
+      </div>
+    </section>
+
+    <!-- 1. INTRODUCCIÓN -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-globe"></i> 1. Introducción</h2>
+      <div class="card">
+        <p>La evaluación de vulnerabilidades es una actividad esencial dentro de la gestión de riesgos, ya que permite <strong>traducir hallazgos técnicos en criterios claros de prioridad</strong> para la toma de decisiones. En ese proceso, el Common Vulnerability Scoring System versión 3.1 (CVSS v3.1) funciona como un marco estandarizado para describir la severidad de una vulnerabilidad mediante métricas comparables entre distintos productos, entornos y organizaciones.</p>
+        <p>Su principal valor consiste en ofrecer una <strong>puntuación base reproducible</strong> y una representación compacta en forma de vector. CVSS v3.1 separa las características intrínsecas de la vulnerabilidad en tres grupos de métricas: Base, Temporal y Ambiental. Para esta actividad se trabaja principalmente con el grupo Base.</p>
+      </div>
+    </section>
+
+    <!-- 2. MARCO TEÓRICO -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-book-open"></i> 2. Marco Teórico – CVSS v3.1</h2>
+      <div class="card">
+        <p>CVSS es un marco abierto para comunicar las características y la severidad de vulnerabilidades de software, hardware y firmware. Su diseño se basa en <strong>tres grupos de métricas</strong>:</p>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1rem; margin:1rem 0;">
+          <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:1rem;">
+            <h4 style="color:var(--primary); margin-bottom:0.5rem;"><i class="fas fa-cube"></i> Grupo Base</h4>
+            <p style="font-size:0.88rem; color:var(--text); margin:0;">Refleja cualidades intrínsecas de la vulnerabilidad. Permanece constante en el tiempo y entre distintos entornos.</p>
+          </div>
+          <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:1rem;">
+            <h4 style="color:#f59e0b; margin-bottom:0.5rem;"><i class="fas fa-clock"></i> Grupo Temporal</h4>
+            <p style="font-size:0.88rem; color:var(--text); margin:0;">Ajusta la severidad conforme cambian factores como la disponibilidad de código de explotación.</p>
+          </div>
+          <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:1rem;">
+            <h4 style="color:#10b981; margin-bottom:0.5rem;"><i class="fas fa-building"></i> Grupo Ambiental</h4>
+            <p style="font-size:0.88rem; color:var(--text); margin:0;">Adapta la valoración al contexto específico de una organización, considerando sus activos críticos.</p>
+          </div>
+        </div>
+        <h3 style="margin-top:1.5rem;">Escala cualitativa CVSS v3.1</h3>
+        <div class="severity-scale">
+          <div class="severity-seg low">BAJA<span>0.1 – 3.9</span></div>
+          <div class="severity-seg medium">MEDIA ★<span>4.0 – 6.9</span></div>
+          <div class="severity-seg high">ALTA<span>7.0 – 8.9</span></div>
+          <div class="severity-seg critical">CRÍTICA<span>9.0 – 10.0</span></div>
+        </div>
+        <p class="muted" style="font-size:0.85rem;">★ La vulnerabilidad analizada en esta actividad se ubica en la categoría MEDIA con puntuación 4.7.</p>
+      </div>
+    </section>
+
+    <!-- 3. ESCENARIO -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-clipboard-list"></i> 3. Escenario de la actividad</h2>
+      <div class="card">
+        <div class="escenario-box">
+          <p style="font-weight:700; color:var(--primary); margin-bottom:0.75rem;"><i class="fas fa-info-circle"></i> Una organización detecta una vulnerabilidad en un sistema web interno con las siguientes características:</p>
+          <ul>
+            <li>Puede explotarse <strong>a través de la red</strong>.</li>
+            <li>La explotación requiere <strong>baja complejidad</strong>.</li>
+            <li>Se necesitan <strong>privilegios elevados</strong>.</li>
+            <li><strong>No requiere interacción</strong> del usuario.</li>
+            <li><strong>No cambia el alcance</strong> (Scope Unchanged).</li>
+            <li>Impacto en Confidencialidad, Integridad y Disponibilidad: <strong>Bajo en los tres</strong>.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. CONSTRUCCIÓN DEL VECTOR -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-wrench"></i> 4. Construcción del vector CVSS</h2>
+      <div class="card">
+        <p>Con base en la información proporcionada, se mapea cada característica a la métrica correspondiente de CVSS v3.1:</p>
+
+        <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin:1.2rem 0;">
+          <div class="metric-row" style="background:rgba(59,130,246,0.06);">
+            <div class="metric-label">Attack Vector <span class="metric-abbr">(AV)</span></div>
+            <div class="metric-desc">Explotable a través de la red</div>
+            <span class="metric-value">AV:N</span>
+          </div>
+          <div class="metric-row">
+            <div class="metric-label">Attack Complexity <span class="metric-abbr">(AC)</span></div>
+            <div class="metric-desc">Baja complejidad de explotación</div>
+            <span class="metric-value">AC:L</span>
+          </div>
+          <div class="metric-row" style="background:rgba(59,130,246,0.06);">
+            <div class="metric-label">Privileges Required <span class="metric-abbr">(PR)</span></div>
+            <div class="metric-desc">Se necesitan privilegios elevados</div>
+            <span class="metric-value">PR:H</span>
+          </div>
+          <div class="metric-row">
+            <div class="metric-label">User Interaction <span class="metric-abbr">(UI)</span></div>
+            <div class="metric-desc">No requiere interacción del usuario</div>
+            <span class="metric-value">UI:N</span>
+          </div>
+          <div class="metric-row" style="background:rgba(59,130,246,0.06);">
+            <div class="metric-label">Scope <span class="metric-abbr">(S)</span></div>
+            <div class="metric-desc">El alcance no cambia</div>
+            <span class="metric-value">S:U</span>
+          </div>
+          <div class="metric-row">
+            <div class="metric-label">Confidentiality <span class="metric-abbr">(C)</span></div>
+            <div class="metric-desc">Impacto bajo en confidencialidad</div>
+            <span class="metric-value">C:L</span>
+          </div>
+          <div class="metric-row" style="background:rgba(59,130,246,0.06);">
+            <div class="metric-label">Integrity <span class="metric-abbr">(I)</span></div>
+            <div class="metric-desc">Impacto bajo en integridad</div>
+            <span class="metric-value">I:L</span>
+          </div>
+          <div class="metric-row">
+            <div class="metric-label">Availability <span class="metric-abbr">(A)</span></div>
+            <div class="metric-desc">Impacto bajo en disponibilidad</div>
+            <span class="metric-value">A:L</span>
+          </div>
+        </div>
+
+        <h3>Cadena vector resultante</h3>
+        <div class="vector-display">
+          <div class="vector-label">CVSS Vector String</div>
+          <div class="vector-string">CVSS:3.1/AV:N/AC:L/PR:H/UI:N/S:U/C:L/I:L/A:L</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. PUNTUACIÓN Y CATEGORÍA -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-calculator"></i> 5. Cálculo de puntuación base</h2>
+      <div class="card">
+        <p>Utilizando la calculadora oficial CVSS v3.1 del NIST, la puntuación base obtenida para el vector construido es:</p>
+        <div style="text-align:center; margin:1.5rem 0;">
+          <div class="score-badge medium">
+            <i class="fas fa-shield-alt"></i> 4.7 – MEDIA (Medium)
+          </div>
+        </div>
+        <p>Según la escala cualitativa CVSS v3.1, esta puntuación ubica la vulnerabilidad en la categoría <strong>Media (4.0 – 6.9)</strong>.</p>
+
+        <h3 style="margin-top:1.5rem;">Interpretación técnica</h3>
+        <p>A pesar de que la vulnerabilidad requiere privilegios elevados (PR:H), continúa siendo relevante porque puede explotarse remotamente (AV:N) con baja complejidad (AC:L). Un atacante que ya haya obtenido acceso privilegiado mediante robo de credenciales, escalamiento previo o cuentas comprometidas podría explotarla <strong>sin necesidad de interacción del usuario (UI:N)</strong>.</p>
+        <p>El tipo de atacante corresponde principalmente a un actor con conocimientos técnicos intermedios o avanzados: ciberdelincuentes organizados, insiders maliciosos o grupos APT que ya posean acceso privilegiado. El hecho de que el alcance permanezca sin cambios (S:U) indica que <strong>la vulnerabilidad solo afecta recursos dentro del mismo ámbito de seguridad comprometido</strong>, sin expandir privilegios hacia otros dominios o sistemas externos.</p>
+        <p>Los impactos bajos en C/I/A (C:L/I:L/A:L) significan que la explotación produce afectaciones limitadas: acceso parcial a información, modificación de algunos datos o pequeñas interrupciones del servicio, sin comprometer completamente el sistema ni generar daños críticos.</p>
+      </div>
+    </section>
+
+    <!-- 6. VIDEO -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-photo-video"></i> 6. Material multimedia</h2>
+      <div class="card">
+        <h3>📹 Video: Cómo usar la calculadora CVSS v3.1</h3>
+        <div class="video-wrapper">
+          <iframe width="560" height="315"
+            src="https://www.youtube.com/embed/KDqDswjy1Gg"
+            title="CVSS v3.1 Calculator Tutorial"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <p class="muted">Video de referencia académica sobre el uso de la calculadora oficial CVSS v3.1 y la interpretación de métricas de vulnerabilidad.</p>
+      </div>
+    </section>
+
+    <!-- 7. CONCLUSIÓN -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-comment-dots"></i> 7. Conclusión</h2>
+      <div class="card reflexion">
+        <p>El uso de CVSS v3.1 en este escenario permite <strong>transformar una descripción técnica de la vulnerabilidad en un criterio de severidad claro y comparable</strong>. La construcción del vector mostró que, aunque el impacto sobre confidencialidad, integridad y disponibilidad es bajo, la explotación remota y la ausencia de interacción del usuario representan condiciones que siguen justificando atención prioritaria. El requisito de privilegios elevados reduce el potencial de explotación, pero no elimina el riesgo.</p>
+        <p>La puntuación base obtenida, <strong>4.7</strong>, ubica la vulnerabilidad en la categoría Media, por lo que su corrección no debería postergarse indefinidamente, especialmente si afecta un sistema web interno con valor operativo para la organización. CVSS no solo sirve para clasificar vulnerabilidades, sino también para <strong>sustentar decisiones de mitigación con un lenguaje técnico estandarizado</strong>. Para una priorización más precisa, la valoración base debe complementarse con métricas temporales y ambientales que reflejen las condiciones reales del entorno.</p>
+        <p style="font-style:italic; margin-top:1rem;">— Equipo 02 – Seguridad Informática, Primavera 2026.</p>
+      </div>
+    </section>
+
+    <!-- 8. REFERENCIAS -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-book"></i> 8. Referencias</h2>
+      <ul class="referencias-lista">
+        <li>FIRST.Org, Inc. (2026). <em>Common Vulnerability Scoring System version 3.1 Specification Document</em>. https://www.first.org/cvss/v3.1/specification-document</li>
+        <li>NIST. (2026). <em>National Vulnerability Database (NVD)</em>. https://www.nist.gov/programs-projects/national-vulnerability-database-nvd</li>
+        <li>NIST. (2026). <em>CVSS v3 Calculator</em>. https://nvd.nist.gov/vuln-metrics/cvss/v3-calculator</li>
+      </ul>
+    </section>
+
+    <div style="text-align:center; margin:2rem 0;">
+      <a href="act17-Equipo02.pdf" download class="btn btn--primary" style="font-size:1.1rem; padding:0.75rem 2rem;">
+        <i class="fas fa-download"></i> Descargar PDF de la actividad
+      </a>
+    </div>
+
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <h3>Jorge Alejandro Cabrera</h3>
+          <p>Ingeniero en Tecnologías de la Información</p>
+        </div>
+        <div class="footer-info">
+          <a href="https://www.upslp.edu.mx" target="_blank" class="footer-link">
+            <i class="fas fa-university"></i> Universidad Politécnica de San Luis Potosí
+          </a>
+          <p><i class="fas fa-map-marker-alt"></i> San Luis Potosí, México</p>
+          <p><i class="fas fa-envelope"></i> 181591@upslp.edu.mx</p>
+        </div>
+        <div class="footer-social">
+          <a href="https://github.com/jorgeeemz" target="_blank" class="social-icon"><i class="fab fa-github"></i></a>
+          <a href="mailto:181591@upslp.edu.mx" class="social-icon"><i class="fas fa-envelope"></i></a>
+          <a href="Jorge resume.pdf" download class="social-icon"><i class="fas fa-file-pdf"></i></a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Jorge Alejandro Cabrera. Todos los derechos reservados.</p>
+        <p>Portafolio profesional - Seguridad Informática</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function exportarActividadPDF() {
+      const elemento = document.querySelector('main.container');
+      const botones = document.querySelectorAll('#exportarPDF');
+      botones.forEach(btn => btn.disabled = true);
+      const opt = {
+        margin: [0.5, 0.5, 0.5, 0.5],
+        filename: 'Actividad17_CVSS_v3_1.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, letterRendering: true, useCORS: true },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+      html2pdf().set(opt).from(elemento).save().then(() => {
+        botones.forEach(btn => btn.disabled = false);
+      });
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+      const btn = document.getElementById('exportarPDF');
+      if (btn) btn.addEventListener('click', exportarActividadPDF);
+    });
+  </script>
+</body>
+</html>

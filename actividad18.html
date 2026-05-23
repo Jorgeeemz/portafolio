@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Actividad 18 – Análisis de Intrusiones con el Modelo Diamante</title>
+  <meta name="description" content="Aplicación del Modelo Diamante de análisis de intrusiones, Cyber Kill Chain y MITRE ATT&CK para el análisis de un escenario APT realista." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    /* ─── Diagrama Diamante ─── */
+    .diamond-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 2rem 0;
+      padding: 1rem;
+    }
+    .diamond-grid {
+      display: grid;
+      grid-template-columns: 1fr 60px 1fr;
+      grid-template-rows: 1fr 60px 1fr;
+      gap: 8px;
+      max-width: 520px;
+      width: 100%;
+    }
+    .diamond-vertex {
+      background: var(--surface);
+      border: 2px solid var(--primary);
+      border-radius: var(--radius);
+      padding: 1rem;
+      text-align: center;
+      box-shadow: 0 4px 16px rgba(59,130,246,0.18);
+      transition: transform 0.2s;
+    }
+    .diamond-vertex:hover { transform: scale(1.04); }
+    .diamond-vertex i { font-size: 1.8rem; color: var(--primary); display: block; margin-bottom: 0.4rem; }
+    .diamond-vertex strong { display: block; font-size: 0.95rem; color: var(--heading); }
+    .diamond-vertex small { font-size: 0.78rem; color: var(--muted); margin-top: 0.3rem; display: block; }
+    .diamond-vertex.adversario { grid-column: 2; grid-row: 1; border-color: #ef4444; }
+    .diamond-vertex.adversario i { color: #ef4444; }
+    .diamond-vertex.capacidad { grid-column: 3; grid-row: 2; border-color: #f59e0b; }
+    .diamond-vertex.capacidad i { color: #f59e0b; }
+    .diamond-vertex.victima { grid-column: 2; grid-row: 3; border-color: #10b981; }
+    .diamond-vertex.victima i { color: #10b981; }
+    .diamond-vertex.infraestructura { grid-column: 1; grid-row: 2; border-color: #8b5cf6; }
+    .diamond-vertex.infraestructura i { color: #8b5cf6; }
+    .diamond-center { grid-column: 2; grid-row: 2; display: flex; align-items: center; justify-content: center; }
+    .diamond-center-icon { width: 52px; height: 52px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(59,130,246,0.35); }
+    .diamond-center-icon i { color: white; font-size: 1.3rem; }
+
+    /* ─── Kill Chain timeline ─── */
+    .killchain-timeline {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+      margin: 1.5rem 0;
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .kc-step {
+      flex: 1;
+      min-width: 100px;
+      padding: 0.8rem 0.5rem;
+      text-align: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      font-size: 0.78rem;
+      color: var(--text);
+      position: relative;
+      transition: background 0.2s;
+    }
+    .kc-step.active { background: linear-gradient(135deg, var(--primary), #2563eb); color: white; border-color: var(--primary); }
+    .kc-step.active small { color: rgba(255,255,255,0.8); }
+    .kc-step strong { display: block; font-size: 0.72rem; margin-bottom: 0.2rem; }
+    .kc-step small { font-size: 0.68rem; color: var(--muted); }
+    .kc-step .kc-num { display: block; font-size: 1.1rem; font-weight: 800; margin-bottom: 0.2rem; }
+
+    /* ─── Tablas de análisis ─── */
+    .analysis-table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+    .analysis-table th { background: var(--primary); color: white; padding: 10px 14px; font-size: 0.88rem; text-align: left; }
+    .analysis-table td { padding: 10px 14px; border: 1px solid var(--border); font-size: 0.88rem; vertical-align: top; color: var(--text); }
+    .analysis-table tr:nth-child(even) td { background: rgba(59,130,246,0.03); }
+    .analysis-table td:first-child { font-weight: 600; color: var(--heading); white-space: nowrap; }
+
+    /* ─── Hilo actividad ─── */
+    .hilo-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.2rem 1.4rem;
+      margin-bottom: 1rem;
+      position: relative;
+      border-left: 5px solid var(--primary);
+    }
+    .hilo-card.hilo2 { border-left-color: #8b5cf6; }
+    .hilo-card h4 { color: var(--heading); margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.5rem; }
+    .hilo-card p { font-size: 0.9rem; color: var(--text); line-height: 1.7; margin: 0; }
+    .hilo-badge { display: inline-block; background: var(--primary); color: white; font-size: 0.72rem; font-weight: 700; padding: 2px 10px; border-radius: 12px; margin-right: 0.4rem; }
+    .hilo-card.hilo2 .hilo-badge { background: #8b5cf6; }
+
+    /* ─── Framework badges ─── */
+    .framework-badges { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 1rem 0; }
+    .fw-badge { padding: 5px 14px; border-radius: 20px; font-size: 0.82rem; font-weight: 700; border: 1.5px solid; }
+    .fw-badge.mitre { background: rgba(239,68,68,0.08); color: #dc2626; border-color: rgba(239,68,68,0.3); }
+    .fw-badge.killchain { background: rgba(245,158,11,0.1); color: #b45309; border-color: rgba(245,158,11,0.3); }
+    .fw-badge.diamond { background: rgba(59,130,246,0.08); color: var(--primary); border-color: rgba(59,130,246,0.25); }
+  </style>
+</head>
+<body>
+
+  <header class="site-header" role="banner">
+    <div class="container">
+      <div class="header-content">
+        <div class="brand" aria-hidden="false">
+          <h1 class="brand__title" style="margin:0;">Jorge Alejandro Cabrera - SentinelJCM</h1>
+          <p class="brand__subtitle" style="margin:4px 0 0 0;"><strong>CNO V – Seguridad Informática</strong></p>
+          <p class="brand__subtitle" style="margin:2px 0 0 0;">Universidad Politécnica de San Luis Potosí</p>
+          <p class="brand__subtitle" style="margin:2px 0 0 0;">8vo Semestre</p>
+        </div>
+        <nav class="nav" aria-label="Navegación principal">
+          <a href="Index.html"><i class="fas fa-home"></i> Inicio</a>
+          <div class="dropdown">
+            <a href="#" class="dropbtn"><i class="fas fa-trophy"></i> ROAD TO HALL OF FAME</a>
+            <div class="dropdown-content">
+              <a href="road-to-hall-of-fame.html">SQL Injection</a>
+            </div>
+          </div>
+          <div class="dropdown">
+            <a href="#" class="dropbtn"><i class="fas fa-folder-open"></i> Actividades</a>
+            <div class="dropdown-content">
+              <div class="submenu">
+                <a href="#">Parcial 1 ▸</a>
+                <div class="submenu-content">
+                  <a href="actividad1.html">Actividad 1 – NotPetya Maersk</a>
+                  <a href="actividad2.html">Actividad 2 – Análisis de servicios de seguridad (X.800 y RFC 4949)</a>
+                  <a href="actividad3.html">Actividad 3 – Interpretación y traducción de políticas de filtrado en iptables</a>
+                  <a href="actividad4.html">Actividad 4 – Mecanismos de defensa en red</a>
+                  <a href="actividad5.html">Actividad 5 – Cartografiando el pentesting: análisis comparativo de metodologías de seguridad informática</a>
+                  <a href="actividad6.html">Actividad 6 – Implementación de IPSec VPN</a>
+                </div>
+              </div>
+              <div class="submenu">
+                <a href="#">Parcial 2 ▸</a>
+                <div class="submenu-content">
+                  <a href="PR2.html">Proyecto - Investigación de ingeniería social y phishing</a>
+                </div>
+              </div>
+              <div class="submenu">
+                <a href="#">Parcial 3 ▸</a>
+                <div class="submenu-content">
+                  <a href="actividad16.html">Actividad 16 – Dilemas éticos en Ciberseguridad</a>
+                  <a href="actividad17.html">Actividad 17 – Evaluación de Vulnerabilidades con CVSS v3.1</a>
+                  <a href="actividad18.html">Actividad 18 – Análisis de Intrusiones con el Modelo Diamante</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <a href="certificaciones.html"><i class="fas fa-certificate"></i> Certificaciones</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" id="actividad-main" role="main">
+
+    <!-- ENCABEZADO -->
+    <section class="actividad-header">
+      <h1 class="section-title">💎 Actividad 18 – Parcial 3</h1>
+      <p class="actividad-subtitulo">Análisis de Intrusiones con el Modelo Diamante</p>
+      <div class="actividad-meta">
+        <span><i class="fas fa-users"></i> Equipo 02 – Cabrera Meza Jorge Alejandro</span>
+        <span><i class="fas fa-calendar-alt"></i> Mayo 2026</span>
+        <span><i class="fas fa-tag"></i> Diamond Model · Kill Chain · MITRE ATT&CK · APT</span>
+      </div>
+      <div class="framework-badges" style="justify-content:center;">
+        <span class="fw-badge diamond"><i class="fas fa-gem"></i> Modelo Diamante</span>
+        <span class="fw-badge killchain"><i class="fas fa-link"></i> Cyber Kill Chain</span>
+        <span class="fw-badge mitre"><i class="fas fa-crosshairs"></i> MITRE ATT&CK</span>
+      </div>
+      <div class="pdf-export-container">
+        <button id="exportarPDF" class="btn btn--primary">
+          <i class="fas fa-file-pdf"></i> Exportar a PDF
+        </button>
+        <p class="form-note muted"><i class="fas fa-info-circle"></i> Descarga un respaldo académico de esta actividad.</p>
+      </div>
+    </section>
+
+    <!-- 1. INTRODUCCIÓN -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-globe"></i> 1. Introducción</h2>
+      <div class="card">
+        <p>La ciberseguridad moderna enfrenta un panorama de amenazas en constante evolución, donde los ataques dirigidos ya no pueden analizarse como eventos aislados. La sofisticación de los grupos de amenazas persistentes avanzadas (APT) exige marcos analíticos que permitan <strong>correlacionar evidencia técnica, comprender la intención del adversario y anticipar patrones de comportamiento futuros</strong>.</p>
+        <p>Propuesto por Caltagirone, Pendergast y Betz en 2013, el <strong>Modelo Diamante de Análisis de Intrusiones</strong> ofrece una estructura conceptual que descompone cualquier evento de intrusión en cuatro elementos interrelacionados: el adversario, la capacidad técnica empleada, la infraestructura utilizada y la víctima objetivo.</p>
+        <p>Esta actividad aplica el Modelo Diamante sobre un escenario realista de intrusión, complementando el análisis con la <strong>Cyber Kill Chain</strong> de Lockheed Martin y las TTPs documentadas en el framework <strong>MITRE ATT&CK</strong>.</p>
+      </div>
+    </section>
+
+    <!-- 2. MARCO TEÓRICO – DIAMANTE -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-gem"></i> 2. El Modelo Diamante</h2>
+      <div class="card">
+        <p>El Modelo Diamante parte de un axioma central: <em>todo evento de intrusión cibernética puede representarse como la relación entre un adversario que utiliza una capacidad sobre una infraestructura para afectar a una víctima.</em></p>
+
+        <h3>Los cuatro vértices del modelo</h3>
+        <div class="diamond-container">
+          <div class="diamond-grid">
+            <div class="diamond-vertex adversario">
+              <i class="fas fa-user-ninja"></i>
+              <strong>Adversario</strong>
+              <small>Actor de amenaza (individuo, grupo APT, estado-nación)</small>
+            </div>
+            <div class="diamond-center">
+              <div class="diamond-center-icon"><i class="fas fa-gem"></i></div>
+            </div>
+            <div class="diamond-vertex capacidad">
+              <i class="fas fa-tools"></i>
+              <strong>Capacidad</strong>
+              <small>TTPs, malware, exploits, herramientas de post-explotación</small>
+            </div>
+            <div class="diamond-vertex infraestructura">
+              <i class="fas fa-server"></i>
+              <strong>Infraestructura</strong>
+              <small>Dominios C2, IPs maliciosas, servidores VPS</small>
+            </div>
+            <div class="diamond-vertex victima">
+              <i class="fas fa-building"></i>
+              <strong>Víctima</strong>
+              <small>Persona, sistema, red u organización objetivo</small>
+            </div>
+          </div>
+        </div>
+
+        <h3>Metacaracterísticas del evento</h3>
+        <p>El modelo incorpora seis metacaracterísticas que enriquecen cada evento: <strong>marca de tiempo</strong>, <strong>fase dentro de la cadena de ataque</strong>, <strong>resultado obtenido</strong>, <strong>dirección del evento</strong>, <strong>metodología empleada</strong> y <strong>recursos requeridos</strong>. Estas transforman el análisis en una descripción estructurada comparable y correlacionable sistemáticamente.</p>
+      </div>
+    </section>
+
+    <!-- 3. PARTE 01 – TABLA CONCEPTUAL -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-table"></i> 3. Parte 01 – Comprensión del modelo</h2>
+      <div class="card">
+        <div class="table-responsive">
+          <table class="analysis-table">
+            <thead>
+              <tr>
+                <th>Elemento</th>
+                <th>Descripción</th>
+                <th>Ejemplo práctico</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><i class="fas fa-user-ninja" style="color:#ef4444;"></i> Adversario</td>
+                <td>Actor malicioso que lleva a cabo el ataque (individuo o grupo APT)</td>
+                <td>Grupo APT28 (Fancy Bear), atacante de estado-nación</td>
+              </tr>
+              <tr>
+                <td><i class="fas fa-tools" style="color:#f59e0b;"></i> Capacidad</td>
+                <td>Herramientas, técnicas y procedimientos (TTPs) del atacante</td>
+                <td>Malware tipo RAT, exploit de vulnerabilidad zero-day en Office</td>
+              </tr>
+              <tr>
+                <td><i class="fas fa-server" style="color:#8b5cf6;"></i> Infraestructura</td>
+                <td>Recursos físicos o lógicos usados para ejecutar el ataque (servidores C2)</td>
+                <td>Dominio malicioso update-srv.net, servidor VPS en Rusia</td>
+              </tr>
+              <tr>
+                <td><i class="fas fa-building" style="color:#10b981;"></i> Víctima</td>
+                <td>Entidad objetivo del ataque; persona, sistema u organización</td>
+                <td>Empresa de infraestructura crítica; equipo Windows de empleado</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. PARTE 02 – ANÁLISIS DE EVENTO -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-search-plus"></i> 4. Parte 02 – Análisis de evento</h2>
+      <div class="card">
+        <div class="table-responsive">
+          <table class="analysis-table">
+            <thead>
+              <tr><th>Metacaracterística</th><th>Descripción del evento</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>⏱ Marca de tiempo</td>
+                <td>Momento en que los logs registran conexiones salientes a IPs externas del C2</td>
+              </tr>
+              <tr>
+                <td>🔗 Fase</td>
+                <td>Comando y Control (C2) — Kill Chain fase 6; el malware ya fue instalado y establece canal con el servidor del atacante</td>
+              </tr>
+              <tr>
+                <td>✅ Resultado</td>
+                <td>Múltiples hosts comprometidos, canal C2 activo, posible exfiltración de datos o movimiento lateral en progreso</td>
+              </tr>
+              <tr>
+                <td>↔ Dirección</td>
+                <td>Adversario → Infraestructura (C2) → Víctima (red interna comprometida)</td>
+              </tr>
+              <tr>
+                <td>⚙ Metodología</td>
+                <td>Malware con dominio C2 embebido; resolución DNS hacia IPs externas; pivoting desde hosts infectados hacia nuevos objetivos</td>
+              </tr>
+              <tr>
+                <td>🧰 Recursos</td>
+                <td>Dominios C2, IPs externas (VPS), WHOIS, logs de red, herramienta de análisis DNS</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 style="margin-top:1.5rem;">Respuestas de análisis</h3>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1rem; margin-top:1rem;">
+          <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:1rem;">
+            <p style="font-size:0.85rem; font-weight:700; color:var(--primary); margin-bottom:0.4rem;">¿Quién es el adversario?</p>
+            <p style="font-size:0.88rem; color:var(--text); margin:0;">Actor de amenaza externo (posiblemente APT), identificado indirectamente a través de WHOIS/IP que revela un posible origen geográfico del atacante.</p>
+          </div>
+          <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:1rem;">
+            <p style="font-size:0.85rem; font-weight:700; color:#f59e0b; margin-bottom:0.4rem;">¿Cuál es la capacidad utilizada?</p>
+            <p style="font-size:0.88rem; color:var(--text); margin:0;">Malware con módulos C2 embebidos, capaz de resolver dominios y establecer conexiones persistentes hacia servidores externos.</p>
+          </div>
+          <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:1rem;">
+            <p style="font-size:0.85rem; font-weight:700; color:#8b5cf6; margin-bottom:0.4rem;">¿Qué infraestructura se emplea?</p>
+            <p style="font-size:0.88rem; color:var(--text); margin:0;">Infraestructura de tipo 2 (controlada por el atacante): dominios maliciosos y servidores VPS externos a los cuales el malware reporta.</p>
+          </div>
+          <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:1rem;">
+            <p style="font-size:0.85rem; font-weight:700; color:#10b981; margin-bottom:0.4rem;">¿Existe movimiento lateral?</p>
+            <p style="font-size:0.88rem; color:var(--text); margin:0;">Sí. Los logs muestran múltiples hosts conectándose a las mismas IPs externas del C2, indicando propagación desde el vector inicial.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. PARTE 03 – KILL CHAIN -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-link"></i> 5. Parte 03 – Relación con la Kill Chain</h2>
+      <div class="card">
+        <p>La <strong>Cyber Kill Chain</strong> de Lockheed Martin describe las siete fases secuenciales de un ataque dirigido. Interrumpir cualquier fase rompe la capacidad del adversario para alcanzar su objetivo final.</p>
+
+        <div class="killchain-timeline">
+          <div class="kc-step">
+            <span class="kc-num">1</span>
+            <strong>Reconocimiento</strong>
+            <small>Recon</small>
+          </div>
+          <div class="kc-step active">
+            <span class="kc-num">2</span>
+            <strong>Armamentización</strong>
+            <small>Phishing</small>
+          </div>
+          <div class="kc-step active">
+            <span class="kc-num">3</span>
+            <strong>Entrega</strong>
+            <small>Correo malicioso</small>
+          </div>
+          <div class="kc-step active">
+            <span class="kc-num">4</span>
+            <strong>Explotación</strong>
+            <small>Ejecución</small>
+          </div>
+          <div class="kc-step active">
+            <span class="kc-num">5</span>
+            <strong>Instalación</strong>
+            <small>Malware detectado</small>
+          </div>
+          <div class="kc-step active">
+            <span class="kc-num">6</span>
+            <strong>Comando y Control</strong>
+            <small>Canal C2 activo</small>
+          </div>
+          <div class="kc-step">
+            <span class="kc-num">7</span>
+            <strong>Acciones sobre obj.</strong>
+            <small>En progreso</small>
+          </div>
+        </div>
+        <p class="muted" style="font-size:0.85rem; margin-top:0.5rem;">Las fases resaltadas son las observadas en el escenario analizado.</p>
+
+        <div class="table-responsive" style="margin-top:1.2rem;">
+          <table class="analysis-table">
+            <thead>
+              <tr><th>Evento detectado</th><th>Fase Kill Chain</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Detección de malware</td>
+                <td>Fase 5 – Instalación: el malware ya fue depositado y ejecutado en el sistema víctima</td>
+              </tr>
+              <tr>
+                <td>Envío de phishing</td>
+                <td>Fase 2 – Armamentización / Fase 3 – Entrega: correo malicioso como vector de entrega inicial</td>
+              </tr>
+              <tr>
+                <td>Conexión a C2</td>
+                <td>Fase 6 – Comando y Control: canal de comunicación con el atacante establecido</td>
+              </tr>
+              <tr>
+                <td>Ejecución de malware</td>
+                <td>Fase 4 – Explotación: el código malicioso se ejecuta tras la apertura del adjunto</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. PARTE 04 – HILOS DE ACTIVIDAD -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-project-diagram"></i> 6. Parte 04 – Hilos de actividad</h2>
+      <div class="card">
+        <p>Una de las contribuciones más valiosas del Modelo Diamante es el concepto de <strong>hilo de actividad (activity thread)</strong>: la secuencia ordenada de eventos de intrusión que corresponde a una campaña contra un objetivo específico. Cuando el adversario expande su ataque a múltiples víctimas mediante <em>pivoting</em>, se generan múltiples hilos interrelacionados que forman un <strong>grafo de actividad</strong>.</p>
+
+        <div class="hilo-card">
+          <h4><span class="hilo-badge">Hilo 1</span> Víctima 1 (Acceso inicial)</h4>
+          <p>El adversario envía un correo de phishing dirigido al administrador → el destinatario abre el adjunto malicioso y ejecuta el malware → el malware establece canal C2 con el servidor del atacante → el host comprometido empieza a ser usado como proxy para atacar internamente.</p>
+        </div>
+
+        <div style="text-align:center; margin:0.75rem 0; color:var(--muted); font-size:0.9rem;">
+          <i class="fas fa-arrow-down"></i> <strong>Pivoting</strong> → el host de Víctima 1 actúa como trampolín interno <i class="fas fa-arrow-down"></i>
+        </div>
+
+        <div class="hilo-card hilo2">
+          <h4><span class="hilo-badge">Hilo 2</span> Víctima 2 (Movimiento lateral)</h4>
+          <p>Usando el host de Víctima 1 como trampolín, el adversario accede a Víctima 2 desde una IP interna confiable → explota vulnerabilidades del nuevo objetivo → instala malware en el segundo sistema → ejecuta acciones finales (exfiltración, reconocimiento adicional, etc.).</p>
+        </div>
+
+        <div style="background:rgba(139,92,246,0.06); border:1px solid rgba(139,92,246,0.2); border-radius:var(--radius-sm); padding:1rem; margin-top:1rem;">
+          <p style="font-size:0.9rem; color:var(--text); margin:0;"><i class="fas fa-info-circle" style="color:#8b5cf6;"></i> <strong>Relación de pivoting:</strong> Víctima 1 comprometida actúa como proxy interno, lo que le permite al atacante evadir controles perimetrales y atacar a Víctima 2 desde una dirección IP interna de confianza. <strong>Ambos hilos comparten la misma infraestructura C2.</strong></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. VIDEO -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-photo-video"></i> 7. Material multimedia</h2>
+      <div class="card">
+        <h3>📹 Video: El Modelo Diamante de Análisis de Intrusiones</h3>
+        <div class="video-wrapper">
+          <iframe width="560" height="315"
+            src="https://www.youtube.com/embed/5MkT9MnrGqY"
+            title="Diamond Model of Intrusion Analysis"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+          </iframe>
+        </div>
+        <p class="muted">Video de referencia académica sobre la aplicación del Modelo Diamante en análisis de intrusiones y Cyber Threat Intelligence.</p>
+
+        <h3 style="margin-top:2rem;">🖼️ Evidencia de la actividad</h3>
+        <div style="display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; margin-top:1rem;">
+          <img src="img/lab18.jpeg" alt="Evidencia actividad 18" style="max-width:340px; width:100%; border-radius:var(--radius); border:1px solid var(--border); box-shadow:var(--shadow);">
+          <img src="img/lab18_ev.jpeg" alt="Evidencia evaluación actividad 18" style="max-width:340px; width:100%; border-radius:var(--radius); border:1px solid var(--border); box-shadow:var(--shadow);">
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. CONCLUSIÓN -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-comment-dots"></i> 8. Conclusión</h2>
+      <div class="card reflexion">
+        <p>El análisis del escenario presentado demuestra con claridad la <strong>utilidad operacional del Modelo Diamante como marco de inteligencia de amenazas</strong>. La detección inicial del malware no constituye el fin del proceso analítico, sino su punto de partida. Al descomponer el incidente en sus cuatro vértices —adversario, capacidad, infraestructura y víctima— y enriquecerlo con las seis metacaracterísticas, el analista obtiene una representación estructurada que revela la arquitectura de la campaña.</p>
+        <p>La integración con la Cyber Kill Chain revela que el adversario alcanzó al menos la <strong>fase 6 (Comando y Control)</strong> y presentó indicios claros de transición hacia la fase 7. El concepto de pivoting ilustra una limitación crítica de las defensas perimetrales: una vez que el adversario opera desde el interior de la red, la confianza implícita en el tráfico interno se convierte en un vector de propagación, <strong>reforzando la necesidad de arquitecturas Zero Trust</strong>.</p>
+        <p style="font-style:italic; margin-top:1rem;">— Equipo 02 – Seguridad Informática, Primavera 2026.</p>
+      </div>
+    </section>
+
+    <!-- 9. REFERENCIAS -->
+    <section class="actividad-seccion">
+      <h2><i class="fas fa-book"></i> 9. Referencias</h2>
+      <ul class="referencias-lista">
+        <li>Caltagirone, S., Pendergast, A., & Betz, C. (2013). <em>The diamond model of intrusion analysis</em>. Center for Cyber Intelligence Analysis and Threat Research.</li>
+        <li>Hutchins, E. M., Cloppert, M. J., & Amin, R. M. (2011). <em>Intelligence-driven computer network defense informed by analysis of adversary campaigns and intrusion kill chains</em>. Lockheed Martin Corporation.</li>
+        <li>MITRE ATT&CK. (2024). <em>ATT&CK framework: Tactics, techniques and procedures</em>. The MITRE Corporation. https://attack.mitre.org/</li>
+        <li>National Institute of Standards and Technology. (2018). <em>Framework for improving critical infrastructure cybersecurity (Version 1.1)</em>. U.S. Department of Commerce.</li>
+        <li>Pols, P. (2017). <em>The unified kill chain: Raising resilience against advanced cyber attacks</em>. Cyber Security Academy.</li>
+      </ul>
+    </section>
+
+    <div style="text-align:center; margin:2rem 0;">
+      <a href="act18-Equipo02.pdf" download class="btn btn--primary" style="font-size:1.1rem; padding:0.75rem 2rem;">
+        <i class="fas fa-download"></i> Descargar PDF de la actividad
+      </a>
+    </div>
+
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <h3>Jorge Alejandro Cabrera</h3>
+          <p>Ingeniero en Tecnologías de la Información</p>
+        </div>
+        <div class="footer-info">
+          <a href="https://www.upslp.edu.mx" target="_blank" class="footer-link">
+            <i class="fas fa-university"></i> Universidad Politécnica de San Luis Potosí
+          </a>
+          <p><i class="fas fa-map-marker-alt"></i> San Luis Potosí, México</p>
+          <p><i class="fas fa-envelope"></i> 181591@upslp.edu.mx</p>
+        </div>
+        <div class="footer-social">
+          <a href="https://github.com/jorgeeemz" target="_blank" class="social-icon"><i class="fab fa-github"></i></a>
+          <a href="mailto:181591@upslp.edu.mx" class="social-icon"><i class="fas fa-envelope"></i></a>
+          <a href="Jorge resume.pdf" download class="social-icon"><i class="fas fa-file-pdf"></i></a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Jorge Alejandro Cabrera. Todos los derechos reservados.</p>
+        <p>Portafolio profesional - Seguridad Informática</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function exportarActividadPDF() {
+      const elemento = document.querySelector('main.container');
+      const botones = document.querySelectorAll('#exportarPDF');
+      botones.forEach(btn => btn.disabled = true);
+      const opt = {
+        margin: [0.5, 0.5, 0.5, 0.5],
+        filename: 'Actividad18_Modelo_Diamante.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, letterRendering: true, useCORS: true },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+      html2pdf().set(opt).from(elemento).save().then(() => {
+        botones.forEach(btn => btn.disabled = false);
+      });
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+      const btn = document.getElementById('exportarPDF');
+      if (btn) btn.addEventListener('click', exportarActividadPDF);
+    });
+  </script>
+</body>
+</html>
